@@ -1,0 +1,51 @@
+# Compiled files
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Build directories
+build/
+dist/
+out/
+bin/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependencies
+node_modules/
+venv/
+env/
+.env
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Game engines (if using Unity)
+Library/
+Temp/
+Builds/
+*.csproj
+*.sln
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.bak

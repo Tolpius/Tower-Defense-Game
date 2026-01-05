@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "TD-map-lvl2.tmx",
+    "activeFile": "TD-map-lvl1.tmx",
     "expandedProjectPaths": [
         "asset-active",
         "."
@@ -17,12 +17,20 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "TD-map-lvl1.tmx": {
+            "scale": 1.341875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480.29809035864,
+                "y": 320.07452258966003
+            }
+        },
         "TD-map-lvl2.tmx": {
             "scale": 1,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 462,
-                "y": 315
+                "x": 480,
+                "y": 314
             }
         },
         "TD-map.tmx": {
@@ -42,8 +50,10 @@
             "scaleInEditor": 1
         }
     },
+    "last.exportedFilePath": "/Users/dominik/Desktop/TD",
     "last.imagePath": "/Users/dominik/Desktop/TD/asset-packs/Foozle_2DT0012_Spire_Tileset_1/Tileset/PNGs",
     "map.height": 10,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
@@ -51,13 +61,15 @@
     "openFiles": [
         "TD-map-lvl2.tmx",
         "asset-active/Animated water tiles.tsx",
-        "asset-active/Grass Tileset.tsx"
+        "asset-active/Grass Tileset.tsx",
+        "TD-map-lvl1.tmx"
     ],
     "project": "TD.tiled-project",
     "recentFiles": [
         "asset-active/Grass Tileset.tsx",
-        "asset-active/Animated water tiles.tsx",
         "TD-map-lvl2.tmx",
+        "asset-active/Animated water tiles.tsx",
+        "TD-map-lvl1.tmx",
         "TD-map.tmx",
         "Grass Tileset.tsx"
     ],

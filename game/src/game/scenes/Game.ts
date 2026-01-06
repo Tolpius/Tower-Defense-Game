@@ -33,8 +33,6 @@ export class Game extends Scene {
             const layerProps = map.createLayer("Props", tilesetGrass, 0, 0);
             const layerDetails = map.createLayer("Details", tilesetGrass, 0, 0);
         }
-        const layerWaypoints = map.getObjectLayer("Waypoints");
-        console.log(layerWaypoints);
         if (tilesetWater) {
             const layerWater = map.createLayer(
                 "Terrain_Water",
@@ -43,7 +41,9 @@ export class Game extends Scene {
                 0
             );
         }
-
+        
+        const layerWaypoints = map.getObjectLayer("Waypoints");
+        console.log(layerWaypoints);
         this.waypoints = layerWaypoints.objects[0].polyline;
         const startPoint = this.waypoints[1];
 

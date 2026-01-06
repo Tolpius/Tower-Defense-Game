@@ -1,5 +1,5 @@
 export class Enemy extends Phaser.GameObjects.PathFollower {
-    duration = 8000;
+    duration = 40000;
     hp = 100;
 
     constructor(scene, path) {
@@ -8,7 +8,7 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     }
 
     start() {
-        this.startFollow({ rotateToPath: false , duration: this.duration });
+        this.startFollow({ rotateToPath: false, duration: this.duration });
     }
 }
 

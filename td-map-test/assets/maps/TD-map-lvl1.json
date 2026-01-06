@@ -138,11 +138,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/asset-active\/Grass Tileset.tsx"
+         "source":"..\/..\/..\/asset-active\/GrassTileset.tsx"
         }, 
         {
          "firstgid":257,
-         "source":"..\/..\/..\/asset-active\/Animated water tiles.tsx"
+         "source":"..\/..\/..\/asset-active\/AnimatedWaterTiles.tsx"
         }],
  "tilewidth":64,
  "type":"map",

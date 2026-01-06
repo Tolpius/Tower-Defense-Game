@@ -43,9 +43,7 @@ export class Game extends Scene {
             "water"
         );
 
-        if (!tilesetGrass || !tilesetWater) {
-            throw new Error("Could not load tileset. Check name!");
-        }
+
 
         const layerBackground = map.createLayer(
             "Terrain_Background",
@@ -65,7 +63,7 @@ export class Game extends Scene {
         const layerDetails = map.createLayer("Details", tilesetGrass, 0, 0);
 
         /*const grassTileset = map.addTilesetImage(
-            "Grass Tileset", // exakt wie in Tiled
+            "GrassTileset", // exakt wie in Tiled
             "grass" // Key aus preload()
         );
 

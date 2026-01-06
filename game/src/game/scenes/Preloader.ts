@@ -47,8 +47,7 @@ export class Preloader extends Scene {
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         const mapData = this.cache.tilemap.get("mapOne");
-        console.log("Tilemap Data:", mapData);
-        this.scene.start("MainMenu");
+        this.scene.start("Game");
     }
 }
 

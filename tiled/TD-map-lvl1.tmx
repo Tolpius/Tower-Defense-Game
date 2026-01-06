@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../TD-map-lvl1.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../GrassTileset.tsx"/>
- <tileset firstgid="257" source="../AnimatedWaterTiles.tsx"/>
+ <tileset firstgid="1" source="GrassTileset.tsx"/>
+ <tileset firstgid="257" source="AnimatedWaterTiles.tsx"/>
  <layer id="1" name="Terrain_Background" width="15" height="10" locked="1">
   <properties>
    <property name="depth" type="int" value="0"/>

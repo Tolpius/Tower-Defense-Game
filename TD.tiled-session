@@ -1,5 +1,89 @@
 {
-    "last.exportedFilePath": "/Users/dominik/Desktop/TD/game/public/assets/worlds/world1/maps/map1",
+    "activeFile": "TD-map-lvl1.tmx",
+    "expandedProjectPaths": [
+        "asset-active",
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "/Users/dominik/Desktop/AnimatedWaterTiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/Users/dominik/Desktop/GrassTileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Grass Tileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "TD-map-lvl1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 496,
+                "y": 498
+            }
+        },
+        "TD-map-lvl1.tmx#Animated water tiles": {
+            "scaleInDock": 1
+        },
+        "TD-map-lvl1.tmx#Grass Tileset": {
+            "scaleInDock": 1
+        },
+        "TD-map-lvl2.tmx": {
+            "scale": 1,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 480,
+                "y": 314
+            }
+        },
+        "TD-map.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 438.5,
+                "y": 339
+            }
+        },
+        "asset-active/Animated water tiles.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        },
+        "asset-active/Grass Tileset.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/Users/dominik/Desktop",
+    "last.externalTilesetPath": "/Users/dominik/Desktop",
+    "last.imagePath": "/Users/dominik/Downloads/Foozle_2DT0012_Spire_Tileset_1/Tileset/PNGs",
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
-    "property.type": "int"
+    "openFiles": [
+        "/Users/dominik/Desktop/GrassTileset.tsx",
+        "/Users/dominik/Desktop/AnimatedWaterTiles.tsx",
+        "TD-map-lvl1.tmx"
+    ],
+    "project": "TD.tiled-project",
+    "property.type": "int",
+    "recentFiles": [
+        "/Users/dominik/Desktop/GrassTileset.tsx",
+        "/Users/dominik/Desktop/AnimatedWaterTiles.tsx",
+        "TD-map-lvl1.tmx",
+        "asset-active/Grass Tileset.tsx",
+        "TD-map-lvl2.tmx",
+        "asset-active/Animated water tiles.tsx",
+        "TD-map.tmx",
+        "Grass Tileset.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
 }

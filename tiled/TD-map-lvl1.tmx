@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="64" tileheight="64" infinite="0" nextlayerid="14" nextobjectid="1">
  <editorsettings>
-  <export target="game/public/assets/worlds/world1/maps/map1/TD-map-lvl1.json" format="json"/>
+  <export target="../TD-map-lvl1.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="asset-active/Grass Tileset.tsx"/>
- <tileset firstgid="257" source="asset-active/Animated water tiles.tsx"/>
+ <tileset firstgid="1" source="../GrassTileset.tsx"/>
+ <tileset firstgid="257" source="../AnimatedWaterTiles.tsx"/>
  <layer id="1" name="Terrain_Background" width="15" height="10" locked="1">
   <properties>
    <property name="depth" type="int" value="0"/>

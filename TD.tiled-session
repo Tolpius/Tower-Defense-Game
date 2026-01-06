@@ -1,5 +1,9 @@
 {
-    "activeFile": "TD-map-lvl1.tmx",
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "/Users/dominik/Desktop/AnimatedWaterTiles.tsx",
     "expandedProjectPaths": [
         "asset-active",
         "."
@@ -66,8 +70,7 @@
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "openFiles": [
         "/Users/dominik/Desktop/GrassTileset.tsx",
-        "/Users/dominik/Desktop/AnimatedWaterTiles.tsx",
-        "TD-map-lvl1.tmx"
+        "/Users/dominik/Desktop/AnimatedWaterTiles.tsx"
     ],
     "project": "TD.tiled-project",
     "property.type": "int",

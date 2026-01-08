@@ -25,7 +25,7 @@ export class Preloader extends Scene {
     preload() {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath("assets");
-
+        //WORLD GENERATION
         this.load.image("logo", "logo.png");
         this.load.image("enemy", "star.png");
         this.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
@@ -33,17 +33,27 @@ export class Preloader extends Scene {
 
         this.load.image("grass", "/tilesets/GrassTileset.png");
         this.load.image("water", "/tilesets/AnimatedWaterTiles.png");
+
+        //TOWER GENERATION
         this.load.spritesheet("tower3", "/towers/Tower03.png", {
             frameWidth: 64,
             frameHeight: 128,
         });
+        this.load.spritesheet("tower3turret1", "/towers/Tower03-Level_01-Turret.png", {
+            frameWidth: 96,
+            frameHeight: 96,
+        });
+        this.load.spritesheet("tower3projectile1", "/towers/Tower03-Level_01-Projectile.png", {
+            frameWidth: 10,
+            frameHeight: 10,
+        })  
 
+        //ENEMY GENERATION
         this.load.spritesheet("scorpion", "/enemies/scorpion/Scorpion.png", {
             frameWidth: 64,
             frameHeight: 64,
         });
 
-        this.load.spritesheet()
     }
 
     create() {

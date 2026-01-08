@@ -1,23 +1,114 @@
-export abstract class Tower extends Phaser.GameObjects.Container {
-    range = 120;
+export class Tower extends Phaser.GameObjects.Container {
+    range = 1000;
     fireRate = 1000;
-    damage = 100;
+    damage = 2;
 
     protected lastFired = 0;
-
     protected turret: Phaser.GameObjects.Sprite;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y);
-
-        const towerBase = scene.add.sprite(0, 0, "tower3");
-        this.turret = scene.add.sprite(0, -20, "tower3", 1);
         scene.add.existing(this);
+
+        const towerBase = scene.add.sprite(0, 0, "tower3", 0);
+        this.turret = scene.add.sprite(0, -16, "tower3turret1", 0);
+        const rangeCircle = scene.add.circle(
+            0, // x relativ zum Tower
+            0, // y relativ zum Tower
+            this.range, // Radius
+            0x00ff00, // Farbe (grün)
+            0.25 // Alpha (transparent)
+        );
+        this.createAnimations();
+        this.add([towerBase, this.turret, rangeCircle]);
     }
 
     protected canShoot(time: number): boolean {
         return time > this.lastFired + this.fireRate;
     }
 
-   abstract update(time: number, delta: number, enemies: Phaser.GameObjects.GameObject[]): void
+    protected createAnimations() {
+        const anims = this.scene.anims;
+        if (!anims.exists(`tower3turret1-shoot`)) {
+            anims.create({
+                key: `tower3turret1-shoot`,
+                frames: anims.generateFrameNumbers("tower3turret1", {
+                    start: 0,
+                    end: 7,
+                }),
+                frameRate: (this.fireRate / 1000) * 8,
+                repeat: 0,
+            });
+        }
+        if (!anims.exists(`tower3projectile1-fly`)) {
+            anims.create({
+                key: `tower3projectile1-fly`,
+                frames: anims.generateFrameNumbers("tower3projectile1", {
+                    start: 0,
+                    end: 5,
+                }),
+                frameRate: 12,
+                repeat: -1,
+            });
+        }
+    }
+
+    update(
+        time: number,
+        delta: number,
+        enemies: Phaser.GameObjects.GameObject[]
+    ): void {
+        const target = this.getTarget(enemies);
+        if (!target) return;
+
+        this.turret.rotation =
+            Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y) + 90;
+        if (!this.canShoot(time)) return;
+        this.shoot(target);
+        this.lastFired = time;
+    }
+
+    protected getTarget(enemies: any[]) {
+        return enemies.find(
+            (e) =>
+                Phaser.Math.Distance.Between(this.x, this.y, e.x, e.y) <=
+                this.range
+        );
+    }
+
+    protected shoot(target: any): void {
+        this.turret.play(`tower3turret1-shoot`, true);
+        this.turret.on(
+            Phaser.Animations.Events.ANIMATION_UPDATE,
+            (
+                anim: Phaser.Animations.Animation,
+                frame: Phaser.Animations.AnimationFrame
+            ) => {
+                if (anim.key !== "tower3turret1-shoot") return;
+
+                if (frame.index === 6) {
+                    this.spawnProjectile(target);
+                }
+            }
+        );
+        target.hp -= this.damage;
+        console.log(`Target hit! HP left: ${target.hp}`);
+    }
+
+    protected spawnProjectile(target:any): void {
+        const projectile = this.scene.add
+            .sprite(this.x, this.y - 16, "tower3projectile1", 0)
+            .setDepth(1);
+        projectile.play("tower3projectile1-fly");
+   
+   this.scene.tweens.add({
+            targets: projectile,
+            x: target.x,
+            y: target.y,
+            duration: 300,
+            onComplete: () => {
+                projectile.destroy();
+            },
+        });
+}
 }

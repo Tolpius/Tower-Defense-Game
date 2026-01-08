@@ -1,7 +1,9 @@
 import { Scene } from "phaser";
 import { Enemy } from "../entities/enemy";
+import { Tower } from "../entities/tower";
 export class Game extends Scene {
     enemies: Enemy[] = [];
+    towers: Tower[] = [];
     constructor() {
         super("Game");
     }
@@ -55,6 +57,9 @@ export class Game extends Scene {
             this.path.lineTo(point.x, point.y);
         });
 
+        const tower = new Tower(this, 200, 300);
+        this.towers.push(tower);
+
         this.time.addEvent({
             delay: 1000,
             repeat: 9,
@@ -65,11 +70,19 @@ export class Game extends Scene {
             },
         });
 
-        this.add.sprite(224, 128, "tower3", 0);
     }
 
     update() {
-        this.enemies.forEach((enemy) => enemy.update());
+        this.enemies.forEach((enemy) => {enemy.update();
+            if (enemy.hp <= 0) {
+                enemy.destroy();
+                this.enemies = this.enemies.filter((e) => e !== enemy);
+            }
+        });
+        this.towers.forEach((tower) => {
+            tower.update(this.time.now, this.game.loop.delta, this.enemies);
+        });
+        
     }
 }
 

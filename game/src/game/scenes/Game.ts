@@ -65,7 +65,7 @@ export class Game extends Scene {
             },
         });
 
-        this.add.image(224, 128, "tower3");
+        this.add.sprite(224, 128, "tower3", 0);
     }
 
     update() {

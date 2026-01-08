@@ -33,12 +33,17 @@ export class Preloader extends Scene {
 
         this.load.image("grass", "/tilesets/GrassTileset.png");
         this.load.image("water", "/tilesets/AnimatedWaterTiles.png");
-        this.load.image("tower3", "/towers/Tower03.png");
+        this.load.spritesheet("tower3", "/towers/Tower03.png", {
+            frameWidth: 64,
+            frameHeight: 128,
+        });
 
         this.load.spritesheet("scorpion", "/enemies/scorpion/Scorpion.png", {
             frameWidth: 64,
             frameHeight: 64,
         });
+
+        this.load.spritesheet()
     }
 
     create() {

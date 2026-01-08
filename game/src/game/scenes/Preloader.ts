@@ -27,18 +27,18 @@ export class Preloader extends Scene {
         this.load.setPath("assets");
 
         this.load.image("logo", "logo.png");
-        this.load.image("star", "star.png");
-        this.load.image(
-            "td-map-lvl1",
-            "/map/TD-map-lvl1.png"
-        );
-        this.load.tilemapTiledJSON(
-            "mapOne",
-            "/map/TD-map-lvl1.json"
-        );
-       
+        this.load.image("enemy", "star.png");
+        this.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
+        this.load.tilemapTiledJSON("mapOne", "/map/TD-map-lvl1.json");
+
         this.load.image("grass", "/tilesets/GrassTileset.png");
         this.load.image("water", "/tilesets/AnimatedWaterTiles.png");
+        this.load.image("tower3", "/towers/Tower03.png");
+
+        this.load.spritesheet("scorpion", "/enemies/scorpion/Scorpion.png", {
+            frameWidth: 64,
+            frameHeight: 64,
+        });
     }
 
     create() {

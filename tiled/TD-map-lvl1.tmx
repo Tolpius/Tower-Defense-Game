@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="64" tileheight="64" infinite="0" nextlayerid="14" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="64" tileheight="64" infinite="0" nextlayerid="16" nextobjectid="2">
  <editorsettings>
-  <export target="../TD-map-lvl1.json" format="json"/>
+  <export target="../game/public/assets/map/TD-map-lvl1.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="GrassTileset" tilewidth="64" tileheight="64" tilecount="256" columns="16">
   <image source="../game/public/assets/tilesets/GrassTileset.png" width="1024" height="1024"/>
  </tileset>
  <tileset firstgid="257" name="AnimatedWaterTiles" tilewidth="64" tileheight="64" tilecount="490" columns="70">
   <image source="../game/public/assets/tilesets/AnimatedWaterTiles.png" width="4480" height="448"/>
+ </tileset>
+ <tileset firstgid="747" name="solid_green" tilewidth="64" tileheight="64" tilecount="9" columns="3">
+  <image source="../game/public/assets/Solid_green.png" width="200" height="200"/>
  </tileset>
  <layer id="1" name="Terrain_Background" width="15" height="10" locked="1">
   <properties>
@@ -109,6 +112,25 @@
 0,0,0,0,0,0,0,126,0,0,0,0,0,0,184,
 0,0,111,0,0,0,0,0,0,0,0,0,0,0,184,
 0,0,0,0,0,0,0,0,0,0,0,110,0,0,200
+</data>
+ </layer>
+ <objectgroup id="14" name="Waypoints">
+  <object id="1" x="0" y="0">
+   <polyline points="0,0 -101.333,220 352,224 350.667,541.333 868,545.333 864,350.667 541.333,348 542.667,94.6667 1068,93.3333"/>
+  </object>
+ </objectgroup>
+ <layer id="15" name="Buildable" width="15" height="10" opacity="0.7" tintcolor="#1a5fb4">
+  <data encoding="csv">
+747,747,0,0,0,747,747,747,0,747,0,0,0,0,0,
+0,0,0,0,0,0,747,747,0,0,0,0,0,0,0,
+747,747,747,747,747,747,0,747,0,0,0,0,0,747,0,
+0,0,0,0,0,0,747,0,0,0,747,747,747,0,0,
+747,0,747,747,747,0,747,747,0,0,0,0,747,747,0,
+0,0,0,747,747,0,747,747,0,0,0,0,0,0,0,
+0,0,0,0,747,0,747,747,0,747,747,0,0,0,0,
+0,0,0,0,747,0,747,0,747,747,747,747,747,0,0,
+0,0,0,747,747,0,0,0,0,0,0,0,0,0,0,
+747,747,747,747,747,747,747,747,747,747,747,0,0,747,0
 </data>
  </layer>
 </map>

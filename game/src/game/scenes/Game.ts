@@ -1,9 +1,10 @@
 import { Scene } from "phaser";
+import { Enemy } from "../entities/enemy";
 export class Game extends Scene {
+    enemies: Enemy[] = [];
     constructor() {
         super("Game");
     }
-
     create() {
         const map = this.make.tilemap({
             key: "mapOne",
@@ -41,6 +42,34 @@ export class Game extends Scene {
                 0
             );
         }
+
+        const layerWaypoints = map.getObjectLayer("Waypoints");
+        console.log(layerWaypoints);
+        this.waypoints = layerWaypoints.objects[0].polyline;
+        const startPoint = this.waypoints[1];
+
+        this.path = new Phaser.Curves.Path(startPoint.x, startPoint.y);
+
+        this.waypoints.forEach((point, index) => {
+            if (index === 0) return;
+            this.path.lineTo(point.x, point.y);
+        });
+
+        this.time.addEvent({
+            delay: 1000,
+            repeat: 9,
+            callback: () => {
+                const enemy = new Enemy(this, this.path, "scorpion");
+                enemy.start();
+                this.enemies.push(enemy);
+            },
+        });
+
+        this.add.image(224, 128, "tower3");
+    }
+
+    update() {
+        this.enemies.forEach((enemy) => enemy.update());
     }
 }
 

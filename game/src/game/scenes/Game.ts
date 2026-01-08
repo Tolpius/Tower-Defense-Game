@@ -59,7 +59,7 @@ export class Game extends Scene {
             delay: 1000,
             repeat: 9,
             callback: () => {
-                const enemy = new Enemy(this, this.path);
+                const enemy = new Enemy(this, this.path, "scorpion");
                 enemy.start();
                 this.enemies.push(enemy);
             },

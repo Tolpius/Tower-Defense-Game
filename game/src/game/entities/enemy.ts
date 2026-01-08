@@ -5,15 +5,62 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     lastDirection = "down";
     lastX: number;
     lastY: number;
+    ident = "scorpion";
 
-    constructor(scene, path) {
-        super(scene, path, path.startPoint.x, path.startPoint.y, "scorpion");
+    constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: string) {
+        super(scene, path, path.startPoint.x, path.startPoint.y, ident);
         scene.add.existing(this);
         this.lastX = this.x;
         this.lastY = this.y;
+        this.ident = ident;
+
+        this.createAnimations();
         // Startanimation
-        if (scene.anims.exists("scorpion-walk-down")) {
-            this.play("scorpion-walk-down");
+        if (scene.anims.exists(`${ident}-walk-down`)) {
+            this.play(`${ident}-walk-down`);
+        }
+    }
+
+    private createAnimations() {
+        const anims = this.scene.anims;
+
+        // Up
+        if (!anims.exists(`${this.ident}-walk-up`)) {
+            anims.create({
+                key: `${this.ident}-walk-up`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 8,
+                    end: 15,
+                }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        // Down
+        if (!anims.exists(`${this.ident}-walk-down`)) {
+            anims.create({
+                key: `${this.ident}-walk-down`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 0,
+                    end: 7,
+                }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        // Sideway
+        if (!anims.exists(`${this.ident}-walk-side`)) {
+            anims.create({
+                key: `${this.ident}-walk-side`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 16,
+                    end: 23,
+                }),
+                frameRate: 16,
+                repeat: -1,
+            });
         }
     }
 
@@ -35,27 +82,27 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
         if (direction !== this.lastDirection) {
             if (
                 direction === "down" &&
-                this.scene.anims.exists("scorpion-walk-down")
+                this.scene.anims.exists(`${this.ident}-walk-down`)
             ) {
-                this.play("scorpion-walk-down", true);
+                this.play(`${this.ident}-walk-down`, true);
                 this.flipX = false;
             } else if (
                 direction === "up" &&
-                this.scene.anims.exists("scorpion-walk-up")
+                this.scene.anims.exists(`${this.ident}-walk-up`)
             ) {
-                this.play("scorpion-walk-up", true);
+                this.play(`${this.ident}-walk-up`, true);
                 this.flipX = false;
             } else if (
                 direction === "left" &&
-                this.scene.anims.exists("scorpion-walk-side")
+                this.scene.anims.exists(`${this.ident}-walk-side`)
             ) {
-                this.play("scorpion-walk-side", true);
+                this.play(`${this.ident}-walk-side`, true);
                 this.flipX = false;
             } else if (
                 direction === "right" &&
-                this.scene.anims.exists("scorpion-walk-side")
+                this.scene.anims.exists(`${this.ident}-walk-side`)
             ) {
-                this.play("scorpion-walk-side", true);
+                this.play(`${this.ident}-walk-side`, true);
                 this.flipX = true;
             }
             this.lastDirection = direction;

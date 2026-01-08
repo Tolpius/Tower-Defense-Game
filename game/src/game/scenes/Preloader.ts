@@ -48,39 +48,6 @@ export class Preloader extends Scene {
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         const mapData = this.cache.tilemap.get("mapOne");
         this.scene.start("Game");
-
-        const scorpionWalkSide = {
-            key: "scorpion-walk-side",
-            frames: this.anims.generateFrameNumbers("scorpion", {
-                frames: [16, 17, 18, 19, 20, 21, 22, 23],
-            }),
-            frameRate: 16,
-            repeat: -1,
-        };
-        const scorpionWalkDown = {
-            key: "scorpion-walk-down",
-            frames: this.anims.generateFrameNumbers("scorpion", {
-                frames: [0, 1, 2, 3, 4, 5, 6, 7],
-            }),
-            frameRate: 16,
-            repeat: -1,
-        };
-        const scorpionWalkUp = {
-            key: "scorpion-walk-up",
-            frames: this.anims.generateFrameNumbers("scorpion", {
-                frames: [8, 9, 10, 11, 12, 13, 14, 15],
-            }),
-            frameRate: 16,
-            repeat: -1,
-        };
-
-        this.anims.create(scorpionWalkSide);
-        this.anims.create(scorpionWalkDown);
-        this.anims.create(scorpionWalkUp);
-
-        this.scorpion = this.add.sprite(400, 300, "scorpion");
-
-        this.scorpion.play("scorpion-walk", true);
     }
 }
 

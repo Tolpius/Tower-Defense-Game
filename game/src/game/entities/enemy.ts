@@ -3,6 +3,7 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     healthBar: Phaser.GameObjects.Graphics;
     maxHp = 100;
     hp = 100;
+    moneyOnDeath = 10;
 
     lastDirection = "down";
     lastX: number;

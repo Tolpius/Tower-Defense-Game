@@ -4,6 +4,8 @@ import { Tower } from "../entities/tower";
 export class Game extends Scene {
     enemies: Enemy[] = [];
     towers: Tower[] = [];
+    private money = 0;
+    private health = 100;
     constructor() {
         super("Game");
     }
@@ -69,18 +71,33 @@ export class Game extends Scene {
                 this.enemies.push(enemy);
             },
         });
+        this.scene.launch("UI");
     }
 
     update() {
-        this.enemies.forEach((enemy) => {
+        this.enemies = this.enemies.filter((enemy) => {
             enemy.update();
-            if (enemy.hp <= 0) {
-                this.enemies = this.enemies.filter((e) => e !== enemy);
+            let dead = enemy.hp <= 0;
+            if (dead) {
+                this.setMoney(this.money + enemy.moneyOnDeath);
             }
+            return !dead;
         });
         this.towers.forEach((tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
         });
+        this.events.emit("money-changed", this.money);
+        this.events.emit("health-changed", this.health);
+    }
+
+    setMoney(value: number) {
+        this.money = value;
+        this.events.emit("money-changed", this.money);
+    }
+
+    setHealth(value: number) {
+        this.health = value;
+        this.events.emit("health-changed", this.health);
     }
 }
 

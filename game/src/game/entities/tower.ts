@@ -123,8 +123,7 @@ export class Tower extends Phaser.GameObjects.Container {
                     .sprite(target.x, target.y, "tower3projectile1impact", 0)
                     .setDepth(1);
                 impact.play("tower3projectile1-impact");
-                target.hp -= this.damage;
-                console.log(`Target hit! HP left: ${target.hp}`);
+                target.takeDamage(this.damage);
                 impact.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                     impact.destroy();
                 });

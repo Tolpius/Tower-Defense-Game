@@ -19,8 +19,88 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
         this.hp = this.maxHp;
         this.healthBar = this.scene.add.graphics();
         // Starte die passende Animation (z.B. 'leafbug_down')
+        this.createAnimations();
         if (scene.anims.exists(`${ident}_down`)) {
             this.play(`${ident}_down`);
+        }
+    }
+
+    private createAnimations() {
+        const anims = this.scene.anims;
+
+        // Up
+        if (!anims.exists(`${this.ident}-walk-up`)) {
+            anims.create({
+                key: `${this.ident}-walk-up`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 32,
+                    end: 39,
+                }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        // Down
+        if (!anims.exists(`${this.ident}-walk-down`)) {
+            anims.create({
+                key: `${this.ident}-walk-down`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 24,
+                    end: 31,
+                }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        // Sideway
+        if (!anims.exists(`${this.ident}-walk-side`)) {
+            anims.create({
+                key: `${this.ident}-walk-side`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 40,
+                    end: 47,
+                }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        if (!anims.exists(`${this.ident}-death-up`)) {
+            anims.create({
+                key: `${this.ident}-death-up`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 56,
+                    end: 63,
+                }),
+                frameRate: 16,
+                repeat: 0,
+            });
+        }
+
+        if (!anims.exists(`${this.ident}-death-down`)) {
+            anims.create({
+                key: `${this.ident}-death-down`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 48,
+                    end: 55,
+                }),
+                frameRate: 16,
+                repeat: 0,
+            });
+        }
+
+        if (!anims.exists(`${this.ident}-death-side`)) {
+            anims.create({
+                key: `${this.ident}-death-side`,
+                frames: anims.generateFrameNumbers(this.ident, {
+                    start: 64,
+                    end: 71,
+                }),
+                frameRate: 16,
+                repeat: 0,
+            });
         }
     }
 
@@ -56,6 +136,32 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
         );
     }
 
+    takeDamage(amount: number) {
+        this.hp -= amount;
+        if (this.hp <= 0) {
+            this.onDeath();
+            return;
+        }
+        this.updateHealthBar();
+    }
+
+    onDeath() {
+        this.stopFollow();
+        let deathAnim = `${this.ident}-death-${this.lastDirection}`;
+        this.flipX = this.flipAnimation;
+        console.log("Playing death animation:", deathAnim);
+        this.play(deathAnim);
+
+        this.once(
+            Phaser.Animations.Events.ANIMATION_COMPLETE,
+            () => {
+                this.healthBar.destroy();
+                this.destroy();
+            },
+            this
+        );
+    }
+
     update() {
         //Calculate direction
         const dx = this.x - this.lastX;
@@ -72,21 +178,13 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
             direction = dy > 0 ? "down" : "up";
         }
 
-        // ON DEATH
-        if (this.hp <= 0) {
-            this.stopFollow();
-            // Optional: Hier könntest du eine Death-Animation abspielen, falls vorhanden
-            this.setVisible(false);
-            this.healthBar.destroy();
-            this.destroy();
-            return;
-        }
-
         // Change animation if direction changed
         if (direction !== this.lastDirection) {
-            const animKey = `${this.ident}_${direction}`;
+            const animKey = `${this.ident}-walk-${direction}`;
+
             if (this.scene.anims.exists(animKey)) {
                 this.play(animKey, true);
+
                 this.flipX = this.flipAnimation;
             }
             this.lastDirection = direction;

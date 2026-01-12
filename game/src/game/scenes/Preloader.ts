@@ -70,11 +70,10 @@ export class Preloader extends Scene {
             frameHeight: 64,
         });
 
-        this.load.aseprite(
-            "leafbug",
-            "/enemies/leafbug/Leafbug.png",
-            "/enemies/leafbug/Leafbug.json"
-        );
+        this.load.spritesheet("leafbug", "/enemies/leafbug/Leafbug.png", {
+            frameWidth: 64,
+            frameHeight: 64,
+        });
     }
 
     create() {

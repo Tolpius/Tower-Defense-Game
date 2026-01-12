@@ -69,29 +69,6 @@ export class Game extends Scene {
                 this.enemies.push(enemy);
             },
         });
-
-        // Leafbug Animationen automatisch aus JSON erstellen
-        const leafbugData = this.cache.json.get("leafbug");
-        if (leafbugData && leafbugData.frames) {
-            // Alle Animation-Präfixe ermitteln (z.B. Down, Up, Side, Right)
-            const prefixes = new Set();
-            leafbugData.frames.forEach((f) => {
-                const match = f.filename.match(/^Leafbug_([A-Za-z]+)_/);
-                if (match) prefixes.add(match[1]);
-            });
-            // Für jeden Präfix eine Animation anlegen
-            prefixes.forEach((prefix) => {
-                const frames = leafbugData.frames
-                    .filter((f) => f.filename.startsWith(`Leafbug_${prefix}_`))
-                    .map((f) => ({ key: "leafbug", frame: f.filename }));
-                this.anims.create({
-                    key: `leafbug_${prefix.toLowerCase()}`,
-                    frames,
-                    frameRate: 10,
-                    repeat: -1,
-                });
-            });
-        }
     }
 
     update() {

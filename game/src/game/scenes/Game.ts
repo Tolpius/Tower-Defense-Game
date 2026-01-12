@@ -9,8 +9,33 @@ export class Game extends Scene {
     constructor() {
         super("Game");
     }
-    create() {
 
+    private cleanup() {
+        // Cleanup all enemies and their tweens
+        this.enemies.forEach((enemy) => {
+            enemy.stopFollow();
+            enemy.healthBar.destroy();
+            enemy.destroy();
+        });
+        this.enemies = [];
+
+        // Cleanup all towers
+        this.towers.forEach((tower) => {
+            tower.destroy();
+        });
+        this.towers = [];
+
+        // Reset game state
+        this.money = 0;
+        this.health = 100;
+    }
+    create() {
+        this.events.once("shutdown", () => {
+            this.cleanup();
+        });
+        this.events.once("sleep", () => {
+            this.cleanup();
+        });
 
         const map = this.make.tilemap({
             key: "mapOne",
@@ -82,11 +107,11 @@ export class Game extends Scene {
             if (enemy.isDead()) {
                 this.setMoney(this.money + enemy.moneyOnDeath);
             }
-            if( enemy.hasReachedEnd() && !enemy.isDead()) {
+            if (enemy.hasReachedEnd() && !enemy.isDead()) {
                 this.onBaseHealthChanged(enemy.damageToBase);
                 enemy.onDeath();
             }
-            return !(enemy.isDead()|| enemy.hasReachedEnd());
+            return !(enemy.isDead() || enemy.hasReachedEnd());
         });
         this.towers.forEach((tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
@@ -101,6 +126,13 @@ export class Game extends Scene {
     setHealth(value: number) {
         this.health = value;
         this.events.emit("health-changed", this.health);
+
+        if (this.health <= 0) {
+            // Stoppe Game und UI, starte GameOver-Screen
+            this.scene.stop("UI");
+            this.scene.stop("Game");
+            this.scene.start("GameOver");
+        }
     }
 
     onBaseHealthChanged(damage: number) {

@@ -95,7 +95,7 @@ export class Tower extends Phaser.GameObjects.Container {
         ) => {
             if (anim.key !== "tower3turret1-shoot") return;
 
-            if (frame.index === 6) {
+            if (frame.index === 6 && target) {
                 this.spawnProjectile(target);
                 this.turret.off(
                     Phaser.Animations.Events.ANIMATION_UPDATE,
@@ -123,7 +123,9 @@ export class Tower extends Phaser.GameObjects.Container {
                     .sprite(target.x, target.y, "tower3projectile1impact", 0)
                     .setDepth(1);
                 impact.play("tower3projectile1-impact");
-                target.takeDamage(this.damage);
+                if (target) {
+                    target.takeDamage(this.damage);
+                }
                 impact.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                     impact.destroy();
                 });

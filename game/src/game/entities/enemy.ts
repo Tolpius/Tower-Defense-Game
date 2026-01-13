@@ -5,6 +5,9 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     hp = 100;
     moneyOnDeath = 10;
     damageToBase = 50;
+    isAlive = true;
+    hasReachedBase = false;
+    isWorthMoney = true;
 
     lastDirection = "down";
     lastX: number;
@@ -109,13 +112,16 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     // Die Animationen werden jetzt zentral in der Game-Scene erstellt
 
     start() {
-        this.startFollow({ rotateToPath: false, duration: this.duration })
-        .on("complete", () => {
-            this.stopFollow();
-            // Enemy reached the end of the path
-            this.healthBar.destroy();
-            this.destroy();
-        });
+        this.startFollow({ rotateToPath: false, duration: this.duration }).on(
+            "complete",
+            () => {
+                this.stopFollow();
+                this.hasReachedBase = true;
+                // Enemy reached the end of the path
+                this.healthBar.destroy();
+                this.setVisible(false);
+            }
+        );
     }
 
     updateHealthBar() {
@@ -154,17 +160,20 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     }
 
     onDeath() {
+        if (!this.isAlive) return;
+        this.isAlive = false;
         this.stopFollow();
         let deathAnim = `${this.ident}-death-${this.lastDirection}`;
         this.flipX = this.flipAnimation;
         console.log("Playing death animation:", deathAnim);
+        this.healthBar.setVisible(false);
         this.play(deathAnim);
 
         this.once(
             Phaser.Animations.Events.ANIMATION_COMPLETE,
             () => {
-                this.healthBar.destroy();
-                this.destroy();
+                this.setVisible(false);
+                this.setActive(false);
             },
             this
         );
@@ -200,10 +209,6 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
 
         this.lastX = this.x;
         this.lastY = this.y;
-    }
-
-    isDead(): boolean {
-        return this.hp <= 0;
     }
 
     hasReachedEnd(): boolean {

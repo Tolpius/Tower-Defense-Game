@@ -2,8 +2,8 @@ import { Scene } from "phaser";
 import { Enemy } from "../entities/enemy";
 import { Tower } from "../entities/tower";
 export class Game extends Scene {
-    enemies: Enemy[] = [];
-    towers: Tower[] = [];
+    enemies!: Phaser.GameObjects.Group;
+    towers!: Phaser.GameObjects.Group;
     private money = 0;
     private health = 100;
     private enemiesToSpawn = 10;
@@ -12,40 +12,28 @@ export class Game extends Scene {
         super("Game");
     }
 
-    private cleanup() {
-        // Cleanup all enemies and their tweens
-        this.enemies.forEach((enemy) => {
-            enemy.stopFollow();
-            enemy.healthBar.destroy();
-            enemy.destroy();
-        });
-        this.enemies = [];
 
-        // Cleanup all towers
-        this.towers.forEach((tower) => {
-            tower.destroy();
-        });
-        this.towers = [];
 
-        // Stop all timers and tweens
-        this.time.removeAllEvents();
-        this.tweens.killAll();
-
-        // Reset game state
+    create() {
+        //Variable Init
         this.money = 0;
         this.health = 100;
 
         this.enemiesSpawned = 0;
         this.enemiesToSpawn = 10;
-    }
-    create() {
-        this.events.once("shutdown", () => {
-            this.cleanup();
-        });
-        this.events.once("sleep", () => {
-            this.cleanup();
+
+        //Enemy Group und Tower Group init
+        this.enemies = this.add.group({
+            classType: Enemy,
+            runChildUpdate: false,
         });
 
+        this.towers = this.add.group({
+            classType: Tower,
+            runChildUpdate: false,
+        });
+
+        //Map Init
         const map = this.make.tilemap({
             key: "mapOne",
         });
@@ -85,7 +73,7 @@ export class Game extends Scene {
                 0
             );
         }
-
+        //Buildable Layer Init
         if (tilesetSolidGreen) {
             const layerBuildable = map.createLayer(
                 "Buildable",
@@ -94,31 +82,31 @@ export class Game extends Scene {
                 0
             );
             // Enable input for buildable layer
-            layerBuildable.setInteractive();
+            layerBuildable && layerBuildable.setInteractive();
 
             // Setup click handler for buildable tiles
             this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
                 if (!layerBuildable?.active) return;
-                console.log("2");
+
                 const tile = layerBuildable.getTileAtWorldXY(
                     pointer.worldX,
                     pointer.worldY
                 );
-                console.log("3");
+
                 if (tile && tile.index !== 0) {
                     // Place tower at tile position
                     const towerX = tile.getCenterX();
                     const towerY = tile.getCenterY() - 32;
-                    console.log("4");
+
                     const tower = new Tower(this, towerX, towerY);
-                    this.towers.push(tower);
-                    console.log("5");
+                    this.towers.add(tower);
+
                     // Remove the buildable tile
                     layerBuildable.removeTileAt(tile.x, tile.y);
                 }
             });
         }
-
+        //Waypoints Init
         const layerWaypoints = map.getObjectLayer("Waypoints");
         console.log(layerWaypoints);
         this.waypoints = layerWaypoints.objects[0].polyline;
@@ -130,14 +118,14 @@ export class Game extends Scene {
             if (index === 0) return;
             this.path.lineTo(point.x, point.y);
         });
-
+        //Enemy Spawn Init
         this.time.addEvent({
             delay: 1000,
             repeat: this.enemiesToSpawn - 1,
             callback: () => {
                 const enemy = new Enemy(this, this.path, "leafbug");
                 enemy.start();
-                this.enemies.push(enemy);
+                this.enemies.add(enemy);
                 this.enemiesSpawned++;
             },
         });
@@ -145,18 +133,25 @@ export class Game extends Scene {
     }
 
     update() {
-        this.enemies = this.enemies.filter((enemy) => {
+        (this.enemies.getChildren() as Enemy[]).forEach((enemy: Enemy) => {
+            if (!enemy.active) return;
+
             enemy.update();
-            if (enemy.isDead()) {
+
+            if (!enemy.isAlive && enemy.isWorthMoney) {
                 this.setMoney(this.money + enemy.moneyOnDeath);
+                enemy.isWorthMoney = false;
             }
-            if (enemy.hasReachedEnd() && !enemy.isDead()) {
+
+            if (enemy.hasReachedEnd() && enemy.isAlive) {
                 this.onBaseHealthChanged(enemy.damageToBase);
                 enemy.onDeath();
             }
-            return !(enemy.isDead() || enemy.hasReachedEnd());
         });
-        this.towers.forEach((tower) => {
+
+        this.checkWinCondition();
+
+        (this.towers.getChildren() as Tower[]).forEach((tower: Tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
         });
         this.checkWinCondition();
@@ -184,9 +179,11 @@ export class Game extends Scene {
     }
 
     checkWinCondition() {
-        const allEnemiesSpawned = this.enemiesSpawned === this.enemiesToSpawn;
+        const allEnemiesSpawned = this.enemiesSpawned >= this.enemiesToSpawn;
 
-        const noEnemiesLeft = this.enemies.length === 0;
+        const noEnemiesLeft =
+            (this.enemies.getChildren() as Enemy[]).filter((e: Enemy) => e.isAlive)
+                .length === 0;
 
         if (allEnemiesSpawned && noEnemiesLeft) {
             this.scene.stop("UI");

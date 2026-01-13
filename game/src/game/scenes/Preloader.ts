@@ -31,6 +31,7 @@ export class Preloader extends Scene {
         this.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
         this.load.tilemapTiledJSON("mapOne", "/map/TD-map-lvl1.json");
 
+        this.load.image("solidGreen", "/Solid_green.png");
         this.load.image("grass", "/tilesets/GrassTileset.png");
         this.load.image("water", "/tilesets/AnimatedWaterTiles.png");
 

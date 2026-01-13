@@ -51,7 +51,10 @@ export class Game extends Scene {
         });
         const tilesetGrass = map.addTilesetImage("GrassTileset", "grass");
         const tilesetWater = map.addTilesetImage("AnimatedWaterTiles", "water");
-
+        const tilesetSolidGreen = map.addTilesetImage(
+            "solid_green",
+            "solidGreen"
+        );
         if (tilesetGrass) {
             const layerBackground = map.createLayer(
                 "Terrain_Background",
@@ -83,6 +86,39 @@ export class Game extends Scene {
             );
         }
 
+        if (tilesetSolidGreen) {
+            const layerBuildable = map.createLayer(
+                "Buildable",
+                tilesetSolidGreen,
+                0,
+                0
+            );
+            // Enable input for buildable layer
+            layerBuildable.setInteractive();
+
+            // Setup click handler for buildable tiles
+            this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+                if (!layerBuildable?.active) return;
+                console.log("2");
+                const tile = layerBuildable.getTileAtWorldXY(
+                    pointer.worldX,
+                    pointer.worldY
+                );
+                console.log("3");
+                if (tile && tile.index !== 0) {
+                    // Place tower at tile position
+                    const towerX = tile.getCenterX();
+                    const towerY = tile.getCenterY() - 32;
+                    console.log("4");
+                    const tower = new Tower(this, towerX, towerY);
+                    this.towers.push(tower);
+                    console.log("5");
+                    // Remove the buildable tile
+                    layerBuildable.removeTileAt(tile.x, tile.y);
+                }
+            });
+        }
+
         const layerWaypoints = map.getObjectLayer("Waypoints");
         console.log(layerWaypoints);
         this.waypoints = layerWaypoints.objects[0].polyline;
@@ -94,9 +130,6 @@ export class Game extends Scene {
             if (index === 0) return;
             this.path.lineTo(point.x, point.y);
         });
-
-        const tower = new Tower(this, 200, 300);
-        this.towers.push(tower);
 
         this.time.addEvent({
             delay: 1000,

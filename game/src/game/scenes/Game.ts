@@ -12,20 +12,17 @@ export class Game extends Scene {
         super("Game");
     }
 
-    private cleanup() {
-        // Cleanup all enemies and their tweens
 
-        this.time.removeAllEvents();
-        this.tweens.killAll();
 
-        // Reset game state
+    create() {
+        //Variable Init
         this.money = 0;
         this.health = 100;
 
         this.enemiesSpawned = 0;
         this.enemiesToSpawn = 10;
-    }
-    create() {
+
+        //Enemy Group und Tower Group init
         this.enemies = this.add.group({
             classType: Enemy,
             runChildUpdate: false,
@@ -35,15 +32,8 @@ export class Game extends Scene {
             classType: Tower,
             runChildUpdate: false,
         });
-        this.events.once("shutdown", () => {
-            console.log("Game scene shutdown, cleaning up...");
-            this.cleanup();
-        });
-        this.events.once("sleep", () => {
-            console.log("Game scene sleep, cleaning up...");
-            this.cleanup();
-        });
 
+        //Map Init
         const map = this.make.tilemap({
             key: "mapOne",
         });
@@ -83,7 +73,7 @@ export class Game extends Scene {
                 0
             );
         }
-
+        //Buildable Layer Init
         if (tilesetSolidGreen) {
             const layerBuildable = map.createLayer(
                 "Buildable",
@@ -92,7 +82,7 @@ export class Game extends Scene {
                 0
             );
             // Enable input for buildable layer
-            layerBuildable.setInteractive();
+            layerBuildable && layerBuildable.setInteractive();
 
             // Setup click handler for buildable tiles
             this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
@@ -116,7 +106,7 @@ export class Game extends Scene {
                 }
             });
         }
-
+        //Waypoints Init
         const layerWaypoints = map.getObjectLayer("Waypoints");
         console.log(layerWaypoints);
         this.waypoints = layerWaypoints.objects[0].polyline;
@@ -128,7 +118,7 @@ export class Game extends Scene {
             if (index === 0) return;
             this.path.lineTo(point.x, point.y);
         });
-
+        //Enemy Spawn Init
         this.time.addEvent({
             delay: 1000,
             repeat: this.enemiesToSpawn - 1,
@@ -143,7 +133,7 @@ export class Game extends Scene {
     }
 
     update() {
-        this.enemies.getChildren().forEach((enemy: Enemy) => {
+        (this.enemies.getChildren() as Enemy[]).forEach((enemy: Enemy) => {
             if (!enemy.active) return;
 
             enemy.update();
@@ -160,7 +150,7 @@ export class Game extends Scene {
 
         this.checkWinCondition();
 
-        this.towers.getChildren().forEach((tower: Tower) => {
+        (this.towers.getChildren() as Tower[]).forEach((tower: Tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
         });
         this.checkWinCondition();
@@ -191,7 +181,7 @@ export class Game extends Scene {
         const allEnemiesSpawned = this.enemiesSpawned >= this.enemiesToSpawn;
 
         const noEnemiesLeft =
-            this.enemies.getChildren().filter((e: Enemy) => e.isAlive)
+            (this.enemies.getChildren() as Enemy[]).filter((e: Enemy) => e.isAlive)
                 .length === 0;
 
         if (allEnemiesSpawned && noEnemiesLeft) {

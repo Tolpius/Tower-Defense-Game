@@ -1,3 +1,5 @@
+import { Enemy } from "./enemy";
+
 export class Tower extends Phaser.GameObjects.Container {
     range = 200;
     fireRate = 1200;
@@ -67,7 +69,7 @@ export class Tower extends Phaser.GameObjects.Container {
     update(
         time: number,
         delta: number,
-        enemies: Phaser.GameObjects.GameObject[]
+        enemies: Phaser.GameObjects.Group
     ): void {
         const target = this.getTarget(enemies);
         if (!target) return;
@@ -79,11 +81,11 @@ export class Tower extends Phaser.GameObjects.Container {
         this.lastFired = time;
     }
 
-    protected getTarget(enemies: any[]) {
-        return enemies.find(
-            (e) =>
-                Phaser.Math.Distance.Between(this.x, this.y, e.x, e.y) <=
-                this.range
+    protected getTarget(enemies: Phaser.GameObjects.Group) {
+        return enemies.getChildren().find(
+            (e: Enemy) =>
+                (Phaser.Math.Distance.Between(this.x, this.y, e.x, e.y) <=
+                this.range) &&(e.isAlive)
         );
     }
 

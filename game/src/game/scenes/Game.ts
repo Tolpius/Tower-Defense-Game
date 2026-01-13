@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import { Enemy } from "../entities/enemy";
 import { Tower } from "../entities/tower";
 export class Game extends Scene {
-    enemies: Enemy[] = [];
+    enemies!: Phaser.GameObjects.Group;
     towers: Tower[] = [];
     private money = 0;
     private health = 100;
@@ -14,20 +14,10 @@ export class Game extends Scene {
 
     private cleanup() {
         // Cleanup all enemies and their tweens
-        this.enemies.forEach((enemy) => {
-            enemy.stopFollow();
-            enemy.healthBar.destroy();
-            enemy.destroy();
-        });
-        this.enemies = [];
 
-        // Cleanup all towers
-        this.towers.forEach((tower) => {
-            tower.destroy();
-        });
+        this.towers.forEach((tower) => tower.destroy());
         this.towers = [];
 
-        // Stop all timers and tweens
         this.time.removeAllEvents();
         this.tweens.killAll();
 
@@ -39,10 +29,17 @@ export class Game extends Scene {
         this.enemiesToSpawn = 10;
     }
     create() {
+        this.enemies = this.add.group({
+            classType: Enemy,
+            runChildUpdate: false,
+        });
+
         this.events.once("shutdown", () => {
+            console.log("Game scene shutdown, cleaning up...");
             this.cleanup();
         });
         this.events.once("sleep", () => {
+            console.log("Game scene sleep, cleaning up...");
             this.cleanup();
         });
 
@@ -99,20 +96,20 @@ export class Game extends Scene {
             // Setup click handler for buildable tiles
             this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
                 if (!layerBuildable?.active) return;
-                console.log("2");
+        
                 const tile = layerBuildable.getTileAtWorldXY(
                     pointer.worldX,
                     pointer.worldY
                 );
-                console.log("3");
+          
                 if (tile && tile.index !== 0) {
                     // Place tower at tile position
                     const towerX = tile.getCenterX();
                     const towerY = tile.getCenterY() - 32;
-                    console.log("4");
+                  
                     const tower = new Tower(this, towerX, towerY);
                     this.towers.push(tower);
-                    console.log("5");
+                 
                     // Remove the buildable tile
                     layerBuildable.removeTileAt(tile.x, tile.y);
                 }
@@ -137,7 +134,7 @@ export class Game extends Scene {
             callback: () => {
                 const enemy = new Enemy(this, this.path, "leafbug");
                 enemy.start();
-                this.enemies.push(enemy);
+                this.enemies.add(enemy);
                 this.enemiesSpawned++;
             },
         });
@@ -145,17 +142,23 @@ export class Game extends Scene {
     }
 
     update() {
-        this.enemies = this.enemies.filter((enemy) => {
+        this.enemies.getChildren().forEach((enemy: Enemy) => {
+            if (!enemy.active) return;
+
             enemy.update();
-            if (enemy.isDead()) {
+
+            if (!enemy.isAlive) {
                 this.setMoney(this.money + enemy.moneyOnDeath);
             }
-            if (enemy.hasReachedEnd() && !enemy.isDead()) {
+
+            if (enemy.hasReachedEnd() && enemy.isAlive) {
                 this.onBaseHealthChanged(enemy.damageToBase);
                 enemy.onDeath();
             }
-            return !(enemy.isDead() || enemy.hasReachedEnd());
         });
+
+        this.checkWinCondition();
+
         this.towers.forEach((tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
         });
@@ -184,9 +187,11 @@ export class Game extends Scene {
     }
 
     checkWinCondition() {
-        const allEnemiesSpawned = this.enemiesSpawned === this.enemiesToSpawn;
+        const allEnemiesSpawned = this.enemiesSpawned >= this.enemiesToSpawn;
 
-        const noEnemiesLeft = this.enemies.length === 0;
+        const noEnemiesLeft =
+            this.enemies.getChildren().filter((e: Enemy) => e.isAlive)
+                .length === 0;
 
         if (allEnemiesSpawned && noEnemiesLeft) {
             this.scene.stop("UI");

@@ -7,6 +7,7 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     damageToBase = 50;
     isAlive = true;
     hasReachedBase = false;
+    isWorthMoney = true;
 
     lastDirection = "down";
     lastX: number;

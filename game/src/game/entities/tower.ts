@@ -1,7 +1,7 @@
 export class Tower extends Phaser.GameObjects.Container {
     range = 200;
     fireRate = 1200;
-    damage = 34;
+    damage = 100;
 
     protected lastFired = 0;
     protected turret: Phaser.GameObjects.Sprite;

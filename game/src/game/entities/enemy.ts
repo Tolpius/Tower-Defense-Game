@@ -3,6 +3,8 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     healthBar: Phaser.GameObjects.Graphics;
     maxHp = 100;
     hp = 100;
+    moneyOnDeath = 10;
+    damageToBase = 50;
 
     lastDirection = "down";
     lastX: number;
@@ -20,8 +22,8 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
         this.healthBar = this.scene.add.graphics();
         // Starte die passende Animation (z.B. 'leafbug_down')
         this.createAnimations();
-        if (scene.anims.exists(`${ident}_down`)) {
-            this.play(`${ident}_down`);
+        if (scene.anims.exists(`${ident}-walk-down`)) {
+            this.play(`${ident}-walk-down`);
         }
     }
 
@@ -107,7 +109,13 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
     // Die Animationen werden jetzt zentral in der Game-Scene erstellt
 
     start() {
-        this.startFollow({ rotateToPath: false, duration: this.duration });
+        this.startFollow({ rotateToPath: false, duration: this.duration })
+        .on("complete", () => {
+            this.stopFollow();
+            // Enemy reached the end of the path
+            this.healthBar.destroy();
+            this.destroy();
+        });
     }
 
     updateHealthBar() {
@@ -192,6 +200,14 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
 
         this.lastX = this.x;
         this.lastY = this.y;
+    }
+
+    isDead(): boolean {
+        return this.hp <= 0;
+    }
+
+    hasReachedEnd(): boolean {
+        return !this.isFollowing();
     }
 }
 

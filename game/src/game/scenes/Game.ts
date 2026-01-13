@@ -4,10 +4,48 @@ import { Tower } from "../entities/tower";
 export class Game extends Scene {
     enemies: Enemy[] = [];
     towers: Tower[] = [];
+    private money = 0;
+    private health = 100;
+    private enemiesToSpawn = 10;
+    private enemiesSpawned = 0;
     constructor() {
         super("Game");
     }
+
+    private cleanup() {
+        // Cleanup all enemies and their tweens
+        this.enemies.forEach((enemy) => {
+            enemy.stopFollow();
+            enemy.healthBar.destroy();
+            enemy.destroy();
+        });
+        this.enemies = [];
+
+        // Cleanup all towers
+        this.towers.forEach((tower) => {
+            tower.destroy();
+        });
+        this.towers = [];
+
+        // Stop all timers and tweens
+        this.time.removeAllEvents();
+        this.tweens.killAll();
+
+        // Reset game state
+        this.money = 0;
+        this.health = 100;
+
+        this.enemiesSpawned = 0;
+        this.enemiesToSpawn = 10;
+    }
     create() {
+        this.events.once("shutdown", () => {
+            this.cleanup();
+        });
+        this.events.once("sleep", () => {
+            this.cleanup();
+        });
+
         const map = this.make.tilemap({
             key: "mapOne",
         });
@@ -62,25 +100,66 @@ export class Game extends Scene {
 
         this.time.addEvent({
             delay: 1000,
-            repeat: 9,
+            repeat: this.enemiesToSpawn - 1,
             callback: () => {
                 const enemy = new Enemy(this, this.path, "leafbug");
                 enemy.start();
                 this.enemies.push(enemy);
+                this.enemiesSpawned++;
             },
         });
+        this.scene.launch("UI");
     }
 
     update() {
-        this.enemies.forEach((enemy) => {
+        this.enemies = this.enemies.filter((enemy) => {
             enemy.update();
-            if (enemy.hp <= 0) {
-                this.enemies = this.enemies.filter((e) => e !== enemy);
+            if (enemy.isDead()) {
+                this.setMoney(this.money + enemy.moneyOnDeath);
             }
+            if (enemy.hasReachedEnd() && !enemy.isDead()) {
+                this.onBaseHealthChanged(enemy.damageToBase);
+                enemy.onDeath();
+            }
+            return !(enemy.isDead() || enemy.hasReachedEnd());
         });
         this.towers.forEach((tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
         });
+        this.checkWinCondition();
+    }
+
+    setMoney(value: number) {
+        this.money = value;
+        this.events.emit("money-changed", this.money);
+    }
+
+    setHealth(value: number) {
+        this.health = value;
+        this.events.emit("health-changed", this.health);
+
+        if (this.health <= 0) {
+            // Stoppe Game und UI, starte GameOver-Screen
+            this.scene.stop("UI");
+            this.scene.stop("Game");
+            this.scene.start("GameOver");
+        }
+    }
+
+    onBaseHealthChanged(damage: number) {
+        this.setHealth(this.health - damage);
+    }
+
+    checkWinCondition() {
+        const allEnemiesSpawned = this.enemiesSpawned === this.enemiesToSpawn;
+
+        const noEnemiesLeft = this.enemies.length === 0;
+
+        if (allEnemiesSpawned && noEnemiesLeft) {
+            this.scene.stop("UI");
+            this.scene.stop("Game");
+            this.scene.start("GameWon");
+        }
     }
 }
 

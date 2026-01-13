@@ -3,7 +3,7 @@ import { Enemy } from "../entities/enemy";
 import { Tower } from "../entities/tower";
 export class Game extends Scene {
     enemies!: Phaser.GameObjects.Group;
-    towers: Tower[] = [];
+    towers!: Phaser.GameObjects.Group;
     private money = 0;
     private health = 100;
     private enemiesToSpawn = 10;
@@ -14,9 +14,6 @@ export class Game extends Scene {
 
     private cleanup() {
         // Cleanup all enemies and their tweens
-
-        this.towers.forEach((tower) => tower.destroy());
-        this.towers = [];
 
         this.time.removeAllEvents();
         this.tweens.killAll();
@@ -34,6 +31,10 @@ export class Game extends Scene {
             runChildUpdate: false,
         });
 
+        this.towers = this.add.group({
+            classType: Tower,
+            runChildUpdate: false,
+        });
         this.events.once("shutdown", () => {
             console.log("Game scene shutdown, cleaning up...");
             this.cleanup();
@@ -96,20 +97,20 @@ export class Game extends Scene {
             // Setup click handler for buildable tiles
             this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
                 if (!layerBuildable?.active) return;
-        
+
                 const tile = layerBuildable.getTileAtWorldXY(
                     pointer.worldX,
                     pointer.worldY
                 );
-          
+
                 if (tile && tile.index !== 0) {
                     // Place tower at tile position
                     const towerX = tile.getCenterX();
                     const towerY = tile.getCenterY() - 32;
-                  
+
                     const tower = new Tower(this, towerX, towerY);
-                    this.towers.push(tower);
-                 
+                    this.towers.add(tower);
+
                     // Remove the buildable tile
                     layerBuildable.removeTileAt(tile.x, tile.y);
                 }
@@ -159,7 +160,7 @@ export class Game extends Scene {
 
         this.checkWinCondition();
 
-        this.towers.forEach((tower) => {
+        this.towers.getChildren().forEach((tower: Tower) => {
             tower.update(this.time.now, this.game.loop.delta, this.enemies);
         });
         this.checkWinCondition();

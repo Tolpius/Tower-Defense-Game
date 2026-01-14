@@ -1,24 +1,30 @@
 import { Enemy } from "./enemy";
 import { Game as GameScene } from "../scenes/Game";
+import { TowerConfig } from "../../config/TowerConfig";
 
 export class Tower extends Phaser.GameObjects.Container {
-    range = 200;
-    fireRate = 1200;
-    damage = 50;
-
+    readonly config: TowerConfig;
+    protected _range: number;
+    protected _fireRate: number;
+    protected _damage: number;
     protected lastFired = 0;
     protected turret: Phaser.GameObjects.Sprite;
     protected rangeCircle: Phaser.GameObjects.Circle;
 
-    constructor(scene: GameScene, x: number, y: number) {
+    constructor(scene: GameScene, x: number, y: number, config: TowerConfig) {
         super(scene, x, y);
+        this.config = config;
         scene.add.existing(this);
-        if (scene.layerHighground.getTileAtWorldXY(x, y, false) !== null) {
-            this.range = this.range * 1.5;
+        this._range = config.range;
+        this._fireRate = config.fireRate;
+        this._damage = config.damage;
+
+        if (scene.layerHighground.getTileAtWorldXY(x, y, false)) {
+            this._range *= 1.5;
         }
         const towerBase = scene.add.sprite(0, 0, "tower3", 0);
         towerBase.setInteractive();
-        towerBase.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+        towerBase.on("pointerdown", () => {
             scene.selectedTower?.hideRange();
             scene.selectedTower = this;
             this.showRange();
@@ -36,6 +42,19 @@ export class Tower extends Phaser.GameObjects.Container {
         this.createAnimations();
         this.add([towerBase, this.turret, this.rangeCircle]);
     }
+
+    get range() {
+        return this._range;
+    }
+
+    get fireRate() {
+        return this._fireRate;
+    }
+
+    get damage() {
+        return this._damage;
+    }
+
     showRange() {
         this.rangeCircle.setVisible(true);
     }

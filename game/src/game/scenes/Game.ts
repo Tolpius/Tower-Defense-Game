@@ -2,7 +2,10 @@ import { Scene } from "phaser";
 import { Enemy } from "../entities/enemy";
 import { Tower } from "../entities/tower";
 import handleTowerBuild from "../scripts/TowerBuild";
+
 export class Game extends Scene {
+
+
     enemies!: Phaser.GameObjects.Group;
     towers!: Phaser.GameObjects.Group;
     layerHighground!: Phaser.Tilemaps.TilemapLayer;

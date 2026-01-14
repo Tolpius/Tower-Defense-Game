@@ -39,7 +39,7 @@ export class UI extends Scene {
         ];
 
         towerButtons.forEach((t, i) => {
-            new TowerButton(this, 50, 120 + i * 72, t.icon, t.cost, t.id);
+            new TowerButton(this, 50, 120 + i * 72, t.icon, t.id);
             console.log("Created TowerButton for:", t.id);
         });
 

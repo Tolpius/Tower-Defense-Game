@@ -1,19 +1,20 @@
+import { TOWER_CONFIGS, TowerType } from "../../config/TowerConfig";
+
 export class TowerButton extends Phaser.GameObjects.Container {
-    private cost: number;
+    private _cost: number;
     private bg: Phaser.GameObjects.Rectangle;
     private currentMoney = 0;
     private canAfford = true;
-
+    readonly config = TOWER_CONFIGS[TowerType.Arrow];
     constructor(
         scene: Phaser.Scene,
         x: number,
         y: number,
         iconKey: string,
-        cost: number,
         towerId: string
     ) {
         super(scene, x, y);
-        this.cost = cost;
+        this._cost = this.config.cost;
 
         // Get initial money value from registry
         this.currentMoney = scene.registry.get("money") ?? 0;
@@ -40,7 +41,7 @@ export class TowerButton extends Phaser.GameObjects.Container {
         const icon = scene.add.image(0, -8, iconKey).setScale(0.3);
 
         const text = scene.add
-            .text(0, 20, `${cost}g`, {
+            .text(0, 20, `${this.cost}g`, {
                 fontSize: "12px",
             })
             .setOrigin(0.5);
@@ -59,6 +60,10 @@ export class TowerButton extends Phaser.GameObjects.Container {
         });
         this.updateVisuals();
         scene.add.existing(this);
+    }
+
+    get cost() {
+        return this._cost;
     }
 
     private updateVisuals() {

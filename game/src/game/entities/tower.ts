@@ -1,4 +1,5 @@
 import { Enemy } from "./enemy";
+import { Game as GameScene } from "../scenes/Game";
 
 export class Tower extends Phaser.GameObjects.Container {
     range = 200;
@@ -7,22 +8,40 @@ export class Tower extends Phaser.GameObjects.Container {
 
     protected lastFired = 0;
     protected turret: Phaser.GameObjects.Sprite;
+    protected rangeCircle: Phaser.GameObjects.Circle;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: GameScene, x: number, y: number) {
         super(scene, x, y);
         scene.add.existing(this);
-
+        if (scene.layerHighground.getTileAtWorldXY(x, y, false) !== null) {
+            this.range = this.range * 1.5;
+        }
         const towerBase = scene.add.sprite(0, 0, "tower3", 0);
+        towerBase.setInteractive();
+        towerBase.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            scene.selectedTower?.hideRange();
+            scene.selectedTower = this;
+            this.showRange();
+            console.log("Tower selected at:", this.x, this.y);
+        });
         this.turret = scene.add.sprite(0, -16, "tower3turret1", 0);
-        const rangeCircle = scene.add.circle(
+        this.rangeCircle = scene.add.circle(
             0, // x relativ zum Tower
             0, // y relativ zum Tower
             this.range, // Radius
             0x00ff00, // Farbe (grün)
             0.25 // Alpha (transparent)
         );
+        this.rangeCircle.setVisible(false);
         this.createAnimations();
-        this.add([towerBase, this.turret, rangeCircle]);
+        this.add([towerBase, this.turret, this.rangeCircle]);
+    }
+    showRange() {
+        this.rangeCircle.setVisible(true);
+    }
+
+    hideRange() {
+        this.rangeCircle.setVisible(false);
     }
 
     protected canShoot(time: number): boolean {
@@ -82,11 +101,13 @@ export class Tower extends Phaser.GameObjects.Container {
     }
 
     protected getTarget(enemies: Phaser.GameObjects.Group) {
-        return enemies.getChildren().find(
-            (e: Enemy) =>
-                (Phaser.Math.Distance.Between(this.x, this.y, e.x, e.y) <=
-                this.range) &&(e.isAlive)
-        );
+        return enemies
+            .getChildren()
+            .find(
+                (e: Enemy) =>
+                    Phaser.Math.Distance.Between(this.x, this.y, e.x, e.y) <=
+                        this.range && e.isAlive
+            );
     }
 
     protected shoot(target: any): void {

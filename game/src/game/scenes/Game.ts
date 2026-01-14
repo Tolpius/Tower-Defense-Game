@@ -1,20 +1,34 @@
 import { Scene } from "phaser";
 import { Enemy } from "../entities/enemy";
 import { Tower } from "../entities/tower";
+import handleTowerBuild from "../scripts/TowerBuild";
 export class Game extends Scene {
     enemies!: Phaser.GameObjects.Group;
     towers!: Phaser.GameObjects.Group;
-    private money = 200;
+    layerHighground!: Phaser.Tilemaps.TilemapLayer;
+    private _money = 200;
     private health = 100;
     private enemiesToSpawn = 10;
     private enemiesSpawned = 0;
-    private towerSelected: string | null = null;
-    private towerSelectedCost: number | null = null;
-    private buildPreview: Phaser.GameObjects.Image | null = null;
-    private buildMode = false;
-    towerPlacementClick: Phaser.Input.Events.PointerDownEvent | null = null;
+    public selectedTower?: Tower;
+    public buildingTowerSelected: string | null = null;
+    public buildingTowerSelectedCost: number | null = null;
+    public buildPreview: Phaser.GameObjects.Image | null = null;
+    public buildMode = false;
+    public towerPlacementClick: Phaser.Input.Events.PointerDownEvent | null =
+        null;
+    public layerBuildable: Phaser.Tilemaps.TilemapLayer | null = null;
     constructor() {
         super("Game");
+    }
+    get money() {
+        return this._money;
+    }
+    set money(value: number) {
+        this._money = value;
+        this.registry.set("money", this._money);
+        this.events.emit("money-changed", this._money);
+        console.log("Money updated:", this._money);
     }
 
     cleanup() {
@@ -31,13 +45,13 @@ export class Game extends Scene {
         this.money = 200;
         this.health = 100;
 
-        this.registry.set("money", this.money);
+        this.registry.set("money", this._money);
         this.registry.set("health", this.health);
 
         this.buildPreview = null;
         this.towerPlacementClick = null;
-        this.towerSelected = null;
-        this.towerSelectedCost = null;
+        this.buildingTowerSelected = null;
+        this.buildingTowerSelectedCost = null;
         this.buildMode = false;
 
         this.enemiesSpawned = 0;
@@ -95,64 +109,66 @@ export class Game extends Scene {
             );
         }
         //Buildable Layer Init
-        let layerBuildable: Phaser.Tilemaps.TilemapLayer | null = null;
+        this.layerBuildable = null;
         if (tilesetSolidGreen) {
-            layerBuildable = map.createLayer(
+            this.layerBuildable = map.createLayer(
                 "Buildable",
                 tilesetSolidGreen,
                 0,
                 0
             );
+            this.layerHighground = map.createLayer(
+                "Highground",
+                tilesetSolidGreen,
+                0,
+                0
+            );
+            this.layerHighground?.setVisible(false);
             // Disable visibility of buildable layer initially
-            layerBuildable && layerBuildable.setVisible(false);
+            this.layerBuildable && this.layerBuildable.setVisible(false);
 
-            // Setup click handler for buildable tiles
-            this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-                if (!this.buildMode) return;
-                const tile = layerBuildable.getTileAtWorldXY(
-                    pointer.worldX,
-                    pointer.worldY,
-                    false
-                );
+            // Setup click handler for buildable tiles12
+            this.input.on(
+                "pointerdown",
+                (
+                    pointer: Phaser.Input.Pointer,
+                    gameObjects: Phaser.GameObjects.GameObject[]
+                ) => {
+                    //1️⃣ Ignore clicks on GameObjects thile not in Build Mode
+                    if (gameObjects.length > 0 && this.buildMode === false) {
+                        return;
+                    }
+                    //2️⃣ Build Mode check - build selected Tower
 
-                if (tile && tile.index !== 0) {
-                    const towerX = tile.getCenterX();
-                    const towerY = tile.getCenterY() - 32;
+                    if (this.buildMode) {
+                        handleTowerBuild(this, pointer);
+                    }
 
-                    const tower = new Tower(this, towerX, towerY);
-                    this.towers.add(tower);
-
-                    layerBuildable.removeTileAt(tile.x, tile.y);
-
-                    this.setMoney(this.money - (this.towerSelectedCost || 50));
-
-                    // Build Mode beenden
-                    this.buildMode = false;
-                    this.towerSelected = null;
-                    this.towerSelectedCost = null;
-                    layerBuildable.setVisible(false);
-
-                    this.buildPreview?.destroy();
-                    this.buildPreview = undefined;
+                    // 3️⃣ Click on nothing in particular or while in Build Mode - Deselect Tower
+                    this.selectedTower?.hideRange();
+                    this.selectedTower = undefined;
                 }
-            });
+            );
         }
 
         this.events.on("tower-selected", (towerId: string, cost: number) => {
             console.log("Game scene received tower-selected:", towerId, cost);
-            if (this.towerSelected === towerId) {
+            if (this.buildingTowerSelected === towerId) {
                 //Build Mode AUS
-                this.towerSelected = null;
-                layerBuildable && layerBuildable.setVisible(false);
+                this.buildingTowerSelected = null;
+                this.layerBuildable && this.layerBuildable.setVisible(false);
                 this.buildMode = false;
-                this.towerSelectedCost = null;
+                this.buildingTowerSelectedCost = null;
                 this.buildPreview?.setVisible(false);
                 return;
             }
+            //Deselect currently selected tower
+            this.selectedTower?.hideRange();
+            this.selectedTower = undefined;
             //BUILD MODE AN
-            this.towerSelected = towerId;
-            layerBuildable?.setVisible(true);
-            this.towerSelectedCost = cost;
+            this.buildingTowerSelected = towerId;
+            this.layerBuildable?.setVisible(true);
+            this.buildingTowerSelectedCost = cost;
             this.buildMode = true;
             this.buildPreview?.destroy();
             this.buildPreview = this.add
@@ -163,10 +179,10 @@ export class Game extends Scene {
 
         //Build Preview Event Listener
         this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
-            if (!this.buildMode || !layerBuildable || !this.buildPreview)
+            if (!this.buildMode || !this.layerBuildable || !this.buildPreview)
                 return;
 
-            const tile = layerBuildable.getTileAtWorldXY(
+            const tile = this.layerBuildable.getTileAtWorldXY(
                 pointer.worldX,
                 pointer.worldY
             );
@@ -215,7 +231,7 @@ export class Game extends Scene {
             enemy.update();
 
             if (!enemy.isAlive && enemy.isWorthMoney) {
-                this.setMoney(this.money + enemy.moneyOnDeath);
+                this.setMoney(this._money + enemy.moneyOnDeath);
                 enemy.isWorthMoney = false;
             }
 
@@ -234,10 +250,10 @@ export class Game extends Scene {
     }
 
     setMoney(value: number) {
-        this.money = value;
-        this.registry.set("money", this.money);
-        this.events.emit("money-changed", this.money);
-        console.log("Money updated:", this.money);
+        this._money = value;
+        this.registry.set("money", this._money);
+        this.events.emit("money-changed", this._money);
+        console.log("Money updated:", this._money);
     }
 
     setHealth(value: number) {

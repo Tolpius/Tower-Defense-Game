@@ -1,8 +1,9 @@
+import { EnemyType } from "../../../config/enemyConfig";
 import { Enemy } from "../enemy";
 
 export class Scorpion extends Enemy {
     constructor(scene: Phaser.Scene, path: Phaser.Curves.Path) {
-        super(scene, path, "scorpion");
+        super(scene, path, EnemyType.Scorpion);
     }
     protected createAnimations() {
         const anims = this.scene.anims;

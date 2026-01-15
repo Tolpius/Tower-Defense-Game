@@ -1,0 +1,40 @@
+{
+  "worlds": [
+    {
+      "id": 1,
+      "name": "Forest World",
+      "maps": [
+        {
+          "id": 1,
+          "name": "Green Fields",
+          "startingMoney": 200,
+          "startingHealth": 100,
+          "waves": [
+            {
+              "id": 1,
+              "spawns": [
+                { "enemyType": "leafbug", "delay": 0 },
+                { "enemyType": "leafbug", "delay": 1000 },
+                { "enemyType": "scorpion", "delay": 1500 }
+              ]
+            },
+            {
+              "id": 2,
+              "spawns": [
+                { "enemyType": "scorpion", "delay": 0 },
+                { "enemyType": "leafbug", "delay": 800 }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Dark Woods",
+          "startingMoney": 150,
+          "startingHealth": 80,
+          "waves": []
+        }
+      ]
+    }
+  ]
+}

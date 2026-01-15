@@ -124,7 +124,7 @@ export class Game extends Scene {
 
         //Enemy Spawn Init
         this.waveManager = new WaveManager(this, this.mapConfig.waves);
-        this.waveManager.startNextWave();
+        this.waveManager.startWave();
 
         //UI Init
         this.scene.launch("UI");
@@ -162,7 +162,7 @@ export class Game extends Scene {
 
         if (this.waveManager.hasMoreWaves()) {
             this.waveManager.advanceWave();
-            this.waveManager.startNextWave();
+            this.waveManager.startWave();
         } else {
             this.onLevelCompleted();
         }

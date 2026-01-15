@@ -15,7 +15,7 @@ export class WaveManager {
         this.waves = waves;
     }
 
-    startNextWave() {
+    startWave() {
         if (this.active) return;
 
         const wave = this.waves[this.currentWaveIndex];

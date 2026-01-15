@@ -26,7 +26,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         id: TowerType.Arrow,
         name: "Arrow Tower",
         cost: 30,
-        range: 100,
+        range: 150,
         fireRate: 1200,
         damage: 50,
         baseSprite: "tower3",

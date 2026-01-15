@@ -18,7 +18,7 @@ export function handleTowerBuild(scene: Game, pointer: Phaser.Input.Pointer) {
         scene.towers.add(tower);
         scene.layerBuildable?.removeTileAt(tile.x, tile.y);
 
-        scene.money = scene.money - (scene.buildingTowerSelectedCost || 50);
+        scene.money = scene.money - (scene.buildingTowerSelectedCost || 30);
 
         // Build Mode beenden
         scene.buildingTowerSelected = null;

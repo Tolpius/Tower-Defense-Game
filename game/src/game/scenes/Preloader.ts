@@ -87,6 +87,12 @@ export class Preloader extends Scene {
             frameWidth: 96,
             frameHeight: 96,
         });
+
+        this.load.spritesheet("magmacrab", "/enemies/magmacrab/Magmacrab.png", {    
+            frameWidth: 64,
+            frameHeight: 64,
+        }
+        )
     }
 
     create() {

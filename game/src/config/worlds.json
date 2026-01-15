@@ -1,40 +1,215 @@
 {
-  "worlds": [
-    {
-      "id": 1,
-      "name": "Forest World",
-      "maps": [
+    "worlds": [
         {
-          "id": 1,
-          "name": "Green Fields",
-          "startingMoney": 200,
-          "startingHealth": 100,
-          "waves": [
-            {
-              "id": 1,
-              "spawns": [
-                { "enemyType": "leafbug", "delay": 0 },
-                { "enemyType": "leafbug", "delay": 1000 },
-                { "enemyType": "scorpion", "delay": 1500 }
-              ]
-            },
-            {
-              "id": 2,
-              "spawns": [
-                { "enemyType": "scorpion", "delay": 0 },
-                { "enemyType": "leafbug", "delay": 800 }
-              ]
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "name": "Dark Woods",
-          "startingMoney": 150,
-          "startingHealth": 80,
-          "waves": []
+            "id": 1,
+            "name": "Forest World",
+            "maps": [
+                {
+                    "id": 1,
+                    "name": "Green Fields",
+                    "startingMoney": 200,
+                    "startingHealth": 100,
+                    "waves": [
+                        {
+                            "id": 1,
+                            "spawns": [
+                                { "enemyType": "magmacrab", "delay": 0 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "scorpion", "delay": 500 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "firebug", "delay": 500 },
+                                { "enemyType": "scorpion", "delay": 500 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "firebug", "delay": 500 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "scorpion", "delay": 500 }
+                            ]
+                        },
+                        {
+                            "id": 2,
+                            "spawns": [
+                                { "enemyType": "leafbug", "delay": 0 },
+                                { "enemyType": "firebug", "delay": 500 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "scorpion", "delay": 500 },
+                                { "enemyType": "magmacrab", "delay": 500 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "firebug", "delay": 500 },
+                                { "enemyType": "scorpion", "delay": 500 },
+                                { "enemyType": "leafbug", "delay": 500 },
+                                { "enemyType": "magmacrab", "delay": 500 },
+                                { "enemyType": "firebug", "delay": 500 }
+                            ]
+                        },
+                        {
+                            "id": 3,
+                            "spawns": [
+                                { "enemyType": "leafbug", "delay": 0 },
+                                { "enemyType": "firebug", "delay": 400 },
+                                { "enemyType": "magmacrab", "delay": 400 },
+                                { "enemyType": "scorpion", "delay": 400 },
+                                { "enemyType": "leafbug", "delay": 400 },
+                                { "enemyType": "firebug", "delay": 400 },
+                                { "enemyType": "magmacrab", "delay": 400 },
+                                { "enemyType": "scorpion", "delay": 400 },
+                                { "enemyType": "leafbug", "delay": 400 },
+                                { "enemyType": "firebug", "delay": 400 },
+                                { "enemyType": "magmacrab", "delay": 400 },
+                                { "enemyType": "scorpion", "delay": 400 }
+                            ]
+                        },
+                        {
+                            "id": 4,
+                            "spawns": [
+                                { "enemyType": "scorpion", "delay": 0 },
+                                { "enemyType": "leafbug", "delay": 300 },
+                                { "enemyType": "firebug", "delay": 300 },
+                                { "enemyType": "magmacrab", "delay": 300 },
+                                { "enemyType": "leafbug", "delay": 300 },
+                                { "enemyType": "firebug", "delay": 300 },
+                                { "enemyType": "magmacrab", "delay": 300 },
+                                { "enemyType": "scorpion", "delay": 300 },
+                                { "enemyType": "leafbug", "delay": 300 },
+                                { "enemyType": "firebug", "delay": 300 },
+                                { "enemyType": "magmacrab", "delay": 300 },
+                                { "enemyType": "scorpion", "delay": 300 },
+                                { "enemyType": "leafbug", "delay": 300 }
+                            ]
+                        },
+                        {
+                            "id": 5,
+                            "spawns": [
+                                { "enemyType": "leafbug", "delay": 0 },
+                                { "enemyType": "firebug", "delay": 300 },
+                                { "enemyType": "magmacrab", "delay": 300 },
+                                { "enemyType": "scorpion", "delay": 300 },
+                                { "enemyType": "leafbug", "delay": 300 },
+                                { "enemyType": "firebug", "delay": 300 },
+                                { "enemyType": "magmacrab", "delay": 300 },
+                                { "enemyType": "scorpion", "delay": 300 },
+                                { "enemyType": "leafbug", "delay": 300 },
+                                { "enemyType": "firebug", "delay": 300 },
+                                { "enemyType": "magmacrab", "delay": 300 },
+                                { "enemyType": "scorpion", "delay": 300 },
+                                { "enemyType": "leafbug", "delay": 300 },
+                                { "enemyType": "firebug", "delay": 300 }
+                            ]
+                        },
+                        {
+                            "id": 6,
+                            "spawns": [
+                                { "enemyType": "magmacrab", "delay": 0 },
+                                { "enemyType": "scorpion", "delay": 250 },
+                                { "enemyType": "leafbug", "delay": 250 },
+                                { "enemyType": "firebug", "delay": 250 },
+                                { "enemyType": "magmacrab", "delay": 250 },
+                                { "enemyType": "scorpion", "delay": 250 },
+                                { "enemyType": "leafbug", "delay": 250 },
+                                { "enemyType": "firebug", "delay": 250 },
+                                { "enemyType": "magmacrab", "delay": 250 },
+                                { "enemyType": "scorpion", "delay": 250 },
+                                { "enemyType": "leafbug", "delay": 250 },
+                                { "enemyType": "firebug", "delay": 250 },
+                                { "enemyType": "magmacrab", "delay": 250 }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "spawns": [
+                                { "enemyType": "leafbug", "delay": 0 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "scorpion", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "scorpion", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "scorpion", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 }
+                            ]
+                        },
+                        {
+                            "id": 8,
+                            "spawns": [
+                                { "enemyType": "scorpion", "delay": 0 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 },
+                                { "enemyType": "scorpion", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 },
+                                { "enemyType": "scorpion", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 },
+                                { "enemyType": "scorpion", "delay": 200 },
+                                { "enemyType": "magmacrab", "delay": 200 },
+                                { "enemyType": "firebug", "delay": 200 },
+                                { "enemyType": "leafbug", "delay": 200 }
+                            ]
+                        },
+                        {
+                            "id": 9,
+                            "spawns": [
+                                { "enemyType": "magmacrab", "delay": 0 },
+                                { "enemyType": "firebug", "delay": 150 },
+                                { "enemyType": "leafbug", "delay": 150 },
+                                { "enemyType": "scorpion", "delay": 150 },
+                                { "enemyType": "magmacrab", "delay": 150 },
+                                { "enemyType": "firebug", "delay": 150 },
+                                { "enemyType": "leafbug", "delay": 150 },
+                                { "enemyType": "scorpion", "delay": 150 },
+                                { "enemyType": "magmacrab", "delay": 150 },
+                                { "enemyType": "firebug", "delay": 150 },
+                                { "enemyType": "leafbug", "delay": 150 },
+                                { "enemyType": "scorpion", "delay": 150 },
+                                { "enemyType": "magmacrab", "delay": 150 },
+                                { "enemyType": "firebug", "delay": 150 },
+                                { "enemyType": "leafbug", "delay": 150 },
+                                { "enemyType": "scorpion", "delay": 150 },
+                                { "enemyType": "magmacrab", "delay": 150 }
+                            ]
+                        },
+                        {
+                            "id": 10,
+                            "spawns": [
+                                { "enemyType": "leafbug", "delay": 0 },
+                                { "enemyType": "firebug", "delay": 100 },
+                                { "enemyType": "magmacrab", "delay": 100 },
+                                { "enemyType": "scorpion", "delay": 100 },
+                                { "enemyType": "leafbug", "delay": 100 },
+                                { "enemyType": "firebug", "delay": 100 },
+                                { "enemyType": "magmacrab", "delay": 100 },
+                                { "enemyType": "scorpion", "delay": 100 },
+                                { "enemyType": "leafbug", "delay": 100 },
+                                { "enemyType": "firebug", "delay": 100 },
+                                { "enemyType": "magmacrab", "delay": 100 },
+                                { "enemyType": "scorpion", "delay": 100 },
+                                { "enemyType": "leafbug", "delay": 100 },
+                                { "enemyType": "firebug", "delay": 100 },
+                                { "enemyType": "magmacrab", "delay": 100 },
+                                { "enemyType": "scorpion", "delay": 100 },
+                                { "enemyType": "leafbug", "delay": 100 },
+                                { "enemyType": "firebug", "delay": 100 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "name": "Dark Woods",
+                    "startingMoney": 150,
+                    "startingHealth": 80,
+                    "waves": []
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
+

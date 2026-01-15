@@ -2,6 +2,8 @@ import { Enemy } from "../entities/enemy";
 import { Leafbug } from "../entities/enemies/leafbug";
 import { Scorpion } from "../entities/enemies/scorpion";
 import { EnemyType } from "../../config/enemyConfig";
+import { Firebug } from "../entities/enemies/firebug";
+import { Magmacrab } from "../entities/enemies/magmacrab";
 
 export class EnemyFactory {
     static create(
@@ -14,9 +16,16 @@ export class EnemyFactory {
                 return new Leafbug(scene, path);
             case "scorpion":
                 return new Scorpion(scene, path);
+            case "firebug":
+                return new Firebug(scene, path);
+            case "magmacrab":
+                return new Magmacrab(scene, path);
             default:
-                console.warn(`Unknown enemy type: ${type}, using Leafbug as fallback`);
+                console.warn(
+                    `Unknown enemy type: ${type}, using Leafbug as fallback`
+                );
                 return new Leafbug(scene, path);
         }
     }
 }
+

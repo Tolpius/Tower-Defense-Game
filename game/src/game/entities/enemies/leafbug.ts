@@ -1,8 +1,9 @@
+import { EnemyType } from "../../../config/enemyConfig";
 import { Enemy } from "../enemy";
 
 export class Leafbug extends Enemy {
     constructor(scene: Phaser.Scene, path: Phaser.Curves.Path) {
-        super(scene, path, "leafbug");
+        super(scene, path, EnemyType.Leafbug);
     }
     protected createAnimations() {
         const anims = this.scene.anims;

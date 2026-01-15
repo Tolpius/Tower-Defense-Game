@@ -24,7 +24,7 @@ export class GameWon extends Scene {
             .setInteractive({ useHandCursor: true })
             .on("pointerdown", () => {
                 this.scene.stop("GameWon");
-                this.scene.start("Game");
+                this.scene.start("Game", {worldId: 1, mapId: 1});
                 this
             });
 

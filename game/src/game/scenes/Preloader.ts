@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-
+import worldsData from "../../config/worlds.json";
 export class Preloader extends Scene {
     constructor() {
         super("Preloader");
@@ -23,6 +23,7 @@ export class Preloader extends Scene {
     }
 
     preload() {
+        this.cache.json.add("worlds", worldsData);
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath("assets");
         //WORLD GENERATION
@@ -83,7 +84,7 @@ export class Preloader extends Scene {
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         const mapData = this.cache.tilemap.get("mapOne");
-        this.scene.start("Game");
+        this.scene.start("Game", { worldId: 1, mapId: 1 });
     }
 }
 

@@ -1,4 +1,4 @@
-import { ENEMY_CONFIG, EnemyStats } from "../../config/enemyConfig";
+import { ENEMY_CONFIG, EnemyStats, EnemyType } from "../../config/enemyConfig";
 
 export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     duration: number;
@@ -17,7 +17,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     ident: string;
     flipAnimation = false;
 
-    constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: string) {
+    constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: EnemyType) {
         super(scene, path, path.startPoint.x, path.startPoint.y, ident);
         scene.add.existing(this);
 

@@ -7,12 +7,11 @@ import {
     setupTowerSelectedHandler,
 } from "../scripts/events/gameEvents";
 import handleMap1Init from "../scripts/maps/map1";
-import { GAME_CONFIG } from "../../config/gameConfig";
 import { Types } from "phaser";
-import { Leafbug } from "../entities/enemies/leafbug";
-import { Scorpion } from "../entities/enemies/scorpion";
 import { EnemyFactory } from "../factories/enemyFactory";
 import { WAVE_1 } from "../../waves/wave1";
+import { MapData, WaveData, WorldsData } from "../../config/WorldInterfaces";
+import { WaveManager } from "../scripts/waves/WaveManager";
 
 export class Game extends Scene {
     public enemies!: Phaser.GameObjects.Group;
@@ -32,6 +31,13 @@ export class Game extends Scene {
     public waypoints: Types.Math.Vector2Like[];
     public path: Phaser.Curves.Path;
     private _buildRangeIndicator: Phaser.GameObjects.Graphics | null = null;
+    public worlds: WorldsData;
+    public waveManager!: WaveManager;
+
+    private worldId!: number;
+    private mapId!: number;
+    private mapConfig!: MapData;
+
     constructor() {
         super("Game");
     }
@@ -67,10 +73,21 @@ export class Game extends Scene {
         this._buildRangeIndicator = value;
     }
 
-    cleanup() {
-        this.events.off("money-changed");
-        this.events.off("health-changed");
-        this.events.off("tower-selected");
+    init(data: { worldId: number; mapId: number }) {
+        this.worldId = data.worldId;
+        this.mapId = data.mapId;
+
+        this.worlds = this.cache.json.get("worlds");
+        console.log(this.worlds);
+        if (!this.worlds) {
+            throw new Error("Failed to load World data:" + this.worlds);
+        }
+        const world = this.worlds.worlds.find((w) => w.id == this.worldId);
+        if (!world) throw new Error("World not found");
+        const map = world?.maps.find((m) => m.id == this.mapId);
+        if (!map) throw new Error("Map not found");
+
+        this.mapConfig = map;
     }
 
     create() {
@@ -78,8 +95,8 @@ export class Game extends Scene {
             this.cleanup();
         });
         //Variable Init
-        this.money = GAME_CONFIG.startingMoney;
-        this.health = GAME_CONFIG.startingHealth;
+        this.money = this.mapConfig.startingMoney;
+        this.health = this.mapConfig.startingHealth;
 
         this.registry.set("money", this.money);
         this.registry.set("health", this.health);
@@ -113,38 +130,22 @@ export class Game extends Scene {
         setupPointerMoveHandler(this);
 
         //Enemy Spawn Init
-        this.spawnWave(WAVE_1);
+        this.waveManager = new WaveManager(this, this.mapConfig.waves);
+        this.waveManager.startNextWave();
 
         //UI Init
         this.scene.launch("UI");
     }
 
-    spawnWave(wave: typeof WAVE_1) {
-        let currentDelay = 0;
-
-        wave.forEach((spawn) => {
-            currentDelay += spawn.delay;
-
-            this.time.delayedCall(currentDelay, () => {
-                const enemy = EnemyFactory.create(
-                    this,
-                    this.path,
-                    spawn.enemyType
-                );
-                enemy.start();
-                this.enemies.add(enemy);
-                this.enemiesSpawned++;
-            });
-        });
-    }
-    update() {
-        (this.enemies.getChildren() as Enemy[]).forEach((enemy: Enemy) => {
+    update(time: number, delta: number) {
+        // Enemies
+        (this.enemies.getChildren() as Enemy[]).forEach((enemy) => {
             if (!enemy.active) return;
 
             enemy.update();
 
             if (!enemy.isAlive && enemy.isWorthMoney) {
-                this.money = this.money + enemy.moneyOnDeath;
+                this.money += enemy.moneyOnDeath;
                 enemy.isWorthMoney = false;
             }
 
@@ -154,31 +155,44 @@ export class Game extends Scene {
             }
         });
 
-        this.checkWinCondition();
-
-        (this.towers.getChildren() as Tower[]).forEach((tower: Tower) => {
-            tower.update(this.time.now, this.game.loop.delta, this.enemies);
+        // Towers
+        (this.towers.getChildren() as Tower[]).forEach((tower) => {
+            tower.update(time, delta, this.enemies);
         });
-        this.checkWinCondition();
+
+        // Wave-Progress
+        this.checkWaveProgress();
+    }
+
+    checkWaveProgress() {
+        if (!this.waveManager.isCurrentWaveFinished()) return;
+
+        if (this.waveManager.hasMoreWaves()) {
+            this.waveManager.advanceWave();
+            this.waveManager.startNextWave();
+        } else {
+            this.onLevelCompleted();
+        }
+    }
+
+    onLevelCompleted() {
+        console.log("Level completed!");
+        this.scene.stop("UI");
+        this.scene.stop("Game");
+        this.scene.start("GameWon", {
+            worldId: this.worldId,
+            mapId: this.mapId,
+        });
     }
 
     onBaseHealthChanged(damage: number) {
         this.health = this.health - damage;
     }
 
-    checkWinCondition() {
-        const allEnemiesSpawned = this.enemiesSpawned >= this.enemiesToSpawn;
-
-        const noEnemiesLeft =
-            (this.enemies.getChildren() as Enemy[]).filter(
-                (e: Enemy) => e.isAlive
-            ).length === 0;
-
-        if (allEnemiesSpawned && noEnemiesLeft) {
-            this.scene.stop("UI");
-            this.scene.stop("Game");
-            this.scene.start("GameWon");
-        }
+    cleanup() {
+        this.events.off("money-changed");
+        this.events.off("health-changed");
+        this.events.off("tower-selected");
     }
 }
 

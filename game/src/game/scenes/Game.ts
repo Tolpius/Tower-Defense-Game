@@ -8,9 +8,7 @@ import {
 } from "../scripts/events/gameEvents";
 import handleMap1Init from "../scripts/maps/map1";
 import { Types } from "phaser";
-import { EnemyFactory } from "../factories/enemyFactory";
-import { WAVE_1 } from "../../waves/wave1";
-import { MapData, WaveData, WorldsData } from "../../config/WorldInterfaces";
+import { MapData, WorldsData } from "../../config/WorldInterfaces";
 import { WaveManager } from "../scripts/waves/WaveManager";
 
 export class Game extends Scene {
@@ -19,8 +17,6 @@ export class Game extends Scene {
     public layerHighground!: Phaser.Tilemaps.TilemapLayer;
     private _money: number;
     private _health: number;
-    private enemiesToSpawn: number;
-    private enemiesSpawned = 0;
     public selectedTower?: Tower;
     public buildingTowerSelected: string | null;
     public buildingTowerSelectedCost: number;
@@ -102,9 +98,6 @@ export class Game extends Scene {
         this.registry.set("health", this.health);
 
         this.buildMode = false;
-
-        this.enemiesSpawned = 0;
-        this.enemiesToSpawn = 10;
 
         //Enemy Group und Tower Group init
         this.enemies = this.add.group({

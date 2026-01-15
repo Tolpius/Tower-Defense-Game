@@ -5,6 +5,7 @@ import { Preloader } from "./scenes/Preloader";
 import { UI } from "./scenes/UI";
 import { GameOver } from "./scenes/GameOver";
 import { GameWon } from "./scenes/GameWon";
+import MainMenu from "./scenes/MainMenu";
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -14,7 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
     height: 640,
     parent: "game-container",
     backgroundColor: "#028af8",
-    scene: [Boot, Preloader, MainGame, UI, GameOver, GameWon],
+    scene: [Boot, Preloader, MainMenu, MainGame, UI, GameOver, GameWon],
     physics: {
         default: "arcade",
         arcade: {

@@ -9,6 +9,10 @@ import {
 import handleMap1Init from "../scripts/maps/map1";
 import { GAME_CONFIG } from "../../config/gameConfig";
 import { Types } from "phaser";
+import { Leafbug } from "../entities/enemies/leafbug";
+import { Scorpion } from "../entities/enemies/scorpion";
+import { EnemyFactory } from "../factories/enemyFactory";
+import { WAVE_1 } from "../../waves/wave1";
 
 export class Game extends Scene {
     public enemies!: Phaser.GameObjects.Group;
@@ -108,21 +112,31 @@ export class Game extends Scene {
         //Setup Build Preview Event Listener
         setupPointerMoveHandler(this);
 
-
         //Enemy Spawn Init
-        this.time.addEvent({
-            delay: 1000,
-            repeat: this.enemiesToSpawn - 1,
-            callback: () => {
-                const enemy = new Enemy(this, this.path, "leafbug");
-                enemy.start();
-                this.enemies.add(enemy);
-                this.enemiesSpawned++;
-            },
-        });
+        this.spawnWave(WAVE_1);
+
+        //UI Init
         this.scene.launch("UI");
     }
 
+    spawnWave(wave: typeof WAVE_1) {
+        let currentDelay = 0;
+
+        wave.forEach((spawn) => {
+            currentDelay += spawn.delay;
+
+            this.time.delayedCall(currentDelay, () => {
+                const enemy = EnemyFactory.create(
+                    this,
+                    this.path,
+                    spawn.enemyType
+                );
+                enemy.start();
+                this.enemies.add(enemy);
+                this.enemiesSpawned++;
+            });
+        });
+    }
     update() {
         (this.enemies.getChildren() as Enemy[]).forEach((enemy: Enemy) => {
             if (!enemy.active) return;

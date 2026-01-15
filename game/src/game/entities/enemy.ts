@@ -1,115 +1,50 @@
-export class Enemy extends Phaser.GameObjects.PathFollower {
-    duration = 40000;
+import { ENEMY_CONFIG, EnemyStats } from "../../config/enemyConfig";
+
+export abstract class Enemy extends Phaser.GameObjects.PathFollower {
+    duration: number;
     healthBar: Phaser.GameObjects.Graphics;
-    maxHp = 100;
-    hp = 100;
-    moneyOnDeath = 10;
-    damageToBase = 50;
+    maxHp: number;
+    hp: number;
+    moneyOnDeath: number;
+    damageToBase: number;
     isAlive = true;
     hasReachedBase = false;
     isWorthMoney = true;
-
+    config: EnemyStats;
     lastDirection = "down";
     lastX: number;
     lastY: number;
-    ident = "scorpion";
+    ident: string;
     flipAnimation = false;
 
     constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: string) {
         super(scene, path, path.startPoint.x, path.startPoint.y, ident);
         scene.add.existing(this);
+
+        // Config laden
+        this.config = ENEMY_CONFIG[ident];
+        if (!this.config) {
+            console.warn(`No config found for enemy: ${ident}, using defaults`);
+        }
+
+        this.ident = ident;
+        this.maxHp = this.config?.maxHp ?? 100;
+        this.hp = this.maxHp;
+        this.duration = this.config?.duration ?? 40000;
+        this.moneyOnDeath = this.config?.moneyOnDeath ?? 10;
+        this.damageToBase = this.config?.damageToBase ?? 50;
+
         this.lastX = this.x;
         this.lastY = this.y;
-        this.ident = ident;
-        this.hp = this.maxHp;
         this.healthBar = this.scene.add.graphics();
-        // Starte die passende Animation (z.B. 'leafbug_down')
+
         this.createAnimations();
         if (scene.anims.exists(`${ident}-walk-down`)) {
             this.play(`${ident}-walk-down`);
         }
     }
 
-    private createAnimations() {
-        const anims = this.scene.anims;
-
-        // Up
-        if (!anims.exists(`${this.ident}-walk-up`)) {
-            anims.create({
-                key: `${this.ident}-walk-up`,
-                frames: anims.generateFrameNumbers(this.ident, {
-                    start: 32,
-                    end: 39,
-                }),
-                frameRate: 16,
-                repeat: -1,
-            });
-        }
-
-        // Down
-        if (!anims.exists(`${this.ident}-walk-down`)) {
-            anims.create({
-                key: `${this.ident}-walk-down`,
-                frames: anims.generateFrameNumbers(this.ident, {
-                    start: 24,
-                    end: 31,
-                }),
-                frameRate: 16,
-                repeat: -1,
-            });
-        }
-
-        // Sideway
-        if (!anims.exists(`${this.ident}-walk-side`)) {
-            anims.create({
-                key: `${this.ident}-walk-side`,
-                frames: anims.generateFrameNumbers(this.ident, {
-                    start: 40,
-                    end: 47,
-                }),
-                frameRate: 16,
-                repeat: -1,
-            });
-        }
-
-        if (!anims.exists(`${this.ident}-death-up`)) {
-            anims.create({
-                key: `${this.ident}-death-up`,
-                frames: anims.generateFrameNumbers(this.ident, {
-                    start: 56,
-                    end: 63,
-                }),
-                frameRate: 16,
-                repeat: 0,
-            });
-        }
-
-        if (!anims.exists(`${this.ident}-death-down`)) {
-            anims.create({
-                key: `${this.ident}-death-down`,
-                frames: anims.generateFrameNumbers(this.ident, {
-                    start: 48,
-                    end: 55,
-                }),
-                frameRate: 16,
-                repeat: 0,
-            });
-        }
-
-        if (!anims.exists(`${this.ident}-death-side`)) {
-            anims.create({
-                key: `${this.ident}-death-side`,
-                frames: anims.generateFrameNumbers(this.ident, {
-                    start: 64,
-                    end: 71,
-                }),
-                frameRate: 16,
-                repeat: 0,
-            });
-        }
-    }
-
-    // Die Animationen werden jetzt zentral in der Game-Scene erstellt
+    protected abstract createAnimations(): void;
 
     start() {
         this.startFollow({ rotateToPath: false, duration: this.duration }).on(
@@ -189,7 +124,9 @@ export class Enemy extends Phaser.GameObjects.PathFollower {
         if (Math.abs(dx) > Math.abs(dy)) {
             direction = "side";
             // flipX NUR wenn nach links (dx < 0)
-            this.flipAnimation = dx < 0;
+            this.flipAnimation = this.config.sideAnimationLeft
+                ? dx > 0
+                : dx < 0;
         } else if (Math.abs(dy) > 0) {
             direction = dy > 0 ? "down" : "up";
         }

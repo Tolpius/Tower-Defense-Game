@@ -41,12 +41,16 @@ export default class MainMenu extends Phaser.Scene {
         super({ key: "MainMenu" });
     }
 
-    preload() {
-        // Keine Logo- oder Käfer-Assets mehr hier laden! Alles im Preloader.
-    }
-
     create() {
         const { width, height } = this.scale;
+
+        // Hintergrundbild einfügen (background.png, muss im Preloader geladen sein)
+        // Hintergrundbild auf volle Scene-Größe skalieren
+        this.add
+            .image(width / 2, height / 2, "background")
+            .setOrigin(0.5)
+            .setDisplaySize(width, height)
+            .setDepth(0);
 
         // Animations-Setups für alle Käfer (nur einmalig! Frames anpassen!)
         this.beetleData.forEach((data) => {
@@ -78,7 +82,7 @@ export default class MainMenu extends Phaser.Scene {
 
         // Start-Button und Skip-Text initial erzeugen, aber ausblenden
         this.startButton = this.add
-            .text(width / 2, height / 2 + 80, "Spiel starten", {
+            .text(width / 2, height / 2 + 80, "Start Game", {
                 fontSize: "40px",
                 color: "#fff",
                 backgroundColor: "#222",
@@ -90,17 +94,12 @@ export default class MainMenu extends Phaser.Scene {
             .on("pointerdown", () => this.startGame());
 
         this.skipText = this.add
-            .text(
-                width / 2,
-                height - 60,
-                "Klick oder Taste: Intro überspringen",
-                {
-                    fontSize: "20px",
-                    color: "#fff",
-                    backgroundColor: "#222",
-                    padding: { left: 12, right: 12, top: 6, bottom: 6 },
-                }
-            )
+            .text(width / 2, height - 60, "Click or key: Skip intro", {
+                fontSize: "20px",
+                color: "#fff",
+                backgroundColor: "#222",
+                padding: { left: 12, right: 12, top: 6, bottom: 6 },
+            })
             .setOrigin(0.5)
             .setAlpha(0.7);
 
@@ -220,11 +219,11 @@ export default class MainMenu extends Phaser.Scene {
         const { width, height } = this.scale;
         this.logo.setPosition(width / 2, height / 2 - 100);
         this.logo.setScale(0.5);
-        // Start-Button und Skip-Text einblenden
+        // Start-Button einblenden
         this.startButton.setAlpha(1);
         this.startButton.setInteractive({ useHandCursor: true });
-        this.skipText.setAlpha(0.7);
-        this.skipText.setText("Klick oder Taste: Intro überspringen");
+        // Skip-Text ausblenden, falls noch sichtbar
+        if (this.skipText) this.skipText.setVisible(false);
     }
 }
 

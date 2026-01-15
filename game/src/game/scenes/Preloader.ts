@@ -27,6 +27,7 @@ export class Preloader extends Scene {
         this.load.setPath("assets");
         //WORLD GENERATION
         this.load.image("logo", "logo_path-of-bugs.png");
+        this.load.image("background", "/assets/background.png");
         this.load.image("enemy", "star.png");
         this.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
         this.load.tilemapTiledJSON("mapOne", "/map/TD-map-lvl1.json");

@@ -27,7 +27,8 @@ export class Preloader extends Scene {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath("assets");
         //WORLD GENERATION
-        this.load.image("logo", "logo.png");
+        this.load.image("logo", "logo_path-of-bugs.png");
+        this.load.image("background", "/assets/background.png");
         this.load.image("enemy", "star.png");
         this.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
         this.load.tilemapTiledJSON("mapOne", "/map/TD-map-lvl1.json");
@@ -76,15 +77,23 @@ export class Preloader extends Scene {
             frameWidth: 64,
             frameHeight: 64,
         });
+
+        this.load.spritesheet("firebug", "/enemies/firebug/Firebug.png", {
+            frameWidth: 128,
+            frameHeight: 64,
+        });
+
+        this.load.spritesheet("firewasp", "/enemies/firewasp/Firewasp.png", {
+            frameWidth: 96,
+            frameHeight: 96,
+        });
     }
 
     create() {
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
 
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        const mapData = this.cache.tilemap.get("mapOne");
-        this.scene.start("Game", { worldId: 1, mapId: 1 });
+        this.scene.start("MainMenu");
     }
 }
 

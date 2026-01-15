@@ -1,26 +1,37 @@
 import { Scene } from "phaser";
 import { Enemy } from "../entities/enemy";
 import { Tower } from "../entities/tower";
-import handleTowerBuild from "../scripts/TowerBuild";
+import {
+    setupPointerDownHandler,
+    setupPointerMoveHandler,
+    setupTowerSelectedHandler,
+} from "../scripts/events/gameEvents";
+import handleMap1Init from "../scripts/maps/map1";
+import { GAME_CONFIG } from "../../config/gameConfig";
+import { Types } from "phaser";
+import { Leafbug } from "../entities/enemies/leafbug";
+import { Scorpion } from "../entities/enemies/scorpion";
+import { EnemyFactory } from "../factories/enemyFactory";
+import { WAVE_1 } from "../../waves/wave1";
 
 export class Game extends Scene {
-
-
-    enemies!: Phaser.GameObjects.Group;
-    towers!: Phaser.GameObjects.Group;
-    layerHighground!: Phaser.Tilemaps.TilemapLayer;
-    private _money = 200;
-    private health = 100;
-    private enemiesToSpawn = 10;
+    public enemies!: Phaser.GameObjects.Group;
+    public towers!: Phaser.GameObjects.Group;
+    public layerHighground!: Phaser.Tilemaps.TilemapLayer;
+    private _money: number;
+    private _health: number;
+    private enemiesToSpawn: number;
     private enemiesSpawned = 0;
     public selectedTower?: Tower;
-    public buildingTowerSelected: string | null = null;
-    public buildingTowerSelectedCost: number | null = null;
-    public buildPreview: Phaser.GameObjects.Image | null = null;
-    public buildMode = false;
-    public towerPlacementClick: Phaser.Input.Events.PointerDownEvent | null =
-        null;
-    public layerBuildable: Phaser.Tilemaps.TilemapLayer | null = null;
+    public buildingTowerSelected: string | null;
+    public buildingTowerSelectedCost: number;
+    public buildPreview: Phaser.GameObjects.Image;
+    public buildMode: boolean;
+    public towerPlacementClick: Phaser.Input.Pointer;
+    public layerBuildable: Phaser.Tilemaps.TilemapLayer;
+    public waypoints: Types.Math.Vector2Like[];
+    public path: Phaser.Curves.Path;
+    private _buildRangeIndicator: Phaser.GameObjects.Graphics | null = null;
     constructor() {
         super("Game");
     }
@@ -31,7 +42,29 @@ export class Game extends Scene {
         this._money = value;
         this.registry.set("money", this._money);
         this.events.emit("money-changed", this._money);
-        console.log("Money updated:", this._money);
+    }
+
+    get health() {
+        return this._health;
+    }
+
+    set health(value: number) {
+        this._health = value;
+        this.events.emit("health-changed", this._health);
+
+        if (this._health <= 0) {
+            // Stoppe Game und UI, starte GameOver-Screen
+            this.scene.stop("UI");
+            this.scene.stop("Game");
+            this.scene.start("GameOver");
+        }
+    }
+    get buildRangeIndicator() {
+        return this._buildRangeIndicator;
+    }
+
+    set buildRangeIndicator(value) {
+        this._buildRangeIndicator = value;
     }
 
     cleanup() {
@@ -45,16 +78,12 @@ export class Game extends Scene {
             this.cleanup();
         });
         //Variable Init
-        this.money = 200;
-        this.health = 100;
+        this.money = GAME_CONFIG.startingMoney;
+        this.health = GAME_CONFIG.startingHealth;
 
-        this.registry.set("money", this._money);
+        this.registry.set("money", this.money);
         this.registry.set("health", this.health);
 
-        this.buildPreview = null;
-        this.towerPlacementClick = null;
-        this.buildingTowerSelected = null;
-        this.buildingTowerSelectedCost = null;
         this.buildMode = false;
 
         this.enemiesSpawned = 0;
@@ -71,194 +100,43 @@ export class Game extends Scene {
             runChildUpdate: false,
         });
 
-        //Map Init
-        const map = this.make.tilemap({
-            key: "mapOne",
-        });
-        const tilesetGrass = map.addTilesetImage("GrassTileset", "grass");
-        const tilesetWater = map.addTilesetImage("AnimatedWaterTiles", "water");
-        const tilesetSolidGreen = map.addTilesetImage(
-            "solid_green",
-            "solidGreen"
-        );
-        if (tilesetGrass) {
-            const layerBackground = map.createLayer(
-                "Terrain_Background",
-                tilesetGrass,
-                0,
-                0
-            );
-            const layerPath = map.createLayer(
-                "Terrain_Path",
-                tilesetGrass,
-                0,
-                0
-            );
-            const layerCliffs = map.createLayer(
-                "Terrain_Cliffs",
-                tilesetGrass,
-                0,
-                0
-            );
-            const layerProps = map.createLayer("Props", tilesetGrass, 0, 0);
-            const layerDetails = map.createLayer("Details", tilesetGrass, 0, 0);
-        }
-        if (tilesetWater) {
-            const layerWater = map.createLayer(
-                "Terrain_Water",
-                tilesetWater,
-                0,
-                0
-            );
-        }
-        //Buildable Layer Init
-        this.layerBuildable = null;
-        if (tilesetSolidGreen) {
-            this.layerBuildable = map.createLayer(
-                "Buildable",
-                tilesetSolidGreen,
-                0,
-                0
-            );
-            this.layerHighground = map.createLayer(
-                "Highground",
-                tilesetSolidGreen,
-                0,
-                0
-            );
-            this.layerHighground?.setVisible(false);
-            // Disable visibility of buildable layer initially
-            this.layerBuildable && this.layerBuildable.setVisible(false);
+        //Map and Waypoint Init
+        handleMap1Init(this);
 
-            // Setup click handler for buildable tiles12
-            this.input.on(
-                "pointerdown",
-                (
-                    pointer: Phaser.Input.Pointer,
-                    gameObjects: Phaser.GameObjects.GameObject[]
-                ) => {
-                    //1️⃣ Ignore clicks on GameObjects thile not in Build Mode
-                    if (gameObjects.length > 0 && this.buildMode === false) {
-                        return;
-                    }
-                    //2️⃣ Build Mode check - build selected Tower
+        // Setup click handler for buildable tiles12
+        setupPointerDownHandler(this);
 
-                    if (this.buildMode) {
-                        handleTowerBuild(this, pointer);
-                    }
+        // Setup UI Event listener for building Tower selected
+        setupTowerSelectedHandler(this);
 
-                    // 3️⃣ Click on nothing in particular or while in Build Mode - Deselect Tower
-                    this.selectedTower?.hideRange();
-                    this.selectedTower = undefined;
-                    if (buildRangeIndicator)
-                        buildRangeIndicator.setVisible(false);
-                }
-            );
-        }
+        //Setup Build Preview Event Listener
+        setupPointerMoveHandler(this);
 
-        this.events.on("tower-selected", (towerId: string, cost: number) => {
-            console.log("Game scene received tower-selected:", towerId, cost);
-            if (this.buildingTowerSelected === towerId) {
-                //Build Mode AUS
-                this.buildingTowerSelected = null;
-                this.layerBuildable && this.layerBuildable.setVisible(false);
-                this.buildMode = false;
-                this.buildingTowerSelectedCost = null;
-                this.buildPreview?.setVisible(false);
-                return;
-            }
-            //Deselect currently selected tower
-            this.selectedTower?.hideRange();
-            this.selectedTower = undefined;
-
-            //BUILD MODE AN
-            this.buildingTowerSelected = towerId;
-            this.layerBuildable?.setVisible(true);
-            this.buildingTowerSelectedCost = cost;
-            this.buildMode = true;
-            this.buildPreview?.destroy();
-            this.buildPreview = this.add
-                .image(0, 0, towerId)
-                .setAlpha(0.5)
-                .setDepth(2);
-        });
-
-        let buildRangeIndicator: Phaser.GameObjects.Graphics | null = null;
-
-        //Build Preview Event Listener
-        this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
-            if (!this.buildMode || !this.layerBuildable || !this.buildPreview)
-                return;
-
-            const tile = this.layerBuildable.getTileAtWorldXY(
-                pointer.worldX,
-                pointer.worldY
-            );
-
-            if (!tile || tile.index === 0) {
-                this.buildPreview.setVisible(false);
-                if (buildRangeIndicator) buildRangeIndicator.setVisible(false);
-                return;
-            }
-
-            this.buildPreview.setVisible(true);
-            this.buildPreview.setPosition(
-                tile.getCenterX(),
-                tile.getCenterY() - 32
-            );
-
-            // Range-Kreis anzeigen
-            if (!buildRangeIndicator) {
-                buildRangeIndicator = this.add.graphics();
-                buildRangeIndicator.setDepth(10);
-            }
-            buildRangeIndicator.clear();
-            buildRangeIndicator.fillStyle(0x00ff00, 0.25);
-            // Default-Range wie im Tower
-            let range = 200;
-            if (
-                this.layerHighground &&
-                this.layerHighground.getTileAtWorldXY(
-                    tile.getCenterX(),
-                    tile.getCenterY() - 32,
-                    false
-                ) !== null
-            ) {
-                range = range * 1.5;
-            }
-            buildRangeIndicator.fillCircle(
-                tile.getCenterX(),
-                tile.getCenterY() - 32,
-                range
-            );
-            buildRangeIndicator.setVisible(true);
-        });
-
-        //Waypoints Init
-        const layerWaypoints = map.getObjectLayer("Waypoints");
-        this.waypoints = layerWaypoints.objects[0].polyline;
-        const startPoint = this.waypoints[1];
-
-        this.path = new Phaser.Curves.Path(startPoint.x, startPoint.y);
-
-        this.waypoints.forEach((point, index) => {
-            if (index === 0) return;
-            this.path.lineTo(point.x, point.y);
-        });
         //Enemy Spawn Init
-        this.time.addEvent({
-            delay: 1000,
-            repeat: this.enemiesToSpawn - 1,
-            callback: () => {
-                const enemy = new Enemy(this, this.path, "leafbug");
-                enemy.start();
-                this.enemies.add(enemy);
-                this.enemiesSpawned++;
-            },
-        });
+        this.spawnWave(WAVE_1);
+
+        //UI Init
         this.scene.launch("UI");
     }
 
+    spawnWave(wave: typeof WAVE_1) {
+        let currentDelay = 0;
+
+        wave.forEach((spawn) => {
+            currentDelay += spawn.delay;
+
+            this.time.delayedCall(currentDelay, () => {
+                const enemy = EnemyFactory.create(
+                    this,
+                    this.path,
+                    spawn.enemyType
+                );
+                enemy.start();
+                this.enemies.add(enemy);
+                this.enemiesSpawned++;
+            });
+        });
+    }
     update() {
         (this.enemies.getChildren() as Enemy[]).forEach((enemy: Enemy) => {
             if (!enemy.active) return;
@@ -266,7 +144,7 @@ export class Game extends Scene {
             enemy.update();
 
             if (!enemy.isAlive && enemy.isWorthMoney) {
-                this.setMoney(this._money + enemy.moneyOnDeath);
+                this.money = this.money + enemy.moneyOnDeath;
                 enemy.isWorthMoney = false;
             }
 
@@ -284,27 +162,8 @@ export class Game extends Scene {
         this.checkWinCondition();
     }
 
-    setMoney(value: number) {
-        this._money = value;
-        this.registry.set("money", this._money);
-        this.events.emit("money-changed", this._money);
-        console.log("Money updated:", this._money);
-    }
-
-    setHealth(value: number) {
-        this.health = value;
-        this.events.emit("health-changed", this.health);
-
-        if (this.health <= 0) {
-            // Stoppe Game und UI, starte GameOver-Screen
-            this.scene.stop("UI");
-            this.scene.stop("Game");
-            this.scene.start("GameOver");
-        }
-    }
-
     onBaseHealthChanged(damage: number) {
-        this.setHealth(this.health - damage);
+        this.health = this.health - damage;
     }
 
     checkWinCondition() {

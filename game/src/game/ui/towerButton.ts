@@ -1,4 +1,4 @@
-import { TOWER_CONFIGS, TowerType } from "../../config/TowerConfig";
+import { TOWER_CONFIGS, TowerType } from "../../config/towerConfig";
 
 export class TowerButton extends Phaser.GameObjects.Container {
     private _cost: number;
@@ -54,7 +54,6 @@ export class TowerButton extends Phaser.GameObjects.Container {
 
         // Listen for money changes from Game scene
         scene.scene.get("Game").events.on("money-changed", (money: number) => {
-            console.log("TowerButton received money update:", money);
             this.currentMoney = money;
             this.updateVisuals();
         });

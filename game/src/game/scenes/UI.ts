@@ -40,11 +40,9 @@ export class UI extends Scene {
 
         towerButtons.forEach((t, i) => {
             new TowerButton(this, 50, 120 + i * 72, t.icon, t.id);
-            console.log("Created TowerButton for:", t.id);
         });
 
         this.events.on("tower-selected", (id: string, cost: number) => {
-            console.log("UI scene recieved tower-selected:", id, cost);
             gameScene.events.emit("tower-selected", id, cost);
         });
         let paused = false;
@@ -67,11 +65,9 @@ export class UI extends Scene {
         gameScene.events.on("money-changed", this.onMoneyChanged, this);
         gameScene.events.on("health-changed", this.onHealthChanged, this);
 
-        console.log("UI scene created");
     }
 
     onMoneyChanged(money: number) {
-        console.log("UI scene updating money display:", money);
         this.moneyText.setText(`Gold: ${money}`);
     }
 

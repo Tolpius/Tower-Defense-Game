@@ -1,8 +1,25 @@
-import { useRef, useState } from 'react';
-import { IRefPhaserGame, PhaserGame } from './PhaserGame';
+import { useEffect, useRef, useState } from "react";
+import { IRefPhaserGame, PhaserGame } from "./PhaserGame";
+import SpriteSheetFavicon from "./SpriteSheetFavicon";
 
-function App()
-{
+function App() {
+    useEffect(() => {
+        let faviconAnimator: SpriteSheetFavicon | null = null;
+        faviconAnimator = new SpriteSheetFavicon(
+            {
+                src: "/favicon.png",
+                frameCount: 8,
+                frameWidth: 32,
+                interval: 100,
+            },
+            () => {
+                faviconAnimator?.start();
+            }
+        );
+
+        return () => faviconAnimator?.stop();
+    }, []);
+
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
 
@@ -10,13 +27,11 @@ function App()
     const phaserRef = useRef<IRefPhaserGame | null>(null);
     const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
 
- 
-
     return (
         <div id="app">
             <PhaserGame ref={phaserRef} />
         </div>
-    )
+    );
 }
 
-export default App
+export default App;

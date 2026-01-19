@@ -40,6 +40,7 @@ export class Tower extends Phaser.GameObjects.Container {
         this.rangeCircle.setVisible(false);
         this.createAnimations();
         this.add([towerBase, this.turret, this.rangeCircle]);
+        this.updateDepth();
     }
 
     get range() {
@@ -60,6 +61,12 @@ export class Tower extends Phaser.GameObjects.Container {
 
     hideRange() {
         this.rangeCircle.setVisible(false);
+    }
+
+    private updateDepth() {
+        // Set depth based on Y position for proper rendering order
+        // Higher Y position = higher depth (rendered in front)
+        this.depth = Math.floor(this.y);
     }
 
     protected canShoot(time: number): boolean {
@@ -108,6 +115,7 @@ export class Tower extends Phaser.GameObjects.Container {
         delta: number,
         enemies: Phaser.GameObjects.Group
     ): void {
+        this.updateDepth();
         const target = this.getTarget(enemies);
         if (!target) return;
 

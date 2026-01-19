@@ -13,9 +13,9 @@
                         {
                             "id": 1,
                             "spawns": [
-                                { "enemyType": "magmacrab", "delay": 0 },
-                                { "enemyType": "leafbug", "delay": 500 },
-                                { "enemyType": "scorpion", "delay": 500 },
+                                { "enemyType": "clampbeetle", "delay": 0 },
+                                { "enemyType": "flyinglocust", "delay": 500 },
+                                { "enemyType": "voidbutterfly", "delay": 500 },
                                 { "enemyType": "leafbug", "delay": 500 },
                                 { "enemyType": "firebug", "delay": 500 },
                                 { "enemyType": "scorpion", "delay": 500 },

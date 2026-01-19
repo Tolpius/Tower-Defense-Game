@@ -10,7 +10,10 @@ export enum EnemyType {
     Scorpion = "scorpion",
     Leafbug = "leafbug",
     Firebug = "firebug",
-    Magmacrab = "magmacrab"
+    Magmacrab = "magmacrab",
+    Clampbeetle = "clampbeetle",
+    Flyinglocust = "flyinglocust",
+    Voidbutterfly = "voidbutterfly",
 }
 export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
     [EnemyType.Scorpion]: {
@@ -40,6 +43,27 @@ export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
         moneyOnDeath: 5,
         damageToBase: 5,
         sideAnimationLeft: true,
+    },
+    [EnemyType.Clampbeetle]: {
+        maxHp: 150,
+        duration: 40000,
+        moneyOnDeath: 15,
+        damageToBase: 15,
+        sideAnimationLeft: true,
+    },
+    [EnemyType.Flyinglocust]: {
+        maxHp: 80,
+        duration: 35000,
+        moneyOnDeath: 8,
+        damageToBase: 8,
+        sideAnimationLeft: false,
+    },
+    [EnemyType.Voidbutterfly]: {
+        maxHp: 120,
+        duration: 45000,
+        moneyOnDeath: 12,
+        damageToBase: 12,
+        sideAnimationLeft: false,
     },
 };
 

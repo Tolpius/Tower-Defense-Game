@@ -92,7 +92,23 @@ export class Preloader extends Scene {
             frameWidth: 64,
             frameHeight: 64,
         }
-        )
+        );
+
+        this.load.spritesheet("clampbeetle", "/enemies/clampbeetle/Clampbeetle.png", {
+            frameWidth: 64,
+            frameHeight: 64,
+        });
+
+        this.load.spritesheet("flyinglocust", "/enemies/flyinglocust/FlyingLocust.png", {
+            frameWidth: 64,
+            frameHeight: 64,
+        }); 
+
+        this.load.spritesheet("voidbutterfly", "/enemies/voidbutterfly/Voidbutterfly.png", {
+            frameWidth: 64,
+            frameHeight: 64,
+        });
+
     }
 
     create() {

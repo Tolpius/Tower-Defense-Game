@@ -153,7 +153,7 @@ export class Tower extends Phaser.GameObjects.Container {
             }
         };
         this.turret.on(Phaser.Animations.Events.ANIMATION_UPDATE, handler);
-        
+
         // Reset to first frame after animation completes
         this.turret.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
             this.turret.setFrame(0);
@@ -161,8 +161,16 @@ export class Tower extends Phaser.GameObjects.Container {
     }
 
     protected spawnProjectile(target: any): void {
+        // Calculate muzzle position based on turret rotation
+        // Offset is typically at the end of the barrel
+        const muzzleDistance = 16; // Distance from tower center to muzzle
+        const muzzleX =
+            this.x + Math.cos(this.turret.rotation) * muzzleDistance;
+        const muzzleY =
+            this.y + Math.sin(this.turret.rotation) * muzzleDistance;
+
         const projectile = this.scene.add
-            .sprite(this.x, this.y - 16, "tower3projectile1", 0)
+            .sprite(muzzleX, muzzleY, "tower3projectile1", 0)
             .setDepth(1);
         projectile.play("tower3projectile1-fly");
 

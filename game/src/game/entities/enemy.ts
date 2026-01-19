@@ -17,7 +17,11 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     ident: string;
     flipAnimation = false;
 
-    constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: EnemyType) {
+    constructor(
+        scene: Phaser.Scene,
+        path: Phaser.Curves.Path,
+        ident: EnemyType
+    ) {
         super(scene, path, path.startPoint.x, path.startPoint.y, ident);
         scene.add.existing(this);
 
@@ -114,6 +118,9 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     }
 
     update() {
+        // Skip update if enemy is dead
+        if (!this.isAlive) return;
+
         //Calculate direction
         const dx = this.x - this.lastX;
         const dy = this.y - this.lastY;

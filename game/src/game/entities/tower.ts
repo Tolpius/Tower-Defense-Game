@@ -55,6 +55,7 @@ export class Tower extends Phaser.GameObjects.Container {
         return this._damage;
     }
 
+    // Methoden zum Anzeigen und Verbergen der Reichweite
     showRange() {
         this.rangeCircle.setPosition(this.x, this.y + 32);
         this.rangeCircle.setVisible(true);

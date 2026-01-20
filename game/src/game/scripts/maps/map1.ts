@@ -27,7 +27,7 @@ export default function handleMap1Init(scene: Game) {
     map.createLayer("Props", tilesetGrass, 0, 0);
     map.createLayer("Details", tilesetGrass, 0, 0);
 
-    map.createLayer("Terrain_Water", tilesetWater, 0, 0);
+    scene.waterLayer = map.createLayer("Terrain_Water", tilesetWater, 0, 0) as Phaser.Tilemaps.TilemapLayer;
 
     //Buildable Layer Init
 

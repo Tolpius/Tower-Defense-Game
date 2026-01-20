@@ -40,7 +40,14 @@ export class Preloader extends Scene {
 
         this.load.image("solidGreen", "/Solid_green.png");
         this.load.image("grass", "/tilesets/GrassTileset.png");
-        this.load.image("water", "/tilesets/AnimatedWaterTiles.png");
+        this.load.json(
+            "waterSpritesConfig",
+            "/tilesets/AnimatedWaterTiles.json",
+        );
+        this.load.spritesheet("water", "/tilesets/AnimatedWaterTiles.png", {
+            frameWidth: 64,
+            frameHeight: 64,
+        });
 
         //TOWER GENERATION
         this.load.spritesheet("tower3", "/towers/Tower03.png", {
@@ -53,7 +60,7 @@ export class Preloader extends Scene {
             {
                 frameWidth: 96,
                 frameHeight: 96,
-            }
+            },
         );
         this.load.spritesheet(
             "tower3projectile1",
@@ -61,7 +68,7 @@ export class Preloader extends Scene {
             {
                 frameWidth: 10,
                 frameHeight: 10,
-            }
+            },
         );
         this.load.spritesheet(
             "tower3projectile1impact",
@@ -69,7 +76,7 @@ export class Preloader extends Scene {
             {
                 frameWidth: 64,
                 frameHeight: 64,
-            }
+            },
         );
 
         //ENEMY GENERATION
@@ -104,7 +111,7 @@ export class Preloader extends Scene {
             {
                 frameWidth: 64,
                 frameHeight: 64,
-            }
+            },
         );
 
         this.load.spritesheet(
@@ -113,7 +120,7 @@ export class Preloader extends Scene {
             {
                 frameWidth: 64,
                 frameHeight: 64,
-            }
+            },
         );
 
         this.load.spritesheet(
@@ -122,7 +129,7 @@ export class Preloader extends Scene {
             {
                 frameWidth: 64,
                 frameHeight: 64,
-            }
+            },
         );
     }
 

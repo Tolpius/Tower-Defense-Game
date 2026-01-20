@@ -10,6 +10,7 @@ import handleMap1Init from "../scripts/maps/map1";
 import { Types } from "phaser";
 import { MapData, WorldsData } from "../../config/WorldInterfaces";
 import { WaveManager } from "../scripts/waves/WaveManager";
+import { loadWaterSprites } from "../scripts/spriteLoader/waterSprites";
 
 export class Game extends Scene {
     public enemies!: Phaser.GameObjects.Group;
@@ -33,6 +34,8 @@ export class Game extends Scene {
     private worldId!: number;
     private mapId!: number;
     private mapConfig!: MapData;
+
+    public waterLayer!: Phaser.Tilemaps.TilemapLayer;
 
     constructor() {
         super("Game");
@@ -113,6 +116,9 @@ export class Game extends Scene {
         //Map and Waypoint Init
         handleMap1Init(this);
 
+        //Water Spritesheet Animation Init
+        loadWaterSprites(this);
+
         // Setup click handler for buildable tiles12
         setupPointerDownHandler(this);
 
@@ -137,7 +143,11 @@ export class Game extends Scene {
 
             enemy.update();
 
-            if (!enemy.isAlive && enemy.isWorthMoney && !enemy.hasReachedEnd()) {
+            if (
+                !enemy.isAlive &&
+                enemy.isWorthMoney &&
+                !enemy.hasReachedEnd()
+            ) {
                 this.money += enemy.moneyOnDeath;
                 enemy.isWorthMoney = false;
             }

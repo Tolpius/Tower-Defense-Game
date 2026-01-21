@@ -42,8 +42,8 @@ export class UI extends Scene {
             new TowerButton(this, 50, 120 + i * 72, t.icon, t.id);
         });
 
-        this.events.on("tower-selected", (id: string, cost: number) => {
-            gameScene.events.emit("tower-selected", id, cost);
+        this.events.on("tower-selected", (id: string) => {
+            gameScene.events.emit("tower-selected", id);
         });
         let paused = false;
         const pauseButton = this.add

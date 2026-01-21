@@ -1,7 +1,8 @@
 import { Game } from "../../scenes/Game";
 import { TOWER_CONFIGS, TowerType } from "../../../config/towerConfig";
 import { TowerFactory } from "../../factories/towerFactory";
-const config = TOWER_CONFIGS[TowerType.Slingshot];
+const configs = TOWER_CONFIGS;
+let config = configs[TowerType.Slingshot];
 
 export function handleTowerBuild(scene: Game, pointer: Phaser.Input.Pointer) {
     const tile = scene.layerBuildable?.getTileAtWorldXY(
@@ -74,7 +75,7 @@ export function setupPointerDownHandler(scene: Game) {
 }
 
 export function setupTowerSelectedHandler(scene: Game) {
-    scene.events.on("tower-selected", (towerId: TowerType, cost: number) => {
+    scene.events.on("tower-selected", (towerId: TowerType) => {
         if (scene.buildingTowerSelected === towerId) {
             //Build Mode AUS
             scene.buildingTowerSelected = null;
@@ -88,13 +89,14 @@ export function setupTowerSelectedHandler(scene: Game) {
         scene.selectedTower = undefined;
 
         //BUILD MODE AN
+        config = configs[towerId];
         scene.buildingTowerSelected = towerId;
         scene.layerBuildable?.setVisible(true);
-        scene.buildingTowerSelectedCost = cost;
+        scene.buildingTowerSelectedCost = config.cost;
         scene.buildMode = true;
         scene.buildPreview?.destroy();
         scene.buildPreview = scene.add
-            .image(0, 0, towerId)
+            .image(0, 0, config.baseSprite)
             .setAlpha(0.5)
             .setDepth(2);
     });

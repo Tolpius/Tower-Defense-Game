@@ -1,5 +1,8 @@
 import { Scene } from "phaser";
 import worldsData from "../../config/worlds.json";
+import loadTowerSprites from "../scripts/preloader/towerSprites";
+import loadEnemySprites from "../scripts/preloader/enemySprites";
+import loadWorldAssets from "../scripts/preloader/worldAssets";
 export class Preloader extends Scene {
     constructor() {
         super("Preloader");
@@ -31,106 +34,11 @@ export class Preloader extends Scene {
         this.cache.json.add("worlds", worldsData);
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath("assets");
-        //WORLD GENERATION
-        this.load.image("logo", "logo_path-of-bugs.png");
-        this.load.image("background", "/assets/background.png");
-        this.load.image("enemy", "star.png");
-        this.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
-        this.load.tilemapTiledJSON("mapOne", "/map/TD-map-lvl1.json");
 
-        this.load.image("solidGreen", "/Solid_green.png");
-        this.load.image("grass", "/tilesets/GrassTileset.png");
-        this.load.json(
-            "waterSpritesConfig",
-            "/tilesets/AnimatedWaterTiles.json",
-        );
-        this.load.spritesheet("water", "/tilesets/AnimatedWaterTiles.png", {
-            frameWidth: 64,
-            frameHeight: 64,
-        });
+        loadWorldAssets(this);
+        loadTowerSprites(this);
+        loadEnemySprites(this);
 
-        //TOWER GENERATION
-        this.load.spritesheet("tower3", "/towers/Tower03.png", {
-            frameWidth: 64,
-            frameHeight: 128,
-        });
-        this.load.spritesheet(
-            "tower3turret1",
-            "/towers/Tower03-Level_01-Turret.png",
-            {
-                frameWidth: 96,
-                frameHeight: 96,
-            },
-        );
-        this.load.spritesheet(
-            "tower3projectile1",
-            "/towers/Tower03-Level_01-Projectile.png",
-            {
-                frameWidth: 10,
-                frameHeight: 10,
-            },
-        );
-        this.load.spritesheet(
-            "tower3projectile1impact",
-            "/towers/Tower03-Level01-Projectile-Impact.png",
-            {
-                frameWidth: 64,
-                frameHeight: 64,
-            },
-        );
-
-        //ENEMY GENERATION
-        this.load.spritesheet("scorpion", "/enemies/scorpion/Scorpion.png", {
-            frameWidth: 64,
-            frameHeight: 64,
-        });
-
-        this.load.spritesheet("leafbug", "/enemies/leafbug/Leafbug.png", {
-            frameWidth: 64,
-            frameHeight: 64,
-        });
-
-        this.load.spritesheet("firebug", "/enemies/firebug/Firebug.png", {
-            frameWidth: 128,
-            frameHeight: 64,
-        });
-
-        this.load.spritesheet("firewasp", "/enemies/firewasp/Firewasp.png", {
-            frameWidth: 96,
-            frameHeight: 96,
-        });
-
-        this.load.spritesheet("magmacrab", "/enemies/magmacrab/Magmacrab.png", {
-            frameWidth: 64,
-            frameHeight: 64,
-        });
-
-        this.load.spritesheet(
-            "clampbeetle",
-            "/enemies/clampbeetle/Clampbeetle.png",
-            {
-                frameWidth: 64,
-                frameHeight: 64,
-            },
-        );
-
-        this.load.spritesheet(
-            "flyinglocust",
-            "/enemies/flyinglocust/FlyingLocust.png",
-            {
-                frameWidth: 64,
-                frameHeight: 64,
-            },
-        );
-
-        this.load.spritesheet(
-            "voidbutterfly",
-            "/enemies/voidbutterfly/Voidbutterfly.png",
-            {
-                frameWidth: 64,
-                frameHeight: 64,
-            },
-        );
     }
 
     create() {

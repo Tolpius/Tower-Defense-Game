@@ -1,9 +1,8 @@
 export enum TowerType {
-    Arrow = "arrow",
-    Cannon = "cannon",
+    Slingshot = "slingshot",
+    Catapult = "catapult",
     Ice = "ice",
 }
-
 
 export interface TowerConfig {
     id: TowerType;
@@ -15,36 +14,39 @@ export interface TowerConfig {
     damage: number;
 
     baseSprite: string;
-    turretSprite?: string;
+    weaponSprite?: string;
     projectileSprite?: string;
+    impactSprite?: string;
 
     description?: string;
 }
 
 export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
-    [TowerType.Arrow]: {
-        id: TowerType.Arrow,
-        name: "Arrow Tower",
+    [TowerType.Slingshot]: {
+        id: TowerType.Slingshot,
+        name: "Slingshot Tower",
         cost: 30,
         range: 150,
         fireRate: 1200,
         damage: 50,
-        baseSprite: "tower3",
-        turretSprite: "tower3turret1",
-        projectileSprite: "tower3projectile1",
+        baseSprite: "slingshot1base",
+        weaponSprite: "slingshot1weapon",
+        projectileSprite: "slingshot1projectile",
+        impactSprite: "slingshot1impact",
         description: "Medium single-target damage",
     },
 
-    [TowerType.Cannon]: {
-        id: TowerType.Cannon,
-        name: "Cannon Tower",
+    [TowerType.Catapult]: {
+        id: TowerType.Catapult,
+        name: "Catapult Tower",
         cost: 100,
         range: 160,
-        fireRate: 2000,
+        fireRate: 500,
         damage: 120,
-        baseSprite: "cannonBase",
-        turretSprite: "cannonTurret",
-        projectileSprite: "cannonBall",
+        baseSprite: "catapult1base",
+        weaponSprite: "catapult1weapon",
+        projectileSprite: "catapult1projectile",
+        impactSprite: "catapult1impact",
         description: "Slow but heavy splash damage",
     },
 
@@ -56,7 +58,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         fireRate: 1500,
         damage: 10,
         baseSprite: "iceTowerBase",
-        turretSprite: "iceTowerTurret",
+        weaponSprite: "iceTowerweapon",
         projectileSprite: "iceShard",
         description: "Slows enemies",
     },

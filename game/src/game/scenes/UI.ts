@@ -33,8 +33,8 @@ export class UI extends Scene {
         );
         const gameScene = this.scene.get("Game");
         const towerButtons = [
-            { id: "tower3", icon: "tower3", cost: 30 },
-            { id: "cannon", icon: "tower_cannon", cost: 100 },
+            { id: "slingshot", icon: "slingshot1base", cost: 30 },
+            { id: "catapult", icon: "catapult1base", cost: 100 },
             { id: "ice", icon: "tower_ice", cost: 75 },
         ];
 
@@ -42,8 +42,8 @@ export class UI extends Scene {
             new TowerButton(this, 50, 120 + i * 72, t.icon, t.id);
         });
 
-        this.events.on("tower-selected", (id: string, cost: number) => {
-            gameScene.events.emit("tower-selected", id, cost);
+        this.events.on("tower-selected", (id: string) => {
+            gameScene.events.emit("tower-selected", id);
         });
         let paused = false;
         const pauseButton = this.add

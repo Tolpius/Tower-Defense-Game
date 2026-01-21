@@ -2,45 +2,33 @@ import { Enemy } from "./enemy";
 import { Game as GameScene } from "../scenes/Game";
 import { TowerConfig } from "../../config/towerConfig";
 
-export class Tower extends Phaser.GameObjects.Container {
-    readonly config: TowerConfig;
+export abstract class Tower extends Phaser.GameObjects.Container {
+    protected config: TowerConfig;
     protected _range: number;
     protected _fireRate: number;
     protected _damage: number;
     protected lastFired = 0;
-    protected turret: Phaser.GameObjects.Sprite;
-    protected rangeCircle: Phaser.GameObjects.Circle;
+    protected rangeCircle!: Phaser.GameObjects.Arc;
+    protected isPreview: boolean;
 
-    constructor(scene: GameScene, x: number, y: number, config: TowerConfig) {
+    constructor(
+        scene: GameScene,
+        x: number,
+        y: number,
+        config: TowerConfig,
+        isPreview: boolean,
+    ) {
         super(scene, x, y);
         this.config = config;
-        scene.add.existing(this);
         this._range = config.range;
         this._fireRate = config.fireRate;
         this._damage = config.damage;
-
+        this.isPreview = isPreview;
+        console.log(this.config);
+        console.log(isPreview);
         if (scene.layerHighground.getTileAtWorldXY(x, y, false)) {
             this._range *= 1.5;
         }
-        const towerBase = scene.add.sprite(0, 0, "tower3", 0);
-        towerBase.setInteractive();
-        towerBase.on("pointerdown", () => {
-            scene.selectedTower?.hideRange();
-            scene.selectedTower = this;
-            this.showRange();
-        });
-        this.turret = scene.add.sprite(0, -16, "tower3turret1", 0);
-        this.rangeCircle = scene.add.circle(
-            0, // x relativ zum Tower
-            32, // y relativ zum Tower (offset to account for tower visual position)
-            this.range, // Radius
-            0x00ff00, // Farbe (grün)
-            0.25 // Alpha (transparent)
-        );
-        this.rangeCircle.setVisible(false).setDepth(9999); // Always render on top, independent of y position
-        this.createAnimations();
-        this.add([towerBase, this.turret]);
-        this.updateDepth();
     }
 
     get range() {
@@ -64,140 +52,52 @@ export class Tower extends Phaser.GameObjects.Container {
         this.rangeCircle.setVisible(false);
     }
 
-    private updateDepth() {
+    protected updateDepth() {
         // Set depth based on Y position for proper rendering order
         // Higher Y position = higher depth (rendered in front)
         this.depth = Math.floor(this.y);
     }
 
     protected canShoot(time: number): boolean {
-        return time > this.lastFired + this.fireRate;
+        return !this.isPreview && time > this.lastFired + this.fireRate;
     }
 
-    protected createAnimations() {
-        const anims = this.scene.anims;
-        if (!anims.exists(`tower3turret1-shoot`)) {
-            anims.create({
-                key: `tower3turret1-shoot`,
-                frames: anims.generateFrameNumbers("tower3turret1", {
-                    start: 0,
-                    end: 7,
-                }),
-                frameRate: (this.fireRate / 1000) * 8,
-                repeat: 0,
-            });
-        }
-        if (!anims.exists(`tower3projectile1-fly`)) {
-            anims.create({
-                key: `tower3projectile1-fly`,
-                frames: anims.generateFrameNumbers("tower3projectile1", {
-                    start: 0,
-                    end: 5,
-                }),
-                frameRate: 12,
-                repeat: -1,
-            });
-        }
-        if (!anims.exists(`tower3projectile1-impact`)) {
-            anims.create({
-                key: `tower3projectile1-impact`,
-                frames: anims.generateFrameNumbers("tower3projectile1impact", {
-                    start: 0,
-                    end: 5,
-                }),
-                frameRate: 16,
-                repeat: 0,
-            });
-        }
-    }
+    protected abstract createAnimations(): void;
 
-    update(
+    abstract update(
         time: number,
         delta: number,
-        enemies: Phaser.GameObjects.Group
-    ): void {
-        this.updateDepth();
-        const target = this.getTarget(enemies);
-        if (!target) return;
+        enemies: Phaser.GameObjects.Group,
+    ): void;
 
-        this.turret.rotation =
-            Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y) + 90;
-        if (!this.canShoot(time)) return;
-        this.shoot(target);
-        this.lastFired = time;
-    }
-
-    protected getTarget(enemies: Phaser.GameObjects.Group) {
+    protected getTargets(
+        enemies: Phaser.GameObjects.Group,
+        radius?: number,
+        position?: Phaser.Types.Math.Vector2Like,
+    ): Enemy[] {
+        const searchRadius = radius ?? this.range;
         return enemies
             .getChildren()
-            .find(
-                (e: Enemy) =>
+            .filter((gameObject: Phaser.GameObjects.GameObject) => {
+                const e = gameObject as Enemy;
+                return (
                     Phaser.Math.Distance.Between(
-                        this.x,
-                        this.y + 32,
+                        position?.x ?? this.x,
+                        position?.y ?? this.y + 32,
                         e.x,
-                        e.y
-                    ) <= this.range && e.isAlive
-            );
-    }
-
-    protected shoot(target: any): void {
-        this.turret.play(`tower3turret1-shoot`, true);
-        const handler = (
-            anim: Phaser.Animations.Animation,
-            frame: Phaser.Animations.AnimationFrame
-        ) => {
-            if (anim.key !== "tower3turret1-shoot") return;
-
-            if (frame.index === 6 && target) {
-                this.spawnProjectile(target);
-                this.turret.off(
-                    Phaser.Animations.Events.ANIMATION_UPDATE,
-                    handler
+                        e.y,
+                    ) <= searchRadius && e.isAlive
                 );
-            }
-        };
-        this.turret.on(Phaser.Animations.Events.ANIMATION_UPDATE, handler);
-
-        // Reset to first frame after animation completes
-        this.turret.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-            this.turret.setFrame(0);
-        });
+            }) as Enemy[];
     }
 
-    protected spawnProjectile(target: any): void {
-        // Calculate muzzle position based on turret rotation
-        // Offset is typically at the end of the barrel
-        const muzzleDistance = 16; // Distance from tower center to muzzle
-        const muzzleX =
-            this.x + Math.cos(this.turret.rotation) * muzzleDistance;
-        const muzzleY =
-            this.y + Math.sin(this.turret.rotation) * muzzleDistance;
-
-        const projectile = this.scene.add
-            .sprite(muzzleX, muzzleY, "tower3projectile1", 0)
-            .setDepth(1);
-        projectile.play("tower3projectile1-fly");
-
-        this.scene.tweens.add({
-            targets: projectile,
-            x: target.x,
-            y: target.y,
-            duration: 300,
-            onComplete: () => {
-                projectile.destroy();
-                const impact = this.scene.add
-                    .sprite(target.x, target.y, "tower3projectile1impact", 0)
-                    .setDepth(1);
-                impact.play("tower3projectile1-impact");
-                if (target) {
-                    target.takeDamage(this.damage);
-                }
-                impact.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-                    impact.destroy();
-                });
-            },
-        });
+    protected getTarget(enemies: Phaser.GameObjects.Group): Enemy | undefined {
+        const targets = this.getTargets(enemies);
+        return targets.length > 0 ? targets[0] : undefined;
     }
+
+    protected abstract shoot(target: Enemy): void;
+
+    protected abstract spawnProjectile(target: Enemy): void;
 }
 

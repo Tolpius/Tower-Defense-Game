@@ -33,7 +33,7 @@ export class UI extends Scene {
         );
         const gameScene = this.scene.get("Game");
         const towerButtons = [
-            { id: "tower3", icon: "tower3", cost: 30 },
+            { id: "slingshot", icon: "tower3", cost: 30 },
             { id: "cannon", icon: "tower_cannon", cost: 100 },
             { id: "ice", icon: "tower_ice", cost: 75 },
         ];

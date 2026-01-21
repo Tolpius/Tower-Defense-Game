@@ -10,7 +10,7 @@ import handleMap1Init from "../scripts/maps/map1";
 import { Types } from "phaser";
 import { MapData, WorldsData } from "../../config/WorldInterfaces";
 import { WaveManager } from "../scripts/waves/WaveManager";
-import { loadWaterSprites } from "../scripts/spriteLoader/waterSprites";
+import { loadWaterSprites } from "../scripts/preloader/waterSprites";
 
 export class Game extends Scene {
     public enemies!: Phaser.GameObjects.Group;

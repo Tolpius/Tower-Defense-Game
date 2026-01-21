@@ -1,20 +1,25 @@
 import { Game } from "../../scenes/Game";
-import { Tower } from "../../entities/tower";
 import { TOWER_CONFIGS, TowerType } from "../../../config/towerConfig";
-const config = TOWER_CONFIGS[TowerType.Arrow];
+import { TowerFactory } from "../../factories/towerFactory";
+const config = TOWER_CONFIGS[TowerType.Slingshot];
 
 export function handleTowerBuild(scene: Game, pointer: Phaser.Input.Pointer) {
     const tile = scene.layerBuildable?.getTileAtWorldXY(
         pointer.worldX,
         pointer.worldY,
-        false
+        false,
     );
 
     if (tile && tile.index !== 0) {
         const towerX = tile.getCenterX();
         const towerY = tile.getCenterY() - 32;
 
-        const tower = new Tower(scene, towerX, towerY, config);
+        const tower = TowerFactory.create(
+            TowerType.Slingshot,
+            scene,
+            towerX,
+            towerY
+        );
         scene.towers.add(tower);
         scene.layerBuildable?.removeTileAt(tile.x, tile.y);
 
@@ -33,7 +38,7 @@ export function setupPointerDownHandler(scene: Game) {
         "pointerdown",
         (
             pointer: Phaser.Input.Pointer,
-            gameObjects: Phaser.GameObjects.GameObject[]
+            gameObjects: Phaser.GameObjects.GameObject[],
         ) => {
             // Right-click: always deselect and suppress context menu
             if (pointer.button === 2) {
@@ -64,12 +69,12 @@ export function setupPointerDownHandler(scene: Game) {
             scene.selectedTower = undefined;
             if (scene.buildRangeIndicator)
                 scene.buildRangeIndicator.setVisible(false);
-        }
+        },
     );
 }
 
 export function setupTowerSelectedHandler(scene: Game) {
-    scene.events.on("tower-selected", (towerId: string, cost: number) => {
+    scene.events.on("tower-selected", (towerId: TowerType, cost: number) => {
         if (scene.buildingTowerSelected === towerId) {
             //Build Mode AUS
             scene.buildingTowerSelected = null;
@@ -102,7 +107,7 @@ export function setupPointerMoveHandler(scene: any) {
 
         const tile = scene.layerBuildable.getTileAtWorldXY(
             pointer.worldX,
-            pointer.worldY
+            pointer.worldY,
         );
 
         if (!tile || tile.index === 0) {
@@ -131,7 +136,7 @@ export function setupPointerMoveHandler(scene: any) {
             scene.layerHighground.getTileAtWorldXY(
                 tile.getCenterX(),
                 tile.getCenterY() - 32,
-                false
+                false,
             ) !== null
         ) {
             range = range * 1.5;
@@ -139,7 +144,7 @@ export function setupPointerMoveHandler(scene: any) {
         scene.buildRangeIndicator.fillCircle(
             tile.getCenterX(),
             tile.getCenterY(),
-            range
+            range,
         );
         scene.buildRangeIndicator.setVisible(true);
     });

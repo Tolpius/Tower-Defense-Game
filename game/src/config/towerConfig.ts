@@ -1,5 +1,5 @@
 export enum TowerType {
-    Arrow = "arrow",
+    Slingshot = "slingshot",
     Cannon = "cannon",
     Ice = "ice",
 }
@@ -22,9 +22,9 @@ export interface TowerConfig {
 }
 
 export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
-    [TowerType.Arrow]: {
-        id: TowerType.Arrow,
-        name: "Arrow Tower",
+    [TowerType.Slingshot]: {
+        id: TowerType.Slingshot,
+        name: "Slingshot Tower",
         cost: 30,
         range: 150,
         fireRate: 1200,

@@ -6,7 +6,7 @@ export class TowerButton extends Phaser.GameObjects.Container {
     private bg: Phaser.GameObjects.Rectangle;
     private currentMoney = 0;
     private canAfford = true;
-    readonly config = TOWER_CONFIGS[TowerType.Arrow];
+    private config = TOWER_CONFIGS[TowerType.Slingshot];
     constructor(
         scene: Phaser.Scene,
         x: number,
@@ -15,6 +15,7 @@ export class TowerButton extends Phaser.GameObjects.Container {
         towerId: string
     ) {
         super(scene, x, y);
+        this.config = TOWER_CONFIGS[towerId as TowerType];
         this._cost = this.config.cost;
 
         // Get initial money value from registry

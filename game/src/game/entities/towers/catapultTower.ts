@@ -95,14 +95,20 @@ export class CatapultTower extends Tower {
     }
 
     protected shoot(target: Enemy): void {
+        // Remove any existing animation handlers to prevent multiple projectiles
+        this.weapon.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+
         this.weapon.play(`${this.config.weaponSprite}-shoot`, true);
+
+        let projectileSpawned = false;
         const handler = (
             anim: Phaser.Animations.Animation,
             frame: Phaser.Animations.AnimationFrame,
         ) => {
             if (anim.key !== `${this.config.weaponSprite}-shoot`) return;
 
-            if (frame.index === 6 && target) {
+            if (frame.index === 6 && target && !projectileSpawned) {
+                projectileSpawned = true;
                 this.spawnProjectile(target);
                 this.weapon.off(
                     Phaser.Animations.Events.ANIMATION_UPDATE,
@@ -136,7 +142,7 @@ export class CatapultTower extends Tower {
             targets: projectile,
             x: target.x,
             y: target.y,
-            duration: 300,
+            duration: 800,
             onComplete: () => {
                 projectile.destroy();
                 const impact = this.scene.add

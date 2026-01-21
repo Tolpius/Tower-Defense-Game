@@ -16,7 +16,6 @@ export class CatapultTower extends Tower {
         super(scene, x, y, config, isPreview);
         this.config = config;
         scene.add.existing(this);
-
         const towerBase = scene.add.sprite(0, 0, this.config.baseSprite, 0);
         towerBase.setInteractive();
         towerBase.on("pointerdown", () => {
@@ -126,8 +125,7 @@ export class CatapultTower extends Tower {
 
     protected spawnProjectile(target: Enemy): void {
         // Calculate muzzle position based on weapon rotation
-        // Offset is typically at the end of the barrel
-        const muzzleDistance = 16; // Distance from tower center to muzzle
+        const muzzleDistance = 16;
         const muzzleX =
             this.x + Math.cos(this.weapon.rotation) * muzzleDistance;
         const muzzleY =
@@ -138,24 +136,68 @@ export class CatapultTower extends Tower {
             .setDepth(1);
         projectile.play(`${this.config.projectileSprite}-fly`);
 
-        this.scene.tweens.add({
-            targets: projectile,
-            x: target.x,
-            y: target.y,
-            duration: 800,
-            onComplete: () => {
+        const speed = 200; // pixels per second
+
+        const updateProjectile = () => {
+            if (!projectile.active) return;
+
+            // Get current target position (or last known if dead)
+            const targetX =
+                target && target.isAlive
+                    ? target.x
+                    : (projectile.getData("lastTargetX") ?? target.x);
+            const targetY =
+                target && target.isAlive
+                    ? target.y
+                    : (projectile.getData("lastTargetY") ?? target.y);
+
+            // Store last known position
+            if (target && target.isAlive) {
+                projectile.setData("lastTargetX", target.x);
+                projectile.setData("lastTargetY", target.y);
+            }
+
+            // Calculate direction and distance
+            const dx = targetX - projectile.x;
+            const dy = targetY - projectile.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Rotate projectile towards target
+            projectile.rotation = Math.atan2(dy, dx);
+
+            // Check if projectile reached target
+            if (distance < 10) {
                 projectile.destroy();
                 const impact = this.scene.add
-                    .sprite(target.x, target.y, this.config.impactSprite!, 0)
+                    .sprite(targetX, targetY, this.config.impactSprite!, 0)
                     .setDepth(1);
                 impact.play(`${this.config.impactSprite}`);
-                if (target) {
-                    target.takeDamage(this.damage);
-                }
+                const targetsInImpactRadius = this.getTargets(
+                    (this.scene as GameScene).enemies,
+                    30,
+                    { x: targetX, y: targetY },
+                );
+                targetsInImpactRadius.forEach((enemy) => {
+                    enemy.isAlive && enemy.takeDamage(this.damage);
+                });
                 impact.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                     impact.destroy();
                 });
-            },
+                return;
+            }
+
+            // Move projectile towards target
+            const moveDistance = speed * (this.scene.game.loop.delta / 1000);
+            projectile.x += (dx / distance) * moveDistance;
+            projectile.y += (dy / distance) * moveDistance;
+        };
+
+        // Add update listener
+        this.scene.events.on("update", updateProjectile);
+
+        // Clean up when projectile is destroyed
+        projectile.on("destroy", () => {
+            this.scene.events.off("update", updateProjectile);
         });
     }
 }

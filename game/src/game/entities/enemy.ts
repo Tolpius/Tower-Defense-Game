@@ -21,8 +21,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     private _pathProgress = 0; // 0-1 tracking how far along the path
     private _startTime = 0;
     // Show progress bar in dev mode or when VITE_DEBUG=true is set
-    static showProgressBar =
-        import.meta.env.DEV || import.meta.env.VITE_DEBUG === "true";
+    static showProgressBar = import.meta.env.VITE_DEBUG === "true";
 
     constructor(
         scene: Phaser.Scene,

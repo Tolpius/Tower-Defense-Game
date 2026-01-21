@@ -1,7 +1,7 @@
 export enum TowerType {
     Slingshot = "slingshot",
     Catapult = "catapult",
-    Ice = "ice",
+    Crystal = "crystal",
 }
 
 export interface TowerConfig {
@@ -18,6 +18,8 @@ export interface TowerConfig {
     projectileSprite?: string;
     impactSprite?: string;
 
+    offsetY?: number;
+
     description?: string;
 }
 
@@ -33,6 +35,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         weaponSprite: "slingshot1weapon",
         projectileSprite: "slingshot1projectile",
         impactSprite: "slingshot1impact",
+        offsetY: 32,
         description: "Medium single-target damage",
     },
 
@@ -47,19 +50,23 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         weaponSprite: "catapult1weapon",
         projectileSprite: "catapult1projectile",
         impactSprite: "catapult1impact",
+        offsetY: 32,
         description: "Slow but heavy splash damage",
     },
 
-    [TowerType.Ice]: {
-        id: TowerType.Ice,
-        name: "Ice Tower",
+    [TowerType.Crystal]: {
+        id: TowerType.Crystal,
+        name: "Crystal Tower",
         cost: 80,
         range: 180,
         fireRate: 1500,
         damage: 10,
-        baseSprite: "iceTowerBase",
-        weaponSprite: "iceTowerweapon",
-        projectileSprite: "iceShard",
-        description: "Slows enemies",
+        baseSprite: "crystal1base",
+        weaponSprite: "crystal1weapon",
+        projectileSprite: "crystal1projectile",
+        impactSprite: "crystal1impact",
+        offsetY: 64,
+        description: "Zaps an enemy... ouch!",
     },
 };
+

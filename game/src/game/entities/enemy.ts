@@ -4,6 +4,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     duration: number;
     healthBar: Phaser.GameObjects.Graphics;
     progressBar: Phaser.GameObjects.Graphics; // Debug progress bar
+    progressText: Phaser.GameObjects.Text; // Debug progress text
     maxHp: number;
     hp: number;
     moneyOnDeath: number;
@@ -47,7 +48,14 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         this.lastX = this.x;
         this.lastY = this.y;
         this.healthBar = this.scene.add.graphics();
+        this.healthBar.setDepth(1000);
         this.progressBar = this.scene.add.graphics();
+        this.progressBar.setDepth(1000);
+        this.progressText = this.scene.add.text(0, 0, "", {
+            fontSize: "10px",
+            color: "#000000",
+        });
+        this.progressText.setDepth(1000);
 
         this.createAnimations();
         if (scene.anims.exists(`${ident}-walk-down`)) {
@@ -81,6 +89,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
                 // Enemy reached the end of the path
                 this.healthBar.destroy();
                 this.progressBar.destroy();
+                this.progressText.destroy();
                 this.setVisible(false);
             },
         });
@@ -132,6 +141,18 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
                 (barWidth - 2) * this._pathProgress,
                 barHeight - 2,
             );
+
+            // Progress text
+            this.progressText.setText(
+                (this._pathProgress * 100).toFixed(0) + "%",
+            );
+            this.progressText.setPosition(
+                this.x + barWidth / 2 + 2,
+                this.y - 42,
+            );
+            this.progressText.setVisible(true);
+        } else {
+            this.progressText.setVisible(false);
         }
     }
 
@@ -152,6 +173,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         this.flipX = this.flipAnimation;
         this.healthBar.setVisible(false);
         this.progressBar.setVisible(false);
+        this.progressText.setVisible(false);
         this.play(deathAnim);
 
         this.once(
@@ -171,7 +193,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         // Update path progress based on elapsed time
         if (this._startTime > 0) {
             const elapsed = this.scene.time.now - this._startTime;
-            this._pathProgress = Math.min(elapsed / this.duration, 1);
+            this._pathProgress = elapsed / this.duration;
         }
 
         //Calculate direction

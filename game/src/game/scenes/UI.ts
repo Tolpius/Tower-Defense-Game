@@ -35,7 +35,7 @@ export class UI extends Scene {
         const towerButtons = [
             { id: "slingshot", icon: "slingshot1base", cost: 30 },
             { id: "catapult", icon: "catapult1base", cost: 100 },
-            { id: "ice", icon: "tower_ice", cost: 75 },
+            { id: "crystal", icon: "crystal1base", cost: 75 },
         ];
 
         towerButtons.forEach((t, i) => {

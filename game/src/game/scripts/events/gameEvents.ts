@@ -13,7 +13,7 @@ export function handleTowerBuild(scene: Game, pointer: Phaser.Input.Pointer) {
 
     if (tile && tile.index !== 0) {
         const towerX = tile.getCenterX();
-        const towerY = tile.getCenterY() - 32;
+        const towerY = tile.getCenterY() - config.offsetY!;
 
         const tower = TowerFactory.create(
             config.id,
@@ -120,7 +120,7 @@ export function setupPointerMoveHandler(scene: any) {
         }
 
         scene.buildPreview.setVisible(true);
-        const previewY = tile.getCenterY() - 32;
+        const previewY = tile.getCenterY() - config.offsetY!;
         scene.buildPreview.setPosition(tile.getCenterX(), previewY);
         scene.buildPreview.setDepth(Math.floor(previewY));
 

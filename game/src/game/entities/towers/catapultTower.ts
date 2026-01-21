@@ -24,7 +24,7 @@ export class CatapultTower extends Tower {
             scene.selectedTower = this;
             this.showRange();
         });
-        this.weapon = scene.add.sprite(0, -16, this.config.weaponSprite, 0);
+        this.weapon = scene.add.sprite(0, -16, this.config.weaponSprite!, 0);
         this.rangeCircle = scene.add.circle(
             0, // x relativ zum Tower
             32, // y relativ zum Tower (offset to account for tower visual position)
@@ -43,7 +43,7 @@ export class CatapultTower extends Tower {
         if (!anims.exists(`${this.config.weaponSprite}-shoot`)) {
             anims.create({
                 key: `${this.config.weaponSprite}-shoot`,
-                frames: anims.generateFrameNumbers(this.config.weaponSprite, {
+                frames: anims.generateFrameNumbers(this.config.weaponSprite!, {
                     start: 0,
                     end: 7,
                 }),
@@ -55,7 +55,7 @@ export class CatapultTower extends Tower {
             anims.create({
                 key: `${this.config.projectileSprite}-fly`,
                 frames: anims.generateFrameNumbers(
-                    this.config.projectileSprite,
+                    this.config.projectileSprite!,
                     {
                         start: 0,
                         end: 5,
@@ -68,7 +68,7 @@ export class CatapultTower extends Tower {
         if (!anims.exists(`${this.config.impactSprite}`)) {
             anims.create({
                 key: `${this.config.impactSprite}`,
-                frames: anims.generateFrameNumbers(this.config.impactSprite, {
+                frames: anims.generateFrameNumbers(this.config.impactSprite!, {
                     start: 0,
                     end: 5,
                 }),
@@ -128,7 +128,7 @@ export class CatapultTower extends Tower {
             this.y + Math.sin(this.weapon.rotation) * muzzleDistance;
 
         const projectile = this.scene.add
-            .sprite(muzzleX, muzzleY, this.config.projectileSprite, 0)
+            .sprite(muzzleX, muzzleY, this.config.projectileSprite!, 0)
             .setDepth(1);
         projectile.play(`${this.config.projectileSprite}-fly`);
 
@@ -140,7 +140,7 @@ export class CatapultTower extends Tower {
             onComplete: () => {
                 projectile.destroy();
                 const impact = this.scene.add
-                    .sprite(target.x, target.y, this.config.impactSprite, 0)
+                    .sprite(target.x, target.y, this.config.impactSprite!, 0)
                     .setDepth(1);
                 impact.play(`${this.config.impactSprite}-fly`);
                 if (target) {

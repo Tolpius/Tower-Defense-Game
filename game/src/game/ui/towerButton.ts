@@ -11,7 +11,6 @@ export class TowerButton extends Phaser.GameObjects.Container {
         scene: Phaser.Scene,
         x: number,
         y: number,
-        iconKey: string,
         towerId: string
     ) {
         super(scene, x, y);
@@ -44,7 +43,7 @@ export class TowerButton extends Phaser.GameObjects.Container {
                 this.updateVisuals();
             });
 
-        const icon = scene.add.image(0, -8, iconKey).setScale(0.3);
+        const icon = scene.add.image(0, -8, this.config.baseSprite).setScale(0.3);
 
         const text = scene.add
             .text(0, 20, `${this.cost}g`, {

@@ -70,13 +70,13 @@ export class UI extends Scene {
         );
 
         const towerButtons = [
-            { id: "slingshot", icon: "slingshot1base", cost: 30 },
-            { id: "catapult", icon: "catapult1base", cost: 100 },
-            { id: "crystal", icon: "crystal1base", cost: 75 },
+            { id: "slingshot"},
+            { id: "crystal"},
+            { id: "catapult"},
         ];
 
         towerButtons.forEach((t, i) => {
-            new TowerButton(this, 50, 150 + i * 72, t.icon, t.id);
+            new TowerButton(this, 50, 150 + i * 72, t.id);
         });
 
         this.events.on("tower-selected", (id: string) => {

@@ -59,7 +59,7 @@ export class UI extends Scene {
         );
 
         // Wave Frame und Text
-        this.createFrame(10, 78, 100, 28);
+        this.createFrame(10, 78, 120, 28);
         const currentWave = gameScene.waveManager?.currentWave ?? 1;
         const maxWaves = gameScene.waveManager?.maxWaves ?? 1;
         this.waveText = this.add.text(

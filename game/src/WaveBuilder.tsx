@@ -23,6 +23,16 @@ const ENEMY_COLORS: Record<string, string> = {
     [EnemyType.Voidbutterfly]: "#9932CC",
 };
 
+const ENEMY_GIFS: Record<string, string> = {
+    [EnemyType.Scorpion]: "/assets/waveBuilder/scorpion.gif",
+    [EnemyType.Leafbug]: "/assets/waveBuilder/leafbug.gif",
+    [EnemyType.Firebug]: "/assets/waveBuilder/firebug.gif",
+    [EnemyType.Magmacrab]: "/assets/waveBuilder/magmacrab.gif",
+    [EnemyType.Clampbeetle]: "/assets/waveBuilder/clampbeetle.gif",
+    [EnemyType.Flyinglocust]: "/assets/waveBuilder/flyinglocust.gif",
+    [EnemyType.Voidbutterfly]: "/assets/waveBuilder/voidbutterfly.gif",
+};
+
 function WaveBuilder() {
     const [waves, setWaves] = useState<Wave[]>([{ id: 1, spawns: [] }]);
     const [activeWaveIndex, setActiveWaveIndex] = useState(0);
@@ -76,6 +86,38 @@ function WaveBuilder() {
                     : wave,
             ),
         );
+    };
+
+    const moveSpawn = (fromIndex: number, toIndex: number) => {
+        if (toIndex < 0 || toIndex >= activeWave.spawns.length) return;
+
+        setWaves((prev) =>
+            prev.map((wave, idx) => {
+                if (idx !== activeWaveIndex) return wave;
+
+                const newSpawns = [...wave.spawns];
+                const [movedItem] = newSpawns.splice(fromIndex, 1);
+                newSpawns.splice(toIndex, 0, movedItem);
+                return { ...wave, spawns: newSpawns };
+            }),
+        );
+    };
+
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+    const handleDragStart = (index: number) => {
+        setDraggedIndex(index);
+    };
+
+    const handleDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault();
+        if (draggedIndex === null || draggedIndex === index) return;
+        moveSpawn(draggedIndex, index);
+        setDraggedIndex(index);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedIndex(null);
     };
 
     const addWave = () => {
@@ -144,7 +186,12 @@ function WaveBuilder() {
                                 }}
                                 onClick={() => addEnemy(enemy)}
                             >
-                                {enemy}
+                                <img
+                                    src={ENEMY_GIFS[enemy]}
+                                    alt={enemy}
+                                    className="enemy-gif"
+                                />
+                                <span>{enemy}</span>
                             </button>
                         ))}
                     </div>
@@ -210,7 +257,38 @@ function WaveBuilder() {
                             </p>
                         ) : (
                             activeWave.spawns.map((spawn, idx) => (
-                                <div key={idx} className="spawn-item">
+                                <div
+                                    key={idx}
+                                    className={`spawn-item ${draggedIndex === idx ? "dragging" : ""}`}
+                                    draggable
+                                    onDragStart={() => handleDragStart(idx)}
+                                    onDragOver={(e) => handleDragOver(e, idx)}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <span className="drag-handle">☰</span>
+                                    <div className="spawn-arrows">
+                                        <button
+                                            className="arrow-btn"
+                                            onClick={() =>
+                                                moveSpawn(idx, idx - 1)
+                                            }
+                                            disabled={idx === 0}
+                                        >
+                                            ▲
+                                        </button>
+                                        <button
+                                            className="arrow-btn"
+                                            onClick={() =>
+                                                moveSpawn(idx, idx + 1)
+                                            }
+                                            disabled={
+                                                idx ===
+                                                activeWave.spawns.length - 1
+                                            }
+                                        >
+                                            ▼
+                                        </button>
+                                    </div>
                                     <span className="spawn-index">
                                         {idx + 1}.
                                     </span>

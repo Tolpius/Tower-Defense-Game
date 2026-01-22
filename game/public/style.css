@@ -115,11 +115,22 @@ body {
     text-transform: capitalize;
     transition: all 0.2s;
     min-width: 120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }
 
 .enemy-button:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.enemy-gif {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    image-rendering: pixelated;
 }
 
 .delay-setting {
@@ -253,10 +264,62 @@ body {
     background: #1a1a1a;
     border-radius: 6px;
     margin-bottom: 8px;
+    cursor: grab;
+    transition: all 0.15s ease;
+}
+
+.spawn-item:active {
+    cursor: grabbing;
+}
+
+.spawn-item.dragging {
+    opacity: 0.5;
+    background: #2a2a2a;
+    border: 2px dashed #0ec3c9;
 }
 
 .spawn-item:last-child {
     margin-bottom: 0;
+}
+
+.drag-handle {
+    color: #555;
+    cursor: grab;
+    font-size: 1.1em;
+    user-select: none;
+}
+
+.drag-handle:hover {
+    color: #888;
+}
+
+.spawn-arrows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.arrow-btn {
+    padding: 2px 6px;
+    background: #333;
+    border: 1px solid #555;
+    color: #aaa;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.7em;
+    line-height: 1;
+    transition: all 0.15s;
+}
+
+.arrow-btn:hover:not(:disabled) {
+    background: #444;
+    color: #0ec3c9;
+    border-color: #0ec3c9;
+}
+
+.arrow-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .spawn-index {
@@ -375,3 +438,4 @@ body {
     font-size: 0.9em;
     color: #0ec3c9;
 }
+

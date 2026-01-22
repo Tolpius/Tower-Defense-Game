@@ -20,9 +20,9 @@ export class SlingShotTower extends Tower {
         const towerBase = scene.add.sprite(0, 0, config.baseSprite, 0);
         towerBase.setInteractive();
         towerBase.on("pointerdown", () => {
-            scene.selectedTower?.hideRange();
+            scene.selectedTower?.hideUi();
             scene.selectedTower = this;
-            this.showRange();
+            this.showUi();
         });
         this.weapon = scene.add.sprite(0, -16, config.weaponSprite!, 0);
         this.rangeCircle = scene.add.circle(

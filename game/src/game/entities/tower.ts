@@ -59,7 +59,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         return this._damage;
     }
 
-    showRange() {
+    showUi() {
         this.rangeCircle.setPosition(
             this.x,
             this.y + (this.config.offsetY ?? 32),
@@ -67,7 +67,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this.rangeCircle.setVisible(true);
     }
 
-    hideRange() {
+    hideUi() {
         this.rangeCircle.setVisible(false);
     }
 

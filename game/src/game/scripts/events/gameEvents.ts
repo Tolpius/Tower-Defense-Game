@@ -15,12 +15,7 @@ export function handleTowerBuild(scene: Game, pointer: Phaser.Input.Pointer) {
         const towerX = tile.getCenterX();
         const towerY = tile.getCenterY() - config.offsetY!;
 
-        const tower = TowerFactory.create(
-            config.id,
-            scene,
-            towerX,
-            towerY
-        );
+        const tower = TowerFactory.create(config.id, scene, towerX, towerY);
         scene.towers.add(tower);
         scene.layerBuildable?.removeTileAt(tile.x, tile.y);
 
@@ -43,7 +38,7 @@ export function setupPointerDownHandler(scene: Game) {
         ) => {
             // Right-click: always deselect and suppress context menu
             if (pointer.button === 2) {
-                scene.selectedTower?.hideRange();
+                scene.selectedTower?.hideUi();
                 scene.selectedTower = undefined;
                 if (scene.buildRangeIndicator)
                     scene.buildRangeIndicator.setVisible(false);
@@ -66,7 +61,7 @@ export function setupPointerDownHandler(scene: Game) {
             }
 
             // 3️⃣ Click on nothing in particular or while in Build Mode - Deselect Tower
-            scene.selectedTower?.hideRange();
+            scene.selectedTower?.hideUi();
             scene.selectedTower = undefined;
             if (scene.buildRangeIndicator)
                 scene.buildRangeIndicator.setVisible(false);
@@ -85,7 +80,7 @@ export function setupTowerSelectedHandler(scene: Game) {
             return;
         }
         //Deselect currently selected tower
-        scene.selectedTower?.hideRange();
+        scene.selectedTower?.hideUi();
         scene.selectedTower = undefined;
 
         //BUILD MODE AN

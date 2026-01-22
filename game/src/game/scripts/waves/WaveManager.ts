@@ -37,7 +37,7 @@ export class WaveManager {
                 const enemy = EnemyFactory.create(
                     this.scene,
                     this.scene.path,
-                    spawn.enemyType
+                    spawn.enemyType,
                 );
                 enemy.start();
                 this.scene.enemies.add(enemy);
@@ -51,7 +51,7 @@ export class WaveManager {
             this.spawningFinished = true;
             this.scene.events.emit(
                 "wave-spawn-finished",
-                this.currentWaveIndex
+                this.currentWaveIndex,
             );
         });
     }
@@ -61,7 +61,7 @@ export class WaveManager {
         if (!this.spawningFinished) return false;
 
         const aliveEnemies = (this.scene.enemies.getChildren() as any[]).filter(
-            (e) => e.isAlive
+            (e) => e.isAlive,
         ).length;
 
         return aliveEnemies === 0;
@@ -78,6 +78,10 @@ export class WaveManager {
 
     get currentWave() {
         return this.currentWaveIndex + 1;
+    }
+
+    get maxWaves(): number {
+        return this.waves.length + 1;
     }
 }
 

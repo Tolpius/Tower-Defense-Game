@@ -90,6 +90,7 @@ export class SlingShotTower extends Tower {
         this.weapon.rotation =
             Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y) + 90;
         if (!this.canShoot(time)) return;
+        if (target.hp <= this.damage) target.isGoingToDie = true;
         this.shoot(target);
         this.lastFired = time;
     }

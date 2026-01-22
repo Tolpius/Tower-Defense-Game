@@ -98,7 +98,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     }
 
     protected getTarget(enemies: Phaser.GameObjects.Group): Enemy | undefined {
-        const targets = this.getTargets(enemies);
+        const targets = this.getTargets(enemies).filter((e) => !e.isGoingToDie);
         if (targets.length === 0) return undefined;
 
         switch (this.targetPriority) {

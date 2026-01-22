@@ -100,6 +100,7 @@ export class CrystalTower extends Tower {
         const target = this.getTarget(enemies);
         if (!target) return;
         if (!this.canShoot(time)) return;
+        if (target.hp <= this.damage) target.isGoingToDie = true;
         this.shoot(target);
         this.lastFired = time;
     }

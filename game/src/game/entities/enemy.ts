@@ -10,6 +10,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     moneyOnDeath: number;
     damageToBase: number;
     isAlive = true;
+    isGoingToDie = false;
     private _hasReachedBase = false;
     isWorthMoney = true;
     config: EnemyStats;

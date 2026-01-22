@@ -141,7 +141,7 @@ export function setupPointerMoveHandler(scene: any) {
                 false,
             ) !== null
         ) {
-            range = range * 1.5;
+            range = range * config.highgroundRangeMultiplier;
         }
         scene.buildRangeIndicator.fillCircle(
             tile.getCenterX(),

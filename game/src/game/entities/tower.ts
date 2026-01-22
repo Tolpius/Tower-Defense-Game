@@ -33,7 +33,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         console.log(this.config);
         console.log(isPreview);
         if (scene.layerHighground.getTileAtWorldXY(x, y, false)) {
-            this._range *= 1.5;
+            this._range *= config.highgroundRangeMultiplier;
         }
     }
 

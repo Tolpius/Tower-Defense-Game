@@ -10,6 +10,7 @@ export interface TowerConfig {
     cost: number;
 
     range: number;
+    highgroundRangeMultiplier: number;
     fireRate: number;
     damage: number;
 
@@ -29,6 +30,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         name: "Slingshot Tower",
         cost: 30,
         range: 150,
+        highgroundRangeMultiplier: 1.5,
         fireRate: 1200,
         damage: 50,
         baseSprite: "slingshot1base",
@@ -44,6 +46,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         name: "Catapult Tower",
         cost: 100,
         range: 160,
+        highgroundRangeMultiplier: 1.5,
         fireRate: 500,
         damage: 120,
         baseSprite: "catapult1base",
@@ -59,6 +62,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         name: "Crystal Tower",
         cost: 80,
         range: 180,
+        highgroundRangeMultiplier: 1.5,
         fireRate: 1500,
         damage: 10,
         baseSprite: "crystal1base",

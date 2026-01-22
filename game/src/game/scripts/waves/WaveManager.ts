@@ -49,10 +49,6 @@ export class WaveManager {
         this.scene.time.delayedCall(delay + 50, () => {
             this.active = false;
             this.spawningFinished = true;
-            this.scene.events.emit(
-                "wave-spawn-finished",
-                this.currentWaveIndex,
-            );
         });
     }
 

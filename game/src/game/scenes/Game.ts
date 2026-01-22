@@ -170,6 +170,7 @@ export class Game extends Scene {
         if (this.waveManager.hasMoreWaves()) {
             this.waveManager.advanceWave();
             this.waveManager.startWave();
+            this.events.emit("wave-changed");
         } else {
             this.onLevelCompleted();
         }

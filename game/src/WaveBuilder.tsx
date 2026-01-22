@@ -21,6 +21,7 @@ const ENEMY_COLORS: Record<string, string> = {
     [EnemyType.Clampbeetle]: "#4169E1",
     [EnemyType.Flyinglocust]: "#9ACD32",
     [EnemyType.Voidbutterfly]: "#9932CC",
+    [EnemyType.Firewasp]: "#FF8C00",
 };
 
 const ENEMY_GIFS: Record<string, string> = {
@@ -31,6 +32,7 @@ const ENEMY_GIFS: Record<string, string> = {
     [EnemyType.Clampbeetle]: "/assets/waveBuilder/clampbeetle.gif",
     [EnemyType.Flyinglocust]: "/assets/waveBuilder/flyinglocust.gif",
     [EnemyType.Voidbutterfly]: "/assets/waveBuilder/voidbutterfly.gif",
+    [EnemyType.Firewasp]: "/assets/waveBuilder/firewasp.gif",
 };
 
 function WaveBuilder() {

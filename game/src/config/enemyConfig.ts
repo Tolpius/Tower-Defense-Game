@@ -26,7 +26,7 @@ export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
     [EnemyType.Leafbug]: {
         maxHp: 50,
         duration: 50000,
-        moneyOnDeath: 5,
+        moneyOnDeath: 1,
         damageToBase: 5,
         sideAnimationLeft: false,
     },
@@ -38,17 +38,17 @@ export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
         sideAnimationLeft: false,
     },
         [EnemyType.Magmacrab]: {
-        maxHp: 50,
-        duration: 25000,
+        maxHp: 200,
+        duration: 47000,
         moneyOnDeath: 5,
         damageToBase: 5,
         sideAnimationLeft: true,
     },
     [EnemyType.Clampbeetle]: {
         maxHp: 150,
-        duration: 40000,
-        moneyOnDeath: 15,
-        damageToBase: 15,
+        duration: 42000,
+        moneyOnDeath: 5,
+        damageToBase: 5,
         sideAnimationLeft: true,
     },
     [EnemyType.Flyinglocust]: {
@@ -59,10 +59,10 @@ export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
         sideAnimationLeft: false,
     },
     [EnemyType.Voidbutterfly]: {
-        maxHp: 120,
+        maxHp: 60,
         duration: 45000,
-        moneyOnDeath: 12,
-        damageToBase: 12,
+        moneyOnDeath: 2,
+        damageToBase: 5,
         sideAnimationLeft: false,
     },
 };

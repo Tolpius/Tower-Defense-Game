@@ -7,6 +7,7 @@ import { Magmacrab } from "../entities/enemies/magmacrab";
 import { Clampbeetle } from "../entities/enemies/clampbeetle";
 import { Flyinglocust } from "../entities/enemies/flyinglocust";
 import { Voidbutterfly } from "../entities/enemies/voidbutterfly";
+import { Firewasp } from "../entities/enemies/firewasp";
 
 export class EnemyFactory {
     static create(
@@ -29,6 +30,8 @@ export class EnemyFactory {
                 return new Flyinglocust(scene, path);
             case "voidbutterfly":
                 return new Voidbutterfly(scene, path);
+            case "firewasp":
+                return new Firewasp(scene, path);
             default:
                 console.warn(
                     `Unknown enemy type: ${type}, using Leafbug as fallback`

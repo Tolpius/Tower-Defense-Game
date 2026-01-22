@@ -177,6 +177,7 @@ export class CatapultTower extends Tower {
                     (this.scene as GameScene).enemies,
                     30,
                     { x: targetX, y: targetY },
+                    false,
                 );
                 targetsInImpactRadius.forEach((enemy) => {
                     enemy.isAlive && enemy.takeDamage(this.damage);

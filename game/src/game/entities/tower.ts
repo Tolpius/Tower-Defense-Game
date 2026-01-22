@@ -32,13 +32,23 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this.isPreview = isPreview;
         console.log(this.config);
         console.log(isPreview);
-        if (scene.layerHighground.getTileAtWorldXY(x, y, false)) {
-            this._range *= config.highgroundRangeMultiplier;
+        if (
+            scene.layerHighground.getTileAtWorldXY(
+                x,
+                y + (this.config.offsetY ?? 32),
+                false,
+            )
+        ) {
+            this.range *= config.highgroundRangeMultiplier ?? 1.5;
         }
     }
 
     get range() {
         return this._range;
+    }
+
+    set range(value: number) {
+        this._range = value;
     }
 
     get fireRate() {
@@ -50,7 +60,10 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     }
 
     showRange() {
-        this.rangeCircle.setPosition(this.x, this.y + 32);
+        this.rangeCircle.setPosition(
+            this.x,
+            this.y + (this.config.offsetY ?? 32),
+        );
         this.rangeCircle.setVisible(true);
     }
 
@@ -80,6 +93,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         enemies: Phaser.GameObjects.Group,
         radius?: number,
         position?: Phaser.Types.Math.Vector2Like,
+        forTowerShot = true,
     ): Enemy[] {
         const searchRadius = radius ?? this.range;
         return enemies
@@ -89,7 +103,11 @@ export abstract class Tower extends Phaser.GameObjects.Container {
                 return (
                     Phaser.Math.Distance.Between(
                         position?.x ?? this.x,
-                        position?.y ?? this.y + 32,
+                        position?.y ??
+                            this.y +
+                                (forTowerShot
+                                    ? (this.config.offsetY ?? 32)
+                                    : 0),
                         e.x,
                         e.y,
                     ) <= searchRadius && e.isAlive

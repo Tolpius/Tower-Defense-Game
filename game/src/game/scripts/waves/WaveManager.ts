@@ -77,7 +77,7 @@ export class WaveManager {
     }
 
     get maxWaves(): number {
-        return this.waves.length + 1;
+        return this.waves.length;
     }
 }
 

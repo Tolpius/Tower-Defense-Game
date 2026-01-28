@@ -7,6 +7,7 @@ export interface EnemyStats {
 }
 
 export enum EnemyType {
+    PathArrow = "patharrow",
     Scorpion = "scorpion",
     Leafbug = "leafbug",
     Firebug = "firebug",
@@ -17,6 +18,13 @@ export enum EnemyType {
     Firewasp = "firewasp",
 }
 export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
+    [EnemyType.PathArrow]: {
+        maxHp: 9999,
+        duration: 1000,
+        moneyOnDeath: 0,
+        damageToBase: 0,
+        sideAnimationLeft: false,
+    },
     [EnemyType.Scorpion]: {
         maxHp: 100,
         duration: 30000,

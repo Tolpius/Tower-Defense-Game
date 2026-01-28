@@ -59,7 +59,7 @@ export default function loadEnemySprites(preloader: Preloader) {
     );
 
     preloader.load.spritesheet(
-        "pathArrow",
+        "patharrow",
         "/enemies/pathArrows/pathArrow.png",
         {
             frameWidth: 53,

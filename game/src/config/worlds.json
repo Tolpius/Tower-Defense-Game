@@ -14,15 +14,15 @@
                             "id": 1,
                             "spawns": [
                                 {
-                                    "enemyType": "patharrow",
+                                    "enemyType": "leafbug",
                                     "delay": 0
                                 },
                                 {
-                                    "enemyType": "patharrow",
+                                    "enemyType": "leafbug",
                                     "delay": 1000
                                 },
                                 {
-                                    "enemyType": "patharrow",
+                                    "enemyType": "leafbug",
                                     "delay": 1000
                                 },
                                 {

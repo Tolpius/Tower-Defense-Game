@@ -20,7 +20,7 @@ export enum EnemyType {
 export const ENEMY_CONFIG: Record<EnemyType, EnemyStats> = {
     [EnemyType.PathArrow]: {
         maxHp: 9999,
-        duration: 1000,
+        duration: 5000,
         moneyOnDeath: 0,
         damageToBase: 0,
         sideAnimationLeft: false,

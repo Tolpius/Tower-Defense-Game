@@ -39,6 +39,10 @@ export class Preloader extends Scene {
         loadTowerSprites(this);
         loadEnemySprites(this);
 
+        this.load.spritesheet("coin", "misc/coin-sheet.png", {
+            frameWidth: 32,
+            frameHeight: 32,
+        });
     }
 
     create() {

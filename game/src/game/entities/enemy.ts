@@ -1,4 +1,5 @@
 import { ENEMY_CONFIG, EnemyStats, EnemyType } from "../../config/enemyConfig";
+import { Game } from "../scenes/Game";
 
 export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     duration: number;
@@ -25,7 +26,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     static showProgressBar = import.meta.env.VITE_DEBUG === "true";
 
     constructor(
-        scene: Phaser.Scene,
+        scene: Game,
         path: Phaser.Curves.Path,
         ident: EnemyType,
     ) {
@@ -227,6 +228,11 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
 
         this.lastX = this.x;
         this.lastY = this.y;
+
+        if (!this.isAlive && this.isWorthMoney && !this.hasReachedBase) {
+            this.scene.money += this.moneyOnDeath;
+            this.isWorthMoney = false;
+        }
     }
 }
 

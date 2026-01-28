@@ -25,10 +25,6 @@
             "scaleInDock": 1
         },
         "GrassTileset.tsx": {
-            "scaleInDock": 1,
-            "scaleInEditor": 1
-        },
-        "GrassTileset.tsx": {
             "scaleInDock": 1
         },
         "TD-map-lvl1.tmx": {
@@ -76,12 +72,77 @@
         "tiled/GrassTileset.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "tiled/TD-map-lvl1.tmx": {
+            "expandedObjectLayers": [
+                14
+            ],
+            "scale": 0.5184,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 438.8503086419753,
+                "y": 344.3287037037037
+            }
+        },
+        "tiled/TD-map-lvl1.tmx#AnimatedWaterTiles": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl1.tmx#GrassTileset": {
+            "scaleInDock": 0.4643
+        },
+        "tiled/TD-map-lvl1.tmx#solid_green": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl2.tmx": {
+            "expandedObjectLayers": [
+                14
+            ],
+            "scale": 0.7124,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 430.2358225715889,
+                "y": 306.7097136440202
+            }
+        },
+        "tiled/TD-map-lvl2.tmx#AnimatedWaterTiles": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl2.tmx#GrassTileset": {
+            "scaleInDock": 0.4643
+        },
+        "tiled/TD-map-lvl2.tmx#solid_green": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl3.tmx": {
+            "expandedObjectLayers": [
+                14
+            ],
+            "scale": 0.4923,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 539.3053016453382,
+                "y": 382.8966077594963
+            }
+        },
+        "tiled/TD-map-lvl3.tmx#AnimatedWaterTiles": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl3.tmx#GrassTileset": {
+            "scaleInDock": 0.4643
+        },
+        "tiled/TD-map-lvl3.tmx#solid_green": {
+            "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "/Users/dominik/Desktop",
+    "last.exportedFilePath": "/Users/dominik/Desktop/TD/game/public/assets/map",
     "last.externalTilesetPath": "/Users/dominik/Desktop/TD/tiled",
-    "last.imagePath": "/Users/dominik/Desktop/TD/tiled/Foozle_2DT0012_Spire_Tileset_1/Tileset/PNGs",
+    "last.imagePath": "/Users/dominik/Desktop/TD/game/public/assets",
+    "map.height": 18,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 32,
     "openFiles": [
     ],
     "project": "TD.tiled-project",

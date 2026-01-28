@@ -2,9 +2,11 @@ import { Types } from "phaser";
 import { Game } from "../../scenes/Game";
 
 export default function handleMapInit(scene: Game) {
-    // Map 1 specific initialization code can go here
+    // Map key corresponds to what was loaded in Game.preload()
+    const mapKey = `map-${scene.mapConfig.id}`;
+
     const map = scene.make.tilemap({
-        key: "mapOne",
+        key: mapKey,
     });
     const tilesetGrass = map.addTilesetImage("GrassTileset", "grass");
     if (!tilesetGrass) {
@@ -27,7 +29,12 @@ export default function handleMapInit(scene: Game) {
     map.createLayer("Props", tilesetGrass, 0, 0);
     map.createLayer("Details", tilesetGrass, 0, 0);
 
-    scene.waterLayer = map.createLayer("Terrain_Water", tilesetWater, 0, 0) as Phaser.Tilemaps.TilemapLayer;
+    scene.waterLayer = map.createLayer(
+        "Terrain_Water",
+        tilesetWater,
+        0,
+        0,
+    ) as Phaser.Tilemaps.TilemapLayer;
 
     //Buildable Layer Init
 
@@ -35,24 +42,26 @@ export default function handleMapInit(scene: Game) {
         "Buildable",
         tilesetSolidGreen,
         0,
-        0
+        0,
     ) as Phaser.Tilemaps.TilemapLayer;
     scene.layerHighground = map.createLayer(
         "Highground",
         tilesetSolidGreen,
         0,
-        0
+        0,
     ) as Phaser.Tilemaps.TilemapLayer;
     scene.layerHighground?.setVisible(false);
     // Disable visibility of buildable layer initially
     scene.layerBuildable && scene.layerBuildable.setVisible(false);
 
     const layerWaypoints = map.getObjectLayer("Waypoints");
+    console.log(layerWaypoints);
     if (!layerWaypoints) {
         throw new Error("Waypoints layer not found in the map");
     }
 
-    scene.waypoints = layerWaypoints.objects[0].polyline as Types.Math.Vector2Like[];
+    scene.waypoints = layerWaypoints.objects[0]
+        .polyline as Types.Math.Vector2Like[];
     const startPoint = scene.waypoints[1];
 
     scene.path = new Phaser.Curves.Path(startPoint.x, startPoint.y);

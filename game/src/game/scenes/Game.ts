@@ -33,7 +33,7 @@ export class Game extends Scene {
     private levelCompleted = false;
     private worldId!: number;
     private mapId!: number;
-    private mapConfig!: MapData;
+    public mapConfig!: MapData;
 
     public waterLayer!: Phaser.Tilemaps.TilemapLayer;
 
@@ -73,6 +73,12 @@ export class Game extends Scene {
     }
 
     init(data: { worldId: number; mapId: number }) {
+        console.log(
+            "Game Scene init with worldId:",
+            data.worldId,
+            "mapId:",
+            data.mapId,
+        );
         this.worldId = data.worldId;
         this.mapId = data.mapId;
 
@@ -87,6 +93,17 @@ export class Game extends Scene {
         if (!map) throw new Error("Map not found");
 
         this.mapConfig = map;
+    }
+
+    preload() {
+        // Load map JSON if not already loaded
+        const mapKey = `map-${this.mapConfig.id}`;
+        if (!this.cache.tilemap.has(mapKey)) {
+            this.load.tilemapTiledJSON(
+                mapKey,
+                `assets/map/TD-map-lvl${this.mapConfig.id}.json`,
+            );
+        }
     }
 
     create() {

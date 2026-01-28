@@ -12,7 +12,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     damageToBase: number;
     isAlive = true;
     isGoingToDie = false;
-    private _hasReachedBase = false;
+    protected _hasReachedBase = false;
     isWorthMoney = true;
     config: EnemyStats;
     lastDirection = "down";
@@ -20,12 +20,12 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     lastY: number;
     ident: string;
     flipAnimation = false;
-    private _pathProgress = 0; // 0-1 tracking how far along the path
-    private _startTime = 0;
+    protected _pathProgress = 0; // 0-1 tracking how far along the path
+    protected _startTime = 0;
     // Show progress bar in dev mode or when VITE_DEBUG=true is set
     static showProgressBar = import.meta.env.VITE_DEBUG === "true";
 
-    constructor(scene: Game, path: Phaser.Curves.Path, ident: EnemyType) {
+    constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: EnemyType) {
         super(scene, path, path.startPoint.x, path.startPoint.y, ident);
         this.scene.add.existing(this);
         // Config laden

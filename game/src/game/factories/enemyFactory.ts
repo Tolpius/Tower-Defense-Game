@@ -8,12 +8,13 @@ import { Clampbeetle } from "../entities/enemies/clampbeetle";
 import { Flyinglocust } from "../entities/enemies/flyinglocust";
 import { Voidbutterfly } from "../entities/enemies/voidbutterfly";
 import { Firewasp } from "../entities/enemies/firewasp";
+import { PathArrow } from "../entities/enemies/pathArrow";
 
 export class EnemyFactory {
     static create(
         scene: Phaser.Scene,
         path: Phaser.Curves.Path,
-        type: EnemyType
+        type: EnemyType,
     ): Enemy {
         switch (type.toLowerCase()) {
             case "leafbug":
@@ -32,9 +33,13 @@ export class EnemyFactory {
                 return new Voidbutterfly(scene, path);
             case "firewasp":
                 return new Firewasp(scene, path);
+            case "patharrow":
+                // Special enemy type for path visualization/debugging
+                // Assuming PathArrow class is defined elsewhere
+                return new PathArrow(scene, path);
             default:
                 console.warn(
-                    `Unknown enemy type: ${type}, using Leafbug as fallback`
+                    `Unknown enemy type: ${type}, using Leafbug as fallback`,
                 );
                 return new Leafbug(scene, path);
         }

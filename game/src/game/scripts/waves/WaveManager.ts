@@ -1,6 +1,7 @@
 import { Game } from "../../scenes/Game";
 import { WaveData } from "../../../config/WorldInterfaces";
 import { EnemyFactory } from "../../factories/enemyFactory";
+import { ENEMY_CONFIG, EnemyType } from "../../../config/enemyConfig";
 
 export class WaveManager {
     private scene: Game;
@@ -30,7 +31,19 @@ export class WaveManager {
 
         let delay = 0;
 
-        wave.spawns.forEach((spawn) => {
+        wave.spawns.forEach((spawn, index) => {
+            if (index === 0 && wave.id === 1){
+                this.scene.time.delayedCall(spawn.delay, () => {
+                    const enemy = EnemyFactory.create(
+                        this.scene,
+                        this.scene.path,
+                        EnemyType.PathArrow,
+                    );
+                    enemy.start();
+                });
+                delay += ENEMY_CONFIG[EnemyType.PathArrow].duration;
+                return;
+            }
             delay += spawn.delay;
 
             this.scene.time.delayedCall(delay, () => {

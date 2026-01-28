@@ -22,10 +22,14 @@ export default function loadEnemySprites(preloader: Preloader) {
         frameHeight: 96,
     });
 
-    preloader.load.spritesheet("magmacrab", "/enemies/magmacrab/Magmacrab.png", {
-        frameWidth: 64,
-        frameHeight: 64,
-    });
+    preloader.load.spritesheet(
+        "magmacrab",
+        "/enemies/magmacrab/Magmacrab.png",
+        {
+            frameWidth: 64,
+            frameHeight: 64,
+        },
+    );
 
     preloader.load.spritesheet(
         "clampbeetle",
@@ -53,4 +57,14 @@ export default function loadEnemySprites(preloader: Preloader) {
             frameHeight: 64,
         },
     );
+
+    preloader.load.spritesheet(
+        "patharrow",
+        "/enemies/pathArrows/pathArrow.png",
+        {
+            frameWidth: 53,
+            frameHeight: 32,
+        },
+    );
 }
+

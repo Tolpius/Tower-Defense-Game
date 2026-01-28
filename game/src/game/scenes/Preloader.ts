@@ -38,7 +38,6 @@ export class Preloader extends Scene {
         loadWorldAssets(this);
         loadTowerSprites(this);
         loadEnemySprites(this);
-
     }
 
     create() {

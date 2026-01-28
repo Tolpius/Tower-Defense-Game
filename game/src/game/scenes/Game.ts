@@ -6,7 +6,7 @@ import {
     setupPointerMoveHandler,
     setupTowerSelectedHandler,
 } from "../scripts/events/gameEvents";
-import handleMap1Init from "../scripts/maps/map1";
+import handleMapInit from "../scripts/maps/mapInit";
 import { Types } from "phaser";
 import { MapData, WorldsData } from "../../config/WorldInterfaces";
 import { WaveManager } from "../scripts/waves/WaveManager";
@@ -115,7 +115,7 @@ export class Game extends Scene {
         });
 
         //Map and Waypoint Init
-        handleMap1Init(this);
+        handleMapInit(this);
 
         //Water Spritesheet Animation Init
         loadWaterSprites(this);

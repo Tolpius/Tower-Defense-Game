@@ -1,7 +1,7 @@
 import { Types } from "phaser";
 import { Game } from "../../scenes/Game";
 
-export default function handleMap1Init(scene: Game) {
+export default function handleMapInit(scene: Game) {
     // Map 1 specific initialization code can go here
     const map = scene.make.tilemap({
         key: "mapOne",

@@ -1225,7 +1225,134 @@
                     "name": "Dark Woods",
                     "startingMoney": 150,
                     "startingHealth": 80,
-                    "waves": []
+                    "waves": [
+                        {
+                            "id": 1,
+                            "spawns": [
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 2,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

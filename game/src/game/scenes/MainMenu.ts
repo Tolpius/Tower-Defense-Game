@@ -251,7 +251,7 @@ export default class MainMenu extends Phaser.Scene {
     }
 
     startGame() {
-        this.scene.start("Game", { worldId: 1, mapId: 1 });
+        this.scene.start("WorldSelector");
     }
 
     resize(gameSize: Phaser.Structs.Size) {

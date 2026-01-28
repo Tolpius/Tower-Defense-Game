@@ -25,14 +25,9 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     // Show progress bar in dev mode or when VITE_DEBUG=true is set
     static showProgressBar = import.meta.env.VITE_DEBUG === "true";
 
-    constructor(
-        scene: Game,
-        path: Phaser.Curves.Path,
-        ident: EnemyType,
-    ) {
+    constructor(scene: Game, path: Phaser.Curves.Path, ident: EnemyType) {
         super(scene, path, path.startPoint.x, path.startPoint.y, ident);
-        scene.add.existing(this);
-
+        this.scene.add.existing(this);
         // Config laden
         this.config = ENEMY_CONFIG[ident];
         if (!this.config) {
@@ -188,6 +183,11 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     }
 
     update() {
+        if (!this.isAlive && this.isWorthMoney && !this.hasReachedBase) {
+            this.playMoneyAnimation();
+            (this.scene as Game).money += this.moneyOnDeath;
+            this.isWorthMoney = false;
+        }
         // Skip update if enemy is dead
         if (!this.isAlive) return;
 
@@ -229,10 +229,27 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         this.lastX = this.x;
         this.lastY = this.y;
 
-        if (!this.isAlive && this.isWorthMoney && !this.hasReachedBase) {
-            this.scene.money += this.moneyOnDeath;
-            this.isWorthMoney = false;
-        }
+    }
+
+    playMoneyAnimation() {
+        const moneyText = this.scene.add.text(this.x, this.y - 20, `+${this.moneyOnDeath}`, {
+            fontSize: "14px",
+            color: "#ffff00",
+            stroke: "#000000",
+            strokeThickness: 3,
+        });
+        moneyText.setDepth(1000);
+
+        this.scene.tweens.add({
+            targets: moneyText,
+            y: this.y - 50,
+            alpha: 0,
+            duration: 1000,
+            ease: "Cubic.easeOut",
+            onComplete: () => {
+                moneyText.destroy();
+            },
+        });
     }
 }
 

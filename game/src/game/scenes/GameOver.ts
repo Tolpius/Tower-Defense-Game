@@ -22,10 +22,10 @@ export class GameOver extends Scene {
             .setOrigin(0.5);
 
         this.add
-            .text(width / 2, height / 2 + 10, "Restart", {
+            .text(width / 2, height / 2 - 30, "Restart", {
                 fontSize: "32px",
                 color: "#fff",
-                backgroundColor: "#222",
+                backgroundColor: "#B22222",
                 padding: { left: 16, right: 16, top: 8, bottom: 8 },
             })
             .setOrigin(0.5)
@@ -37,6 +37,20 @@ export class GameOver extends Scene {
                     mapId: this.mapId,
                 });
                 this.scene.launch("UI");
+            });
+
+        this.add
+            .text(width / 2, height / 2 + 40, "Back to Main Menu", {
+                fontSize: "32px",
+                color: "#fff",
+                backgroundColor: "#222",
+                padding: { left: 16, right: 16, top: 8, bottom: 8 },
+            })
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerdown", () => {
+                this.scene.stop("GameOver");
+                this.scene.start("MainMenu");
             });
     }
 }

@@ -11,7 +11,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     moneyOnDeath: number;
     damageToBase: number;
     isAlive = true;
-    isGoingToDie = false;
+    protected _isGoingToDie = false;
     protected _hasReachedBase = false;
     isWorthMoney = true;
     config: EnemyStats;
@@ -25,7 +25,11 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     // Show progress bar in dev mode or when VITE_DEBUG=true is set
     static showProgressBar = import.meta.env.VITE_DEBUG === "true";
 
-    constructor(scene: Phaser.Scene, path: Phaser.Curves.Path, ident: EnemyType) {
+    constructor(
+        scene: Phaser.Scene,
+        path: Phaser.Curves.Path,
+        ident: EnemyType,
+    ) {
         super(scene, path, path.startPoint.x, path.startPoint.y, ident);
         this.scene.add.existing(this);
         // Config laden
@@ -71,6 +75,19 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     // Returns a value between 0 and 1 indicating progress along the path
     get pathProgress(): number {
         return this._pathProgress;
+    }
+
+    get isGoingToDie(): boolean {
+        return this._isGoingToDie;
+    }
+
+    set isGoingToDie(value: boolean) {
+        this._isGoingToDie = value;
+        if (value) {
+            this.scene.time.delayedCall(2000, () => {
+                this.isGoingToDie = false;
+            });
+        }
     }
 
     start() {

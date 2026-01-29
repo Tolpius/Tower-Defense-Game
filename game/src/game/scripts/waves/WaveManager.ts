@@ -21,7 +21,6 @@ export class WaveManager {
 
         const wave = this.waves[this.currentWaveIndex];
         if (!wave) {
-            console.log("All waves finished");
             return;
         }
 

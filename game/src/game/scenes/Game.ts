@@ -73,17 +73,10 @@ export class Game extends Scene {
     }
 
     init(data: { worldId: number; mapId: number }) {
-        console.log(
-            "Game Scene init with worldId:",
-            data.worldId,
-            "mapId:",
-            data.mapId,
-        );
         this.worldId = data.worldId;
         this.mapId = data.mapId;
 
         this.worlds = this.cache.json.get("worlds");
-        console.log(this.worlds);
         if (!this.worlds) {
             throw new Error("Failed to load World data:" + this.worlds);
         }

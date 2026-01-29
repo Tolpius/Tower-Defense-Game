@@ -12,7 +12,6 @@ export class CrystalTower extends Tower {
     protected config: TowerConfig;
     constructor(scene: GameScene, x: number, y: number, isPreview: boolean) {
         const config = TOWER_CONFIGS[TowerType.Crystal];
-        console.log(config);
         super(scene, x, y, config, isPreview);
         this.config = config;
         scene.add.existing(this);

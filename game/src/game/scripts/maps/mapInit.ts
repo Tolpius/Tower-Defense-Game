@@ -55,7 +55,6 @@ export default function handleMapInit(scene: Game) {
     scene.layerBuildable && scene.layerBuildable.setVisible(false);
 
     const layerWaypoints = map.getObjectLayer("Waypoints");
-    console.log(layerWaypoints);
     if (!layerWaypoints) {
         throw new Error("Waypoints layer not found in the map");
     }

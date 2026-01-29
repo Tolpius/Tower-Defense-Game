@@ -39,8 +39,6 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this._fireRate = config.fireRate;
         this._damage = config.damage;
         this.isPreview = isPreview;
-        console.log(this.config);
-        console.log(isPreview);
         if (
             scene.layerHighground.getTileAtWorldXY(
                 x,

@@ -1,5 +1,5 @@
 import { Enemy } from "../enemy";
-import { Game as GameScene } from "../../scenes/Game";
+import { Game, Game as GameScene } from "../../scenes/Game";
 import {
     TOWER_CONFIGS,
     TowerConfig,
@@ -107,6 +107,7 @@ export class CrystalTower extends Tower {
     protected shoot(target: Enemy): void {
         // Remove any existing animation handlers to prevent multiple projectiles
         this.weapon.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+        let ignoreList: Enemy[] = [];
 
         this.weapon.play(`${this.config.weaponSprite}-shoot`, true);
 
@@ -118,51 +119,70 @@ export class CrystalTower extends Tower {
 
         // When cloud animation finishes, spawn the impact projectile
         cloud.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-            // Store target position at moment of firing
-            const targetX = target.x;
-            const targetY = target.y;
-
-            // Calculate angle from cloud to target - 45 degrees offset
-            const angle =
-                Phaser.Math.Angle.Between(cloud.x, cloud.y, targetX, targetY) -
-                Math.PI / 4;
-
-            // Spawn impact at cloud position
-            const impact = this.scene.add
-                .sprite(cloud.x, cloud.y, this.config.impactSprite!)
-                .setDepth(1)
-                .setRotation(angle);
-            impact.play(`${this.config.impactSprite}`);
-
             cloud.destroy();
-
-            // Fly impact down to target
-            this.scene.tweens.add({
-                targets: impact,
-                x: targetX,
-                y: targetY,
-                duration: 150,
-                onComplete: () => {
-                    if (target && target.isAlive) {
-                        target.takeDamage(this.damage);
-                    }
-                    impact.once(
-                        Phaser.Animations.Events.ANIMATION_COMPLETE,
-                        () => {
-                            impact.destroy();
-                        },
-                    );
-                    // If animation already finished during tween, destroy now
-                    if (!impact.anims.isPlaying) {
-                        impact.destroy();
-                    }
-                },
-            });
+            this.lightningShot({ x: cloud.x, y: cloud.y }, ignoreList, target);
         });
 
         // Reset weapon to idle after shoot animation completes
         this.weapon.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
             this.weapon.play(`${this.config.weaponSprite}-idle`);
+        });
+    }
+
+    private lightningShot(
+        origin: { x: number; y: number },
+        ignoreList: Enemy[],
+        target: Enemy | undefined = undefined,
+    ): void {
+        //If there is no target provided, get a new one
+        if (!target) {
+            target = this.getTarget(
+                (this.scene as Game).enemies,
+                this.config.impactRange,
+                origin,
+                ignoreList,
+                false,
+            );
+        }
+        // if there are no valid targets or max targets reached, return
+        if (!target || ignoreList.length >= this.config.maxTargets!) {
+            return;
+        }
+        ignoreList.push(target);
+        const targetX = target.x;
+        const targetY = target.y;
+
+        // Calculate angle from cloud to target - 45 degrees offset
+        const angle =
+            Phaser.Math.Angle.Between(origin.x, origin.y, targetX, targetY) -
+            Math.PI / 4;
+
+        // Spawn impact at cloud position
+        const impact = this.scene.add
+            .sprite(origin.x, origin.y, this.config.impactSprite!)
+            .setDepth(1)
+            .setRotation(angle);
+        impact.play(`${this.config.impactSprite}`);
+
+        // Fly impact down to target
+        this.scene.tweens.add({
+            targets: impact,
+            x: targetX,
+            y: targetY,
+            duration: 150,
+            onComplete: () => {
+                if (target && target.isAlive) {
+                    target.takeDamage(this.damage);
+                }
+                impact.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+                    impact.destroy();
+                });
+                // If animation already finished during tween, destroy now
+                if (!impact.anims.isPlaying) {
+                    impact.destroy();
+                }
+                this.lightningShot(target, ignoreList);
+            },
         });
     }
 

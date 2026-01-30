@@ -174,7 +174,7 @@ export class CatapultTower extends Tower {
                 impact.play(`${this.config.impactSprite}`);
                 const targetsInImpactRadius = this.getTargets(
                     (this.scene as GameScene).enemies,
-                    30,
+                    this.config.impactRange!,
                     { x: targetX, y: targetY },
                     false,
                 );

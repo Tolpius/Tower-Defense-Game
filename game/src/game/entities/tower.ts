@@ -16,7 +16,6 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected rangeCircle!: Phaser.GameObjects.Arc;
     protected isPreview: boolean;
     protected targetPriority: TargetPriority = TargetPriority.First;
-
     // UI Elements
     protected targetPriorityButton!: Phaser.GameObjects.Container;
     protected targetPriorityText!: Phaser.GameObjects.Text;
@@ -270,8 +269,16 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             }) as Enemy[];
     }
 
-    protected getTarget(enemies: Phaser.GameObjects.Group): Enemy | undefined {
-        const targets = this.getTargets(enemies).filter((e) => !e.isGoingToDie);
+    protected getTarget(
+        enemies: Phaser.GameObjects.Group,
+        radius?: number,
+        position?: Phaser.Types.Math.Vector2Like,
+        ignoreList: Enemy[] = [],
+        forTowerShot = true,
+    ): Enemy | undefined {
+        const targets = this.getTargets(enemies, radius, position, forTowerShot).filter(
+            (e) => !e.isGoingToDie && !ignoreList.includes(e),
+        );
         if (targets.length === 0) return undefined;
 
         switch (this.targetPriority) {

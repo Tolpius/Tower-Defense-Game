@@ -4,6 +4,8 @@ import { WorldData, MapData } from "../../config/WorldInterfaces";
 export default class MapSelector extends Phaser.Scene {
     private world!: WorldData;
     private mapButtons: Phaser.GameObjects.Text[] = [];
+    private previewImage?: Phaser.GameObjects.Image;
+    private previewFrame?: Phaser.GameObjects.Rectangle;
 
     constructor() {
         super({ key: "MapSelector" });
@@ -34,6 +36,9 @@ export default class MapSelector extends Phaser.Scene {
         // Create map buttons in a grid
         this.createMapGrid();
 
+        // Preview image (shown on hover)
+        this.createPreviewImage();
+
         // Back to World Selector button
         this.add
             .text(width / 2, height - 50, "← Back to Worlds", {
@@ -59,7 +64,7 @@ export default class MapSelector extends Phaser.Scene {
         const { width } = this.scale;
 
         // Grid settings
-        const columns = 4;
+        const columns = 3;
         const buttonWidth = 180;
         const buttonHeight = 100;
         const paddingX = 30;
@@ -80,7 +85,7 @@ export default class MapSelector extends Phaser.Scene {
             const y = startY + row * (buttonHeight + paddingY);
 
             // Map info text
-            const mapInfo = `${map.name}\n💰 ${map.startingMoney} | ❤️ ${map.startingHealth}\n📊 ${map.waves.length} Waves`;
+            const mapInfo = `${map.name}\n🌊 ${map.waves.length} Waves`;
 
             const button = this.add
                 .text(x, y, mapInfo, {
@@ -99,6 +104,12 @@ export default class MapSelector extends Phaser.Scene {
                 .on("pointerout", function (this: Phaser.GameObjects.Text) {
                     this.setStyle({ backgroundColor: "#2a4a6e" });
                 })
+                .on("pointerover", () => {
+                    this.showPreview(map.id);
+                })
+                .on("pointerout", () => {
+                    this.hidePreview();
+                })
                 .on("pointerdown", () => {
                     this.selectMap(map);
                 });
@@ -114,5 +125,51 @@ export default class MapSelector extends Phaser.Scene {
             mapId: map.id,
         });
     }
-}
 
+    private createPreviewImage() {
+        const { width, height } = this.scale;
+        const previewWidth = 320;
+        const previewHeight = 180;
+        const columns = 3;
+        const buttonWidth = 180;
+        const buttonHeight = 100;
+        const paddingY = 25;
+        const startY = 140;
+        const rows = Math.ceil(this.world.maps.length / columns);
+        const lastRowY = startY + (rows - 1) * (buttonHeight + paddingY);
+        const desiredY = lastRowY + buttonHeight / 2 + 40 + previewHeight / 2;
+        const maxY = height - 90 - previewHeight / 2;
+        const previewY = Math.min(desiredY, maxY);
+
+        this.previewFrame = this.add
+            .rectangle(width / 2, previewY, previewWidth + 8, previewHeight + 8)
+            .setStrokeStyle(2, 0x2a4a6e, 1)
+            .setVisible(false);
+
+        this.previewImage = this.add
+            .image(width / 2, previewY, "map-preview-1")
+            .setDisplaySize(previewWidth, previewHeight)
+            .setOrigin(0.5)
+            .setVisible(false)
+            .setDepth(2);
+    }
+
+    private showPreview(mapId: number) {
+        if (!this.previewImage) return;
+        const key = `map-preview-${mapId}`;
+        if (!this.textures.exists(key)) {
+            this.previewImage.setVisible(false);
+            this.previewFrame?.setVisible(false);
+            return;
+        }
+        this.previewImage.setTexture(key);
+        this.previewImage.setVisible(true);
+        this.previewFrame?.setVisible(true);
+    }
+
+    private hidePreview() {
+        if (!this.previewImage) return;
+        this.previewImage.setVisible(false);
+        this.previewFrame?.setVisible(false);
+    }
+}

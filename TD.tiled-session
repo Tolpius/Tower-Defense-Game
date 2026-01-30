@@ -123,6 +123,26 @@
         },
         "tiled/TD-map-lvl5.tmx#solid_green": {
             "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl6.tmx": {
+            "expandedObjectLayers": [
+                14
+            ],
+            "scale": 0.8883,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 672.63311944163,
+                "y": 313.52020713722845
+            }
+        },
+        "tiled/TD-map-lvl6.tmx#AnimatedWaterTiles": {
+            "scaleInDock": 0.6078
+        },
+        "tiled/TD-map-lvl6.tmx#GrassTileset": {
+            "scaleInDock": 0.4167
+        },
+        "tiled/TD-map-lvl6.tmx#solid_green": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "/Users/dominik/Desktop/TD/game/public/assets/map",

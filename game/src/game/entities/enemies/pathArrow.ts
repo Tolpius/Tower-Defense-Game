@@ -40,10 +40,12 @@ export class PathArrow extends Enemy {
         });
         this.play(`${this.ident}-walk`);
     }
-    update() {}
+    update() {
+        // Keep arrow above terrain layers but below towers
+        this.setDepth(Math.floor(this.y) + 50);
+    }
     onDeath() {
         this.setVisible(false);
         this.setActive(false);
     }
 }
-

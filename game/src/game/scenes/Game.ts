@@ -36,6 +36,7 @@ export class Game extends Scene {
     public mapConfig!: MapData;
 
     public waterLayer!: Phaser.Tilemaps.TilemapLayer;
+    public waterSpriteKey = "water";
 
     constructor() {
         super("Game");
@@ -207,4 +208,3 @@ export class Game extends Scene {
         this.events.off("tower-selected");
     }
 }
-

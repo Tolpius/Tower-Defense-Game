@@ -245,6 +245,9 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
 
         this.lastX = this.x;
         this.lastY = this.y;
+
+        // Keep enemies above terrain layers but below towers
+        this.setDepth(Math.floor(this.y) + 50);
     }
 
     playMoneyAnimation() {
@@ -273,4 +276,3 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         });
     }
 }
-

@@ -3,11 +3,13 @@ import { Game } from "../../scenes/Game";
 export function loadWaterSprites(scene: Game) {
     const waterConfig = scene.cache.json.get("waterSpritesConfig");
     const anims = scene.anims;
+    const waterKey = scene.waterSpriteKey ?? "water";
+    const ANIMATED_WATER_TILE_INDEX = 213;
 
     anims.create({
         key: "water-allTogether",
         frames: waterConfig.allTogether.map((frame: number) => ({
-            key: "water",
+            key: waterKey,
             frame: frame,
         })),
         frameRate: 10,
@@ -17,14 +19,16 @@ export function loadWaterSprites(scene: Game) {
     const animatedTiles: Phaser.GameObjects.Sprite[] = [];
 
     scene.waterLayer.forEachTile((tile) => {
-        if (tile.index === 470) {
+        if (!tile.tileset) return;
+        const localIndex = tile.index - tile.tileset.firstgid;
+        if (localIndex === ANIMATED_WATER_TILE_INDEX) {
             const worldX = tile.getCenterX();
             const worldY = tile.getCenterY();
 
             // Tile entfernen
             tile.index = -1;
 
-            const sprite = scene.add.sprite(worldX, worldY, "water");
+            const sprite = scene.add.sprite(worldX, worldY, waterKey);
             sprite.setOrigin(0.5);
             sprite.setDepth(scene.waterLayer.depth ?? 20);
 
@@ -42,4 +46,3 @@ export function loadWaterSprites(scene: Game) {
         }
     });
 }
-

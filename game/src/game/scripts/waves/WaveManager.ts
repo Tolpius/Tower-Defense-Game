@@ -39,6 +39,7 @@ export class WaveManager {
                         EnemyType.PathArrow,
                     );
                     enemy.start();
+                    this.scene.enemies.add(enemy);
                 });
                 delay += ENEMY_CONFIG[EnemyType.PathArrow].duration;
                 return;
@@ -92,4 +93,3 @@ export class WaveManager {
         return this.waves.length;
     }
 }
-

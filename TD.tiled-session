@@ -13,6 +13,15 @@
         "": {
             "scaleInDock": 1
         },
+        "#AnimatedWaterAutumn": {
+            "scaleInDock": 0.5939
+        },
+        "#GrassTilesetAutumn": {
+            "scaleInDock": 0.6228
+        },
+        "#Solid_green": {
+            "scaleInDock": 1
+        },
         "/Users/dominik/Desktop/AnimatedWaterTiles.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -77,8 +86,8 @@
             "scale": 0.72,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 499.3055555555556,
-                "y": 306.25
+                "x": 499.30555555555554,
+                "y": 306.24999999999994
             }
         },
         "tiled/TD-map-lvl1.tmx#AnimatedWaterTiles": {
@@ -88,6 +97,23 @@
             "scaleInDock": 1
         },
         "tiled/TD-map-lvl1.tmx#solid_green": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl2.tmx": {
+            "scale": 0.62529296875,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 571.7320006247073,
+                "y": 288.6646884272998
+            }
+        },
+        "tiled/TD-map-lvl2.tmx#AnimatedWaterTiles": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl2.tmx#GrassTileset": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl2.tmx#solid_green": {
             "scaleInDock": 1
         },
         "tiled/TD-map-lvl3.tmx": {
@@ -131,8 +157,8 @@
             "scale": 0.88,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 282.3863636363636,
-                "y": 346.0227272727273
+                "x": 598.2954545454546,
+                "y": 446.02272727272737
             }
         },
         "tiled/TD-map-lvl6.tmx#AnimatedWaterTiles": {
@@ -147,9 +173,13 @@
     },
     "last.exportedFilePath": "/Users/dominik/Desktop/TD/game/public/assets/map",
     "last.externalTilesetPath": "/Users/dominik/Desktop/TD/tiled",
-    "last.imagePath": "/Users/dominik/Desktop/TD/tiled/Foozle_2DT0012_Spire_Tileset_1/Tileset/PNGs",
+    "last.imagePath": "/Users/dominik/Desktop/TD/game/public/assets",
+    "map.height": 9,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 16,
     "openFiles": [
         "tiled/TD-map-lvl6.tmx",
         "tiled/GrassTileset.tsx"
@@ -157,9 +187,9 @@
     "project": "TD.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "tiled/GrassTileset.tsx",
-        "tiled/TD-map-lvl6.tmx",
         "tiled/TD-map-lvl1.tmx",
+        "tiled/TD-map-lvl6.tmx",
+        "tiled/GrassTileset.tsx",
         "tiled/TD-map-lvl3.tmx",
         "tiled/AnimatedWaterTiles.tsx",
         "/Users/dominik/Desktop/GrassTileset.tsx",
@@ -170,6 +200,7 @@
         "asset-active/AnimatedWaterTiles.tsx",
         "TD-map.tmx"
     ],
+    "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 64,

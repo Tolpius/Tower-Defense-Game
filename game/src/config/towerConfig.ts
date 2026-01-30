@@ -189,10 +189,10 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 refundMultiplier: 0.5,
                 description: "Zaps an enemy... ouch!",
                 animationFrames: {
-                    idle: { start: 0, end: 9 },
-                    shoot: { start: 16, end: 31 },
+                    idle: { start: 0, end: 15 },
+                    shoot: { start: 17, end: 33 },
                     projectile: { start: 0, end: 5 },
-                    impact: { start: 0, end: 5 },
+                    impact: { start: 0, end: 4 },
                 },
             },
             {
@@ -207,10 +207,10 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 refundMultiplier: 0.5,
                 description: "Zaps an enemy... ouch!",
                 animationFrames: {
-                    idle: { start: 0, end: 0 },
-                    shoot: { start: 0, end: 7 },
-                    projectile: { start: 0, end: 5 },
-                    impact: { start: 0, end: 5 },
+                    idle: { start: 0, end: 19 },
+                    shoot: { start: 20, end: 38 },
+                    projectile: { start: 0, end: 6 },
+                    impact: { start: 0, end: 4 },
                 },
             },
         ],

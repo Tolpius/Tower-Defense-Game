@@ -11,9 +11,11 @@ export interface TowerConfig {
     refundMultiplier: number;
 
     range: number;
+    impactRange?: number;
     highgroundRangeMultiplier: number;
     fireRate: number;
     damage: number;
+    maxTargets?: number;
 
     baseSprite: string;
     weaponSprite?: string;
@@ -49,6 +51,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         cost: 100,
         refundMultiplier: 0.5,
         range: 160,
+        impactRange: 30,
         highgroundRangeMultiplier: 1.5,
         fireRate: 500,
         damage: 45,
@@ -66,9 +69,11 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
         cost: 80,
         refundMultiplier: 0.5,
         range: 150,
+        impactRange: 50,
         highgroundRangeMultiplier: 1.5,
         fireRate: 1500,
         damage: 75,
+        maxTargets: 2,
         baseSprite: "crystal1base",
         weaponSprite: "crystal1weapon",
         projectileSprite: "crystal1projectile",

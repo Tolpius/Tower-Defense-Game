@@ -1,6 +1,10 @@
 import { Enemy } from "./enemy";
 import { Game as GameScene } from "../scenes/Game";
-import { TowerConfig, TowerInstanceConfig } from "../../config/towerConfig";
+import {
+    TowerConfig,
+    TowerInstanceConfig,
+    TOWER_CONFIGS,
+} from "../../config/towerConfig";
 
 export enum TargetPriority {
     First = "first",
@@ -22,11 +26,15 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected targetPriorityText!: Phaser.GameObjects.Text;
     protected sellButton!: Phaser.GameObjects.Container;
     protected sellText!: Phaser.GameObjects.Text;
+    protected upgradeButton!: Phaser.GameObjects.Container;
+    protected upgradeText!: Phaser.GameObjects.Text;
 
     protected spriteBase: string;
     protected spriteWeapon: string;
     protected spriteProjectile: string;
     protected spriteImpact: string;
+
+    protected isUpgradeable: boolean;
 
     // Original tile index for restoring after sell
     public originalTileIndex: number = 1;
@@ -60,7 +68,12 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         if (!isPreview) {
             this.createTargetPriorityButton(scene);
             this.createSellButton(scene);
+            this.createUpgradeButton(scene);
         }
+
+        // Determine if tower is upgradeable
+        this.isUpgradeable = level < config.levels.length;
+        // Sprite keys
         this.spriteBase = this.getSpriteKey("base");
         this.spriteWeapon = this.getSpriteKey("weapon");
         this.spriteProjectile = this.getSpriteKey("projectile");
@@ -179,14 +192,96 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this.sellButton.add([frame, this.sellText, hitArea]);
     }
 
-    private sell() {
+    private createUpgradeButton(scene: GameScene) {
+        // Container for the upgrade button, positioned below the sell button
+        this.upgradeButton = scene.add.container(this.x + 50, this.y + 70);
+        this.upgradeButton.setDepth(10000);
+        this.upgradeButton.setVisible(false);
+
+        const nextLevelConfig =
+            TOWER_CONFIGS[this.config.id].levels[this.level];
+        const upgradeCost = nextLevelConfig?.cost ?? 0;
+
+        // Frame background (green-ish for upgrade)
+        const frame = scene.add.graphics();
+        frame.lineStyle(2, 0x66ff66, 1);
+        frame.fillStyle(0x000000, 0.7);
+        frame.fillRoundedRect(-40, -14, 80, 28, 6);
+        frame.strokeRoundedRect(-40, -14, 80, 28, 6);
+
+        // Text
+        this.upgradeText = scene.add.text(0, 0, `Upgrade (${upgradeCost})`, {
+            fontSize: "11px",
+            color: "#66ff66",
+        });
+        this.upgradeText.setOrigin(0.5, 0.5);
+
+        // Hit area for clicking
+        const hitArea = scene.add.rectangle(0, 0, 80, 28, 0x000000, 0);
+        hitArea.setInteractive({ useHandCursor: true });
+        hitArea.on("pointerdown", () => {
+            this.upgrade();
+        });
+
+        this.upgradeButton.add([frame, this.upgradeText, hitArea]);
+    }
+
+    private upgrade() {
+        const scene = this.scene as GameScene;
+        const nextLevelConfig =
+            TOWER_CONFIGS[this.config.id].levels[this.level];
+        const upgradeCost = nextLevelConfig?.cost ?? 0;
+
+        // Check if player has enough money
+        if (scene.money < upgradeCost) {
+            return;
+        }
+
+        // Deduct upgrade cost
+        scene.money -= upgradeCost;
+
+        // Store tower properties before destroying
+        const towerType = this.config.id;
+        const towerX = this.x;
+        const towerY = this.y;
+        const newLevel = this.level + 1;
+        const originalTileIndex = this.originalTileIndex;
+        const currentTargetPriority = this.targetPriority;
+
+        // Destroy old tower without refund
+        this.sell(false);
+
+        // Use dynamic import to avoid circular dependency
+        import("../factories/towerFactory").then(({ TowerFactory }) => {
+            // Create new tower with higher level
+            const newTower = TowerFactory.create(
+                towerType,
+                scene,
+                towerX,
+                towerY,
+                newLevel,
+                false,
+            );
+            newTower.originalTileIndex = originalTileIndex;
+            newTower.setTargetPriority(currentTargetPriority);
+            scene.towers.add(newTower);
+
+            // Select the new tower
+            scene.selectedTower = newTower;
+            newTower.showUi();
+        });
+    }
+
+    private sell(refundMoney = true) {
         const scene = this.scene as GameScene;
         const refundAmount = Math.floor(
             this.config.cost * (this.config.refundMultiplier ?? 0.5),
         );
 
         // Refund money
-        scene.money += refundAmount;
+        if (refundMoney) {
+            scene.money += refundAmount;
+        }
 
         // Restore buildable tile
         if (scene.layerBuildable) {
@@ -212,6 +307,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         // Destroy UI elements
         this.targetPriorityButton?.destroy();
         this.sellButton?.destroy();
+        this.upgradeButton?.destroy();
         this.rangeCircle?.destroy();
 
         // Deselect tower
@@ -250,6 +346,9 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         if (this.sellButton) {
             this.sellButton.setVisible(true);
         }
+        if (this.upgradeButton && this.isUpgradeable) {
+            this.upgradeButton.setVisible(true);
+        }
     }
 
     hideUi() {
@@ -260,6 +359,9 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         }
         if (this.sellButton) {
             this.sellButton.setVisible(false);
+        }
+        if (this.upgradeButton) {
+            this.upgradeButton.setVisible(false);
         }
     }
 

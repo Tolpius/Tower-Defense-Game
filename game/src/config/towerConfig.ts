@@ -114,9 +114,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 refundMultiplier: 0.5,
                 description: "Slow but heavy splash damage",
                 animationFrames: {
-                    shoot: { start: 0, end: 7 },
+                    shoot: { start: 0, end: 16 },
                     projectile: { start: 0, end: 5 },
-                    impact: { start: 0, end: 5 },
+                    impact: { start: 0, end: 8 },
                 },
             },
             {
@@ -130,9 +130,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 refundMultiplier: 0.5,
                 description: "Slow but heavy splash damage",
                 animationFrames: {
-                    shoot: { start: 0, end: 7 },
+                    shoot: { start: 0, end: 16 },
                     projectile: { start: 0, end: 5 },
-                    impact: { start: 0, end: 5 },
+                    impact: { start: 0, end: 8 },
                 },
             },
             {
@@ -146,9 +146,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 refundMultiplier: 0.5,
                 description: "Slow but heavy splash damage",
                 animationFrames: {
-                    shoot: { start: 0, end: 7 },
-                    projectile: { start: 0, end: 5 },
-                    impact: { start: 0, end: 5 },
+                    shoot: { start: 0, end: 16 },
+                    projectile: { start: 0, end: 7 },
+                    impact: { start: 0, end: 8 },
                 },
             },
         ],

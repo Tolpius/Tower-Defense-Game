@@ -1222,7 +1222,7 @@
                 },
                 {
                     "id": 2,
-                    "name": "Dark Woods",
+                    "name": "Whispering Loop",
                     "startingMoney": 55,
                     "startingHealth": 80,
                     "waves": [
@@ -2438,7 +2438,3655 @@
                 },
                 {
                     "id": 3,
-                    "name": "Dominik's Wood",
+                    "name": "Brookbridge Trail",
+                    "startingMoney": 75,
+                    "startingHealth": 80,
+                    "waves": [
+                        {
+                            "id": 1,
+                            "spawns": [
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 2,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 3,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 4,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 5,
+                            "spawns": [
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 6,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 8,
+                            "spawns": [
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 9,
+                            "spawns": [
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 10,
+                            "spawns": [
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 11,
+                            "spawns": [
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 12,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 13,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 14,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 15,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 16,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 17,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 18,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 19,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 20,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "name": "Mossy Heights",
+                    "startingMoney": 75,
+                    "startingHealth": 80,
+                    "waves": [
+                        {
+                            "id": 1,
+                            "spawns": [
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 2,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 3,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 4,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 5,
+                            "spawns": [
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 6,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 8,
+                            "spawns": [
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 9,
+                            "spawns": [
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 10,
+                            "spawns": [
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 11,
+                            "spawns": [
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 12,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 13,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 14,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 15,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 16,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 17,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 18,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 19,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 20,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 5,
+                    "name": "Fernshade Marsh",
+                    "startingMoney": 75,
+                    "startingHealth": 80,
+                    "waves": [
+                        {
+                            "id": 1,
+                            "spawns": [
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 2,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 3,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 4,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 5,
+                            "spawns": [
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "id": 6,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "spawns": [
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 750
+                                }
+                            ]
+                        },
+                        {
+                            "id": 8,
+                            "spawns": [
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 9,
+                            "spawns": [
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 10,
+                            "spawns": [
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 11,
+                            "spawns": [
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 12,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 13,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 14,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 15,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 16,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 17,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 18,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 19,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        },
+                        {
+                            "id": 20,
+                            "spawns": [
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 0
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "clampbeetle",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "voidbutterfly",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "leafbug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firebug",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "magmacrab",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                },
+                                {
+                                    "enemyType": "firewasp",
+                                    "delay": 500
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 6,
+                    "name": "Elderwood Ring",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [

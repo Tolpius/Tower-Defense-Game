@@ -116,7 +116,7 @@ export class CrystalTower extends Tower {
         // Spawn cloud above the target
         const cloud = this.scene.add
             .sprite(target.x, target.y - 48, this.spriteProjectile)
-            .setDepth(1);
+            .setDepth(Math.floor(target.y - 48) + 75);
         cloud.play(`${this.spriteProjectile}-fly`);
 
         // When cloud animation finishes, spawn the impact projectile
@@ -162,7 +162,7 @@ export class CrystalTower extends Tower {
         // Spawn impact at cloud position
         const impact = this.scene.add
             .sprite(origin.x, origin.y, this.spriteImpact)
-            .setDepth(1)
+            .setDepth(Math.floor(origin.y) + 75)
             .setRotation(angle);
         impact.play(`${this.spriteImpact}`);
 
@@ -172,6 +172,9 @@ export class CrystalTower extends Tower {
             x: targetX,
             y: targetY,
             duration: 150,
+            onUpdate: () => {
+                impact.setDepth(Math.floor(impact.y) + 75);
+            },
             onComplete: () => {
                 if (target && target.isAlive) {
                     target.takeDamage(this.damage);
@@ -193,4 +196,3 @@ export class CrystalTower extends Tower {
         // Crystal tower handles projectile spawning directly in shoot()
     }
 }
-

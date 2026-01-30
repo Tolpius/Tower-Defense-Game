@@ -131,7 +131,7 @@ export class SlingShotTower extends Tower {
 
         const projectile = this.scene.add
             .sprite(muzzleX, muzzleY, this.spriteProjectile!, 0)
-            .setDepth(1);
+            .setDepth(Math.floor(muzzleY) + 75);
         projectile.play(`${this.spriteProjectile}-fly`);
 
         this.scene.tweens.add({
@@ -139,11 +139,14 @@ export class SlingShotTower extends Tower {
             x: target.x,
             y: target.y,
             duration: 300,
+            onUpdate: () => {
+                projectile.setDepth(Math.floor(projectile.y) + 75);
+            },
             onComplete: () => {
                 projectile.destroy();
                 const impact = this.scene.add
                     .sprite(target.x, target.y, this.spriteImpact!, 0)
-                    .setDepth(1);
+                    .setDepth(Math.floor(target.y) + 75);
                 impact.play(`${this.spriteImpact}`);
                 if (target) {
                     target.takeDamage(this.damage);
@@ -155,4 +158,3 @@ export class SlingShotTower extends Tower {
         });
     }
 }
-

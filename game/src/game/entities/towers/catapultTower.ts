@@ -135,7 +135,7 @@ export class CatapultTower extends Tower {
 
         const projectile = this.scene.add
             .sprite(muzzleX, muzzleY, this.spriteProjectile, 0)
-            .setDepth(1);
+            .setDepth(Math.floor(muzzleY) + 75);
         projectile.play(`${this.spriteProjectile}-fly`);
 
         const speed = 200; // pixels per second
@@ -166,13 +166,14 @@ export class CatapultTower extends Tower {
 
             // Rotate projectile towards target
             projectile.rotation = Math.atan2(dy, dx);
+            projectile.setDepth(Math.floor(projectile.y) + 75);
 
             // Check if projectile reached target
             if (distance < 10) {
                 projectile.destroy();
                 const impact = this.scene.add
                     .sprite(targetX, targetY, this.spriteImpact, 0)
-                    .setDepth(1);
+                    .setDepth(Math.floor(targetY) + 75);
                 impact.play(`${this.spriteImpact}`);
                 const targetsInImpactRadius = this.getTargets(
                     (this.scene as GameScene).enemies,
@@ -204,4 +205,3 @@ export class CatapultTower extends Tower {
         });
     }
 }
-

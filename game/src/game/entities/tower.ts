@@ -266,7 +266,8 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected updateDepth() {
         // Set depth based on Y position for proper rendering order
         // Higher Y position = higher depth (rendered in front)
-        this.depth = Math.floor(this.y) + 100;
+        const baseY = this.y + (this.config.offsetY ?? 32);
+        this.depth = Math.floor(baseY) + 100;
     }
 
     protected canShoot(time: number): boolean {
@@ -351,4 +352,3 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
     protected abstract spawnProjectile(target: Enemy): void;
 }
-

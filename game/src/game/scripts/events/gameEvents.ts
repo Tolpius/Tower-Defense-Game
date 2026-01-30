@@ -119,7 +119,8 @@ export function setupPointerMoveHandler(scene: any) {
         scene.buildPreview.setVisible(true);
         const previewY = tile.getCenterY() - config.levels[0].offsetY!;
         scene.buildPreview.setPosition(tile.getCenterX(), previewY);
-        scene.buildPreview.setDepth(Math.floor(previewY));
+        const baseY = previewY + (config.levels[0].offsetY ?? 32);
+        scene.buildPreview.setDepth(Math.floor(baseY) + 100);
 
         // Range-Kreis anzeigen
         if (!scene.buildRangeIndicator) {
@@ -148,4 +149,3 @@ export function setupPointerMoveHandler(scene: any) {
         scene.buildRangeIndicator.setVisible(true);
     });
 }
-

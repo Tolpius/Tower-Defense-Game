@@ -172,4 +172,5 @@ export default class MapSelector extends Phaser.Scene {
         this.previewImage.setVisible(false);
         this.previewFrame?.setVisible(false);
     }
+
 }

@@ -98,6 +98,18 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         };
     }
 
+    /**
+     * Calculate total cost invested in this tower (base cost + all upgrade costs)
+     */
+    private getTotalCost(): number {
+        const towerConfig = TOWER_CONFIGS[this.config.id];
+        let totalCost = 0;
+        for (let i = 0; i < this.level; i++) {
+            totalCost += towerConfig.levels[i].cost;
+        }
+        return totalCost;
+    }
+
     private getSpriteKey(
         part: "base" | "weapon" | "projectile" | "impact",
     ): string {
@@ -166,7 +178,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this.sellButton.setVisible(false);
 
         const refundAmount = Math.floor(
-            this.config.cost * (this.config.refundMultiplier ?? 0.5),
+            this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
         );
 
         // Frame background (red-ish for sell)
@@ -279,7 +291,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
         const scene = this.scene as GameScene;
         const refundAmount = Math.floor(
-            this.config.cost * (this.config.refundMultiplier ?? 0.5),
+            this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
         );
 
         // Refund money
@@ -380,7 +392,11 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     }
 
     protected canShoot(time: number): boolean {
-        return this.isActive && !this.isPreview && time > this.lastFired + this.fireRate;
+        return (
+            this.isActive &&
+            !this.isPreview &&
+            time > this.lastFired + this.fireRate
+        );
     }
 
     protected abstract createAnimations(): void;
@@ -462,10 +478,10 @@ export abstract class Tower extends Phaser.GameObjects.Container {
      * and any other resources before the tower is destroyed.
      */
     protected abstract cleanupBeforeDestroy(): void;
-        // Base implementation - subclasses should override
-    
+    // Base implementation - subclasses should override
 
     protected abstract shoot(target: Enemy): void;
 
     protected abstract spawnProjectile(target: Enemy): void;
 }
+

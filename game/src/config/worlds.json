@@ -8524,7 +8524,7 @@
                 },
                 {
                     "id": 8,
-                    "name": "Level 8",
+                    "name": "Amber Trail",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -9740,7 +9740,7 @@
                 },
                 {
                     "id": 9,
-                    "name": "Level 9",
+                    "name": "Rustwind Valley",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -10956,7 +10956,7 @@
                 },
                 {
                     "id": 10,
-                    "name": "Level 10",
+                    "name": "Stillwater Hollow",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -12172,7 +12172,7 @@
                 },
                 {
                     "id": 11,
-                    "name": "Level 11",
+                    "name": "Crimson Ascent",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -13388,7 +13388,7 @@
                 },
                 {
                     "id": 12,
-                    "name": "Level 12",
+                    "name": "Ember Gorge",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -14610,7 +14610,7 @@
             "maps": [
                 {
                     "id": 13,
-                    "name": "Level 13",
+                    "name": "Snowfall Stroll",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -15826,7 +15826,7 @@
                 },
                 {
                     "id": 14,
-                    "name": "Level 14",
+                    "name": "Frostlight Circle",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -17042,7 +17042,7 @@
                 },
                 {
                     "id": 15,
-                    "name": "Level 15",
+                    "name": "Icebound Stream",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -18258,7 +18258,7 @@
                 },
                 {
                     "id": 16,
-                    "name": "Level 16",
+                    "name": "Hushwood",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -19474,7 +19474,7 @@
                 },
                 {
                     "id": 17,
-                    "name": "Level 17",
+                    "name": "Glacier’s Rise",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [
@@ -20690,7 +20690,7 @@
                 },
                 {
                     "id": 18,
-                    "name": "Level 18",
+                    "name": "Mirrorlake Frost",
                     "startingMoney": 75,
                     "startingHealth": 80,
                     "waves": [

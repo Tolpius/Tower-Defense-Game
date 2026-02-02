@@ -103,6 +103,22 @@ export class UI extends Scene {
                 }
             });
 
+        // Speed Button Frame
+        this.createFrame(730, 10, 36, 28);
+        let speedMultiplier = 1;
+        const speedButton = this.add
+            .text(740, 14, "1x", {
+                fontSize: "14px",
+                color: "#ffffff",
+            })
+            .setInteractive()
+            .on("pointerdown", () => {
+                speedMultiplier = speedMultiplier === 1 ? 2 : 1;
+                gameScene.time.timeScale = speedMultiplier;
+                gameScene.tweens.timeScale = speedMultiplier;
+                speedButton.setText(speedMultiplier === 1 ? "1x" : "2x");
+            });
+
         gameScene.events.on("money-changed", this.onMoneyChanged, this);
         gameScene.events.on("health-changed", this.onHealthChanged, this);
         gameScene.events.on("wave-changed", this.onWaveChanged, this);

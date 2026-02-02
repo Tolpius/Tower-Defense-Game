@@ -288,3 +288,4 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         });
     }
 }
+

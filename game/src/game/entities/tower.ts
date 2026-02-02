@@ -65,6 +65,11 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             this.range *= this.config.highgroundRangeMultiplier ?? 1.5;
         }
 
+        // Cheat: Infinite Range
+        if (scene.infiniteRange) {
+            this._range = 9999;
+        }
+
         // Create targeting priority button (only for non-preview towers)
         if (!isPreview) {
             this.createTargetPriorityButton(scene);

@@ -11,6 +11,25 @@ export function handleTowerBuild(scene: Game, pointer: Phaser.Input.Pointer) {
         false,
     );
 
+    // 🐵 MAQUAK Cheat: Baue überall wenn buildAnywhere aktiv
+    if (scene.buildAnywhere) {
+        const towerX = pointer.worldX;
+        const towerY = pointer.worldY - config.levels[0].offsetY!;
+
+        const tower = TowerFactory.create(config.id, scene, towerX, towerY);
+        tower.originalTileIndex = tile?.index ?? 1;
+        scene.towers.add(tower);
+
+        scene.money = scene.money - (scene.buildingTowerSelectedCost || 30);
+
+        // Build Mode beenden
+        scene.buildingTowerSelected = null;
+        scene.buildMode = false;
+        scene.layerBuildable?.setVisible(false);
+        scene.buildPreview?.destroy();
+        return;
+    }
+
     if (tile && tile.index !== 0) {
         const towerX = tile.getCenterX();
         const towerY = tile.getCenterY() - config.levels[0].offsetY!;

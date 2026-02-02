@@ -38,6 +38,12 @@ export class Game extends Scene {
     public waterLayer!: Phaser.Tilemaps.TilemapLayer;
     public waterSpriteKey = "water";
 
+    // Cheat System 📈
+    private cheatBuffer: string = "";
+    public buildAnywhere: boolean = false;
+    public enemyScale: number = 1;
+    public easyMode: boolean = false;
+
     constructor() {
         super("Game");
     }
@@ -62,7 +68,10 @@ export class Game extends Scene {
             // Stoppe Game und UI, starte GameOver-Screen
             this.scene.stop("UI");
             this.scene.stop("Game");
-            this.scene.start("GameOver", {worldId: this.worldId, mapId: this.mapId} );
+            this.scene.start("GameOver", {
+                worldId: this.worldId,
+                mapId: this.mapId,
+            });
         }
     }
     get buildRangeIndicator() {
@@ -146,6 +155,71 @@ export class Game extends Scene {
 
         //UI Init
         this.scene.launch("UI");
+
+        // Cheat System 📈
+        this.setupCheatCodes();
+    }
+
+    private setupCheatCodes() {
+        const cheats: Record<string, () => void> = {
+            stonks: () => {
+                this.money += 1000;
+                console.log("📈 STONKS! +1000 Gold!");
+            },
+            maquak: () => {
+                this.buildAnywhere = true;
+                console.log("🐵 MAQUAK! Baue überall!");
+            },
+            bighead: () => {
+                this.enemyScale = 2;
+                this.applyEnemyScale();
+                console.log("🎈 BIGHEAD! Riesige Gegner!");
+            },
+            ants: () => {
+                this.enemyScale = 0.3;
+                this.applyEnemyScale();
+                console.log("🐜 ANTS! Winzige Gegner!");
+            },
+            nuke: () => {
+                const enemies = this.enemies.getChildren() as Enemy[];
+                const count = enemies.length;
+                enemies.forEach((enemy) => enemy.onDeath());
+                console.log(`💥 NUKE! ${count} Gegner pulverisiert!`);
+            },
+            gottagofast: () => {
+                this.time.timeScale = 3;
+                this.tweens.timeScale = 3;
+                this.physics.world.timeScale = 1 / 3;
+                console.log("🏃 GOTTAGOFAST! 3x Speed!");
+            },
+            slowmo: () => {
+                this.time.timeScale = 0.25;
+                this.tweens.timeScale = 0.25;
+                this.physics.world.timeScale = 4;
+                console.log("🕶️ SLOWMO! Matrix Mode!");
+            },
+            isthiseasymode: () => {
+                this.easyMode = true;
+                (this.enemies.getChildren() as Enemy[]).forEach((enemy) => {
+                    enemy.hp = 1;
+                    enemy.maxHp = 1;
+                });
+                console.log("👶 ISTHISEASYMODE! Alle Gegner haben 1 HP!");
+            },
+        };
+
+        this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+            this.cheatBuffer += event.key.toLowerCase();
+            this.cheatBuffer = this.cheatBuffer.slice(-15); // Letzte 15 Zeichen behalten
+
+            for (const [code, action] of Object.entries(cheats)) {
+                if (this.cheatBuffer.endsWith(code)) {
+                    action();
+                    this.cheatBuffer = "";
+                    this.events.emit("cheat-activated");
+                }
+            }
+        });
     }
 
     update(time: number, delta: number) {
@@ -207,4 +281,12 @@ export class Game extends Scene {
         this.events.off("health-changed");
         this.events.off("tower-selected");
     }
+
+    /** Wendet die aktuelle enemyScale auf alle existierenden Gegner an */
+    private applyEnemyScale() {
+        (this.enemies.getChildren() as Phaser.GameObjects.Sprite[]).forEach((enemy) => {
+            enemy.setScale(this.enemyScale);
+        });
+    }
 }
+

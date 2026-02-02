@@ -61,6 +61,18 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         if (scene.anims.exists(`${ident}-walk-down`)) {
             this.play(`${ident}-walk-down`);
         }
+
+        // Cheat: Apply enemy scale if modified
+        const gameScene = scene as Game;
+        if (gameScene.enemyScale && gameScene.enemyScale !== 1) {
+            this.setScale(gameScene.enemyScale);
+        }
+
+        // Cheat: Easy Mode - 1 HP
+        if (gameScene.easyMode) {
+            this.hp = 1;
+            this.maxHp = 1;
+        }
     }
 
     protected abstract createAnimations(): void;

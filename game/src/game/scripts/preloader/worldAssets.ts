@@ -14,6 +14,11 @@ export default function loadWorldAssets(preloader: Preloader) {
     preloader.load.image("map-preview-5", "/map/TD-map-lvl5.png");
     preloader.load.image("map-preview-6", "/map/TD-map-lvl6.png");
     preloader.load.image("map-preview-7", "/map/TD-map-lvl7.png");
+    preloader.load.image("map-preview-8", "/map/TD-map-lvl8.png");
+    preloader.load.image("map-preview-9", "/map/TD-map-lvl9.png");
+    preloader.load.image("map-preview-10", "/map/TD-map-lvl10.png");
+    preloader.load.image("map-preview-11", "/map/TD-map-lvl11.png");
+    preloader.load.image("map-preview-12", "/map/TD-map-lvl12.png");
     preloader.load.tilemapTiledJSON("mapOne", "/map/TD-map-lvl1.json");
     preloader.load.image("solidGreen", "/Solid_green.png");
     preloader.load.image("grass", "/tilesets/GrassTileset.png");

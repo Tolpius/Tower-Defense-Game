@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tiled/TD-map-lvl6.tmx",
+    "activeFile": "tiled/TD-map-lvl7.tmx",
     "expandedProjectPaths": [
         "asset-active",
         "."
@@ -104,7 +104,7 @@
             "selectedLayer": 8,
             "viewCenter": {
                 "x": 571.7320006247073,
-                "y": 288.6646884272998
+                "y": 288.6646884272997
             }
         },
         "tiled/TD-map-lvl2.tmx#AnimatedWaterTiles": {
@@ -169,6 +169,26 @@
         },
         "tiled/TD-map-lvl6.tmx#solid_green": {
             "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl7.tmx": {
+            "expandedObjectLayers": [
+                20
+            ],
+            "scale": 0.7676,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 539.9947889525796,
+                "y": 371.9385096404378
+            }
+        },
+        "tiled/TD-map-lvl7.tmx#AnimatedWaterAutumn": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl7.tmx#GrassTilesetAutumn": {
+            "scaleInDock": 1
+        },
+        "tiled/TD-map-lvl7.tmx#Solid_green": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "/Users/dominik/Desktop/TD/game/public/assets/map",
@@ -181,12 +201,14 @@
     "map.tileWidth": 64,
     "map.width": 16,
     "openFiles": [
-        "tiled/TD-map-lvl6.tmx",
-        "tiled/GrassTileset.tsx"
+        "tiled/TD-map-lvl7.tmx",
+        "tiled/TD-map-lvl2.tmx"
     ],
     "project": "TD.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "tiled/TD-map-lvl2.tmx",
+        "tiled/TD-map-lvl7.tmx",
         "tiled/TD-map-lvl1.tmx",
         "tiled/TD-map-lvl6.tmx",
         "tiled/GrassTileset.tsx",
@@ -196,9 +218,7 @@
         "/Users/dominik/Desktop/AnimatedWaterTiles.tsx",
         "TD-map-lvl1.tmx",
         "asset-active/GrassTileset.tsx",
-        "TD-map-lvl2.tmx",
-        "asset-active/AnimatedWaterTiles.tsx",
-        "TD-map.tmx"
+        "TD-map-lvl2.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",

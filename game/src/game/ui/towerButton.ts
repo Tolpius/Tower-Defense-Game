@@ -15,7 +15,7 @@ export class TowerButton extends Phaser.GameObjects.Container {
     ) {
         super(scene, x, y);
         this.config = TOWER_CONFIGS[towerId as TowerType];
-        this._cost = this.config.cost;
+        this._cost = this.config.levels[0].cost;
 
         // Get initial money value from registry
         this.currentMoney = scene.registry.get("money") ?? 0;
@@ -43,7 +43,7 @@ export class TowerButton extends Phaser.GameObjects.Container {
                 this.updateVisuals();
             });
 
-        const icon = scene.add.image(0, -8, this.config.baseSprite).setScale(0.3);
+        const icon = scene.add.image(0, -8, `${towerId}base`).setScale(0.3);
 
         const text = scene.add
             .text(0, 20, `${this.cost}g`, {

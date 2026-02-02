@@ -10,20 +10,21 @@ export class TowerFactory {
         scene: Game,
         x: number,
         y: number,
+        level: number = 1,
         isPreview = false
     ): Tower {
         switch (towerType.toLowerCase()) {
             case "slingshot":
-                return new SlingShotTower(scene, x, y, isPreview);
+                return new SlingShotTower(scene, x, y, level, isPreview);
             case "catapult":
-                return new CatapultTower(scene, x, y, isPreview);
+                return new CatapultTower(scene, x, y, level, isPreview);
             case "crystal":
-                return new CrystalTower(scene, x, y , isPreview);
+                return new CrystalTower(scene, x, y , level, isPreview);
             default:
                 console.warn(
                     `Unknown tower type: ${towerType}, using SlingShotTower as fallback`,
                 );
-                return new SlingShotTower(scene, x, y, isPreview);
+                return new SlingShotTower(scene, x, y, level, isPreview);
         }
     }
 }

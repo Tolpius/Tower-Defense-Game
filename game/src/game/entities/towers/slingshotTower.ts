@@ -99,7 +99,12 @@ export class SlingShotTower extends Tower {
     protected shoot(target: Enemy): void {
         if (!this.isActive) return;
 
+        // Remove any existing animation handlers to prevent multiple projectiles
+        this.weapon.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+
         this.weapon.play(`${this.spriteWeapon}-shoot`, true);
+
+        let projectileSpawned = false;
         const handler = (
             anim: Phaser.Animations.Animation,
             frame: Phaser.Animations.AnimationFrame,
@@ -113,7 +118,8 @@ export class SlingShotTower extends Tower {
             }
             if (anim.key !== `${this.spriteWeapon}-shoot`) return;
 
-            if (frame.index === 6 && target) {
+            if (frame.index === 6 && target && !projectileSpawned) {
+                projectileSpawned = true;
                 this.spawnProjectile(target);
                 this.weapon.off(
                     Phaser.Animations.Events.ANIMATION_UPDATE,

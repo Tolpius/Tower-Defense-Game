@@ -25,6 +25,7 @@ export interface TowerLevelConfig {
     damage: number;
     maxTargets?: number;
     offsetY?: number;
+    weaponOffsetY?: number;
     refundMultiplier: number;
     description?: string;
     animationFrames?: AnimationFrames;
@@ -57,6 +58,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 fireRate: 1200,
                 damage: 50,
                 offsetY: 32,
+                weaponOffsetY: -16,
                 refundMultiplier: 0.5,
                 description: "Medium single-target damage",
                 animationFrames: {
@@ -72,6 +74,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 fireRate: 1100,
                 damage: 65,
                 offsetY: 32,
+                weaponOffsetY: -24,
                 refundMultiplier: 0.5,
                 description: "Medium single-target damage",
                 animationFrames: {
@@ -87,6 +90,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 fireRate: 1000,
                 damage: 85,
                 offsetY: 32,
+                weaponOffsetY: -32,
                 refundMultiplier: 0.5,
                 description: "Medium single-target damage",
                 animationFrames: {
@@ -111,6 +115,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 fireRate: 500,
                 damage: 45,
                 offsetY: 32,
+                weaponOffsetY: -12,
                 refundMultiplier: 0.5,
                 description: "Slow but heavy splash damage",
                 animationFrames: {
@@ -127,6 +132,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 fireRate: 480,
                 damage: 60,
                 offsetY: 32,
+                weaponOffsetY: -22,
                 refundMultiplier: 0.5,
                 description: "Slow but heavy splash damage",
                 animationFrames: {
@@ -143,6 +149,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 fireRate: 450,
                 damage: 80,
                 offsetY: 32,
+                weaponOffsetY: -32,
                 refundMultiplier: 0.5,
                 description: "Slow but heavy splash damage",
                 animationFrames: {
@@ -168,6 +175,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 damage: 75,
                 maxTargets: 2,
                 offsetY: 64,
+                weaponOffsetY: -6,
                 refundMultiplier: 0.5,
                 description: "Zaps an enemy... ouch!",
                 animationFrames: {
@@ -186,6 +194,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 damage: 95,
                 maxTargets: 3,
                 offsetY: 64,
+                weaponOffsetY: -12,
                 refundMultiplier: 0.5,
                 description: "Zaps an enemy... ouch!",
                 animationFrames: {
@@ -204,6 +213,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
                 damage: 120,
                 maxTargets: 4,
                 offsetY: 64,
+                weaponOffsetY: -28,
                 refundMultiplier: 0.5,
                 description: "Zaps an enemy... ouch!",
                 animationFrames: {

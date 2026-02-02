@@ -28,7 +28,7 @@ export class SlingShotTower extends Tower {
             scene.selectedTower = this;
             this.showUi();
         });
-        this.weapon = scene.add.sprite(0, -16, this.spriteWeapon, 0);
+        this.weapon = scene.add.sprite(0, this.config.weaponOffsetY ?? -16, this.spriteWeapon, 0);
         this.rangeCircle = scene.add.circle(
             0, // x relativ zum Tower
             32, // y relativ zum Tower (offset to account for tower visual position)

@@ -1,28 +1,41 @@
 import { Enemy } from "../enemy";
-import { Game, Game as GameScene } from "../../scenes/Game";
-import {
-    TOWER_CONFIGS,
-    TowerConfig,
-    TowerType,
-} from "../../../config/towerConfig";
+import { Game as GameScene } from "../../scenes/Game";
+import { TOWER_CONFIGS, TowerType } from "../../../config/towerConfig";
 import { Tower } from "../tower";
 
 export class CrystalTower extends Tower {
     protected weapon: Phaser.GameObjects.Sprite;
-    protected config: TowerConfig;
-    constructor(scene: GameScene, x: number, y: number, isPreview: boolean) {
+    constructor(
+        scene: GameScene,
+        x: number,
+        y: number,
+        level: number,
+        isPreview: boolean,
+    ) {
         const config = TOWER_CONFIGS[TowerType.Crystal];
-        super(scene, x, y, config, isPreview);
-        this.config = config;
+        super(scene, x, y, config, level, isPreview);
         scene.add.existing(this);
-        const towerBase = scene.add.sprite(0, 0, this.config.baseSprite, 0);
-        towerBase.setInteractive();
+        const towerBase = scene.add.sprite(
+            0,
+            0,
+            this.spriteBase,
+            this.level - 1,
+        );
+        // Limit click area to the tile (64x64) the tower stands on
+        const offsetY = this.config.offsetY ?? 32;
+        const hitArea = new Phaser.Geom.Rectangle(0, offsetY * 2, 64, 64);
+        towerBase.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
         towerBase.on("pointerdown", () => {
             scene.selectedTower?.hideUi();
             scene.selectedTower = this;
             this.showUi();
         });
-        this.weapon = scene.add.sprite(0, -16, this.config.weaponSprite!, 0);
+        this.weapon = scene.add.sprite(
+            0,
+            this.config.weaponOffsetY ?? -16,
+            this.spriteWeapon,
+            0,
+        );
         this.rangeCircle = scene.add.circle(
             0, // x relativ zum Tower
             32, // y relativ zum Tower (offset to account for tower visual position)
@@ -32,7 +45,7 @@ export class CrystalTower extends Tower {
         );
         this.rangeCircle.setVisible(false).setDepth(9999); // Always render on top, independent of y position
         this.createAnimations();
-        this.weapon.play(`${this.config.weaponSprite}-idle`);
+        this.weapon.play(`${this.spriteWeapon}-idle`);
         this.add([towerBase, this.weapon]);
         this.updateDepth();
     }
@@ -40,50 +53,47 @@ export class CrystalTower extends Tower {
     protected createAnimations(): void {
         const anims = this.scene.anims;
 
-        if (!anims.exists(`${this.config.weaponSprite}-idle`)) {
+        if (!anims.exists(`${this.spriteWeapon}-idle`)) {
             anims.create({
-                key: `${this.config.weaponSprite}-idle`,
-                frames: anims.generateFrameNumbers(this.config.weaponSprite!, {
-                    start: 0,
-                    end: 9,
-                }),
+                key: `${this.spriteWeapon}-idle`,
+                frames: anims.generateFrameNumbers(
+                    this.spriteWeapon,
+                    this.config.animationFrames?.idle,
+                ),
                 frameRate: (this.fireRate / 1000) * 8,
                 repeat: -1,
             });
         }
 
-        if (!anims.exists(`${this.config.weaponSprite}-shoot`)) {
+        if (!anims.exists(`${this.spriteWeapon}-shoot`)) {
             anims.create({
-                key: `${this.config.weaponSprite}-shoot`,
-                frames: anims.generateFrameNumbers(this.config.weaponSprite!, {
-                    start: 16,
-                    end: 31,
-                }),
+                key: `${this.spriteWeapon}-shoot`,
+                frames: anims.generateFrameNumbers(
+                    this.spriteWeapon,
+                    this.config.animationFrames?.shoot,
+                ),
                 frameRate: (this.fireRate / 1000) * 8,
                 repeat: 0,
             });
         }
-        if (!anims.exists(`${this.config.projectileSprite}-fly`)) {
+        if (!anims.exists(`${this.spriteProjectile}-fly`)) {
             anims.create({
-                key: `${this.config.projectileSprite}-fly`,
+                key: `${this.spriteProjectile}-fly`,
                 frames: anims.generateFrameNumbers(
-                    this.config.projectileSprite!,
-                    {
-                        start: 0,
-                        end: 4,
-                    },
+                    this.spriteProjectile,
+                    this.config.animationFrames?.projectile,
                 ),
                 frameRate: 12,
                 repeat: 0,
             });
         }
-        if (!anims.exists(`${this.config.impactSprite}`)) {
+        if (!anims.exists(`${this.spriteImpact}`)) {
             anims.create({
-                key: `${this.config.impactSprite}`,
-                frames: anims.generateFrameNumbers(this.config.impactSprite!, {
-                    start: 0,
-                    end: 4,
-                }),
+                key: `${this.spriteImpact}`,
+                frames: anims.generateFrameNumbers(
+                    this.spriteImpact,
+                    this.config.animationFrames?.impact,
+                ),
                 frameRate: 16,
                 repeat: 0,
             });
@@ -105,47 +115,83 @@ export class CrystalTower extends Tower {
     }
 
     protected shoot(target: Enemy): void {
+        if (!this.isActive) return;
+
+        // Store scene reference and config before any async operations
+        const scene = this.scene as GameScene;
+        const spriteProjectile = this.spriteProjectile;
+        const spriteWeapon = this.spriteWeapon;
+        const spriteImpact = this.spriteImpact;
+        const damage = this.damage;
+        const impactRange = this.config.impactRange;
+        const maxTargets = this.config.maxTargets!;
+
         // Remove any existing animation handlers to prevent multiple projectiles
         this.weapon.off(Phaser.Animations.Events.ANIMATION_UPDATE);
         let ignoreList: Enemy[] = [];
 
-        this.weapon.play(`${this.config.weaponSprite}-shoot`, true);
+        this.weapon.play(`${spriteWeapon}-shoot`, true);
 
         // Spawn cloud above the target
-        const cloud = this.scene.add
-            .sprite(target.x, target.y - 48, this.config.projectileSprite!)
-            .setDepth(1);
-        cloud.play(`${this.config.projectileSprite}-fly`);
+        const cloud = scene.add
+            .sprite(target.x, target.y - 48, spriteProjectile)
+            .setDepth(Math.floor(target.y - 48) + 75);
+        cloud.play(`${spriteProjectile}-fly`);
 
         // When cloud animation finishes, spawn the impact projectile
         cloud.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
             cloud.destroy();
-            this.lightningShot({ x: cloud.x, y: cloud.y }, ignoreList, target);
+            if (this.isActive) {
+                this.lightningShot(
+                    scene,
+                    { x: cloud.x, y: cloud.y },
+                    ignoreList,
+                    spriteImpact,
+                    damage,
+                    impactRange,
+                    maxTargets,
+                    target,
+                );
+            }
         });
 
         // Reset weapon to idle after shoot animation completes
         this.weapon.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-            this.weapon.play(`${this.config.weaponSprite}-idle`);
+            if (this.isActive) {
+                this.weapon.play(`${spriteWeapon}-idle`);
+            }
         });
     }
 
+    protected cleanupBeforeDestroy(): void {
+        // Remove all animation listeners from weapon
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+        this.weapon?.stop();
+    }
+
     private lightningShot(
+        scene: GameScene,
         origin: { x: number; y: number },
         ignoreList: Enemy[],
+        spriteImpact: string,
+        damage: number,
+        impactRange: number | undefined,
+        maxTargets: number,
         target: Enemy | undefined = undefined,
     ): void {
         //If there is no target provided, get a new one
         if (!target) {
             target = this.getTarget(
-                (this.scene as Game).enemies,
-                this.config.impactRange,
+                scene.enemies,
+                impactRange,
                 origin,
                 ignoreList,
                 false,
             );
         }
         // if there are no valid targets or max targets reached, return
-        if (!target || ignoreList.length >= this.config.maxTargets!) {
+        if (!target || ignoreList.length >= maxTargets) {
             return;
         }
         ignoreList.push(target);
@@ -158,21 +204,24 @@ export class CrystalTower extends Tower {
             Math.PI / 4;
 
         // Spawn impact at cloud position
-        const impact = this.scene.add
-            .sprite(origin.x, origin.y, this.config.impactSprite!)
-            .setDepth(1)
+        const impact = scene.add
+            .sprite(origin.x, origin.y, spriteImpact)
+            .setDepth(Math.floor(origin.y) + 75)
             .setRotation(angle);
-        impact.play(`${this.config.impactSprite}`);
+        impact.play(`${spriteImpact}`);
 
         // Fly impact down to target
-        this.scene.tweens.add({
+        scene.tweens.add({
             targets: impact,
             x: targetX,
             y: targetY,
             duration: 150,
+            onUpdate: () => {
+                impact.setDepth(Math.floor(impact.y) + 75);
+            },
             onComplete: () => {
                 if (target && target.isAlive) {
-                    target.takeDamage(this.damage);
+                    target.takeDamage(damage);
                 }
                 impact.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                     impact.destroy();
@@ -181,7 +230,15 @@ export class CrystalTower extends Tower {
                 if (!impact.anims.isPlaying) {
                     impact.destroy();
                 }
-                this.lightningShot(target, ignoreList);
+                this.lightningShot(
+                    scene,
+                    target,
+                    ignoreList,
+                    spriteImpact,
+                    damage,
+                    impactRange,
+                    maxTargets,
+                );
             },
         });
     }

@@ -1,6 +1,10 @@
 import { Enemy } from "./enemy";
 import { Game as GameScene } from "../scenes/Game";
-import { TowerConfig } from "../../config/towerConfig";
+import {
+    TowerConfig,
+    TowerInstanceConfig,
+    TOWER_CONFIGS,
+} from "../../config/towerConfig";
 
 export enum TargetPriority {
     First = "first",
@@ -8,7 +12,8 @@ export enum TargetPriority {
 }
 
 export abstract class Tower extends Phaser.GameObjects.Container {
-    protected config: TowerConfig;
+    protected config: TowerInstanceConfig;
+    protected level: number;
     protected _range: number;
     protected _fireRate: number;
     protected _damage: number;
@@ -16,11 +21,21 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected rangeCircle!: Phaser.GameObjects.Arc;
     protected isPreview: boolean;
     protected targetPriority: TargetPriority = TargetPriority.First;
+    protected isActive: boolean = true;
     // UI Elements
     protected targetPriorityButton!: Phaser.GameObjects.Container;
     protected targetPriorityText!: Phaser.GameObjects.Text;
     protected sellButton!: Phaser.GameObjects.Container;
     protected sellText!: Phaser.GameObjects.Text;
+    protected upgradeButton!: Phaser.GameObjects.Container;
+    protected upgradeText!: Phaser.GameObjects.Text;
+
+    protected spriteBase: string;
+    protected spriteWeapon: string;
+    protected spriteProjectile: string;
+    protected spriteImpact: string;
+
+    protected isUpgradeable: boolean;
 
     // Original tile index for restoring after sell
     public originalTileIndex: number = 1;
@@ -30,13 +45,15 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         x: number,
         y: number,
         config: TowerConfig,
+        level: number,
         isPreview: boolean,
     ) {
         super(scene, x, y);
-        this.config = config;
-        this._range = config.range;
-        this._fireRate = config.fireRate;
-        this._damage = config.damage;
+        this.config = this.getTowerInstanceConfig(config, level);
+        this.level = level;
+        this._range = this.config.range;
+        this._fireRate = this.config.fireRate;
+        this._damage = this.config.damage;
         this.isPreview = isPreview;
         if (
             scene.layerHighground.getTileAtWorldXY(
@@ -45,14 +62,61 @@ export abstract class Tower extends Phaser.GameObjects.Container {
                 false,
             )
         ) {
-            this.range *= config.highgroundRangeMultiplier ?? 1.5;
+            this.range *= this.config.highgroundRangeMultiplier ?? 1.5;
         }
 
         // Create targeting priority button (only for non-preview towers)
         if (!isPreview) {
             this.createTargetPriorityButton(scene);
             this.createSellButton(scene);
+            this.createUpgradeButton(scene);
         }
+
+        // Determine if tower is upgradeable
+        this.isUpgradeable = level < config.levels.length;
+        // Sprite keys
+        this.spriteBase = this.getSpriteKey("base");
+        this.spriteWeapon = this.getSpriteKey("weapon");
+        this.spriteProjectile = this.getSpriteKey("projectile");
+        this.spriteImpact = this.getSpriteKey("impact");
+    }
+
+    private getTowerInstanceConfig(
+        config: TowerConfig,
+        level: number,
+    ): TowerInstanceConfig {
+        const levelIndex = Math.max(
+            0,
+            Math.min(level - 1, config.levels.length - 1),
+        );
+        return {
+            ...config.levels[levelIndex],
+            id: config.id,
+            name: config.name,
+            spriteBase: config.spriteBase,
+            level,
+        };
+    }
+
+    /**
+     * Calculate total cost invested in this tower (base cost + all upgrade costs)
+     */
+    private getTotalCost(): number {
+        const towerConfig = TOWER_CONFIGS[this.config.id];
+        let totalCost = 0;
+        for (let i = 0; i < this.level; i++) {
+            totalCost += towerConfig.levels[i].cost;
+        }
+        return totalCost;
+    }
+
+    private getSpriteKey(
+        part: "base" | "weapon" | "projectile" | "impact",
+    ): string {
+        if (part === "base") {
+            return `${this.config.spriteBase}${part}`;
+        }
+        return `${this.config.id}${this.config.level}${part}`;
     }
 
     private createTargetPriorityButton(scene: GameScene) {
@@ -114,7 +178,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this.sellButton.setVisible(false);
 
         const refundAmount = Math.floor(
-            this.config.cost * (this.config.refundMultiplier ?? 0.5),
+            this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
         );
 
         // Frame background (red-ish for sell)
@@ -141,17 +205,102 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         this.sellButton.add([frame, this.sellText, hitArea]);
     }
 
-    private sell() {
+    private createUpgradeButton(scene: GameScene) {
+        // Container for the upgrade button, positioned below the sell button
+        this.upgradeButton = scene.add.container(this.x + 50, this.y + 70);
+        this.upgradeButton.setDepth(10000);
+        this.upgradeButton.setVisible(false);
+
+        const nextLevelConfig =
+            TOWER_CONFIGS[this.config.id].levels[this.level];
+        const upgradeCost = nextLevelConfig?.cost ?? 0;
+
+        // Frame background (green-ish for upgrade)
+        const frame = scene.add.graphics();
+        frame.lineStyle(2, 0x66ff66, 1);
+        frame.fillStyle(0x000000, 0.7);
+        frame.fillRoundedRect(-40, -14, 80, 28, 6);
+        frame.strokeRoundedRect(-40, -14, 80, 28, 6);
+
+        // Text
+        this.upgradeText = scene.add.text(0, 0, `Upgrade (${upgradeCost})`, {
+            fontSize: "11px",
+            color: "#66ff66",
+        });
+        this.upgradeText.setOrigin(0.5, 0.5);
+
+        // Hit area for clicking
+        const hitArea = scene.add.rectangle(0, 0, 80, 28, 0x000000, 0);
+        hitArea.setInteractive({ useHandCursor: true });
+        hitArea.on("pointerdown", () => {
+            this.upgrade();
+        });
+
+        this.upgradeButton.add([frame, this.upgradeText, hitArea]);
+    }
+
+    private upgrade() {
+        const scene = this.scene as GameScene;
+        const nextLevelConfig =
+            TOWER_CONFIGS[this.config.id].levels[this.level];
+        const upgradeCost = nextLevelConfig?.cost ?? 0;
+
+        // Check if player has enough money
+        if (scene.money < upgradeCost) {
+            return;
+        }
+
+        // Deduct upgrade cost
+        scene.money -= upgradeCost;
+
+        // Store tower properties before destroying
+        const towerType = this.config.id;
+        const towerX = this.x;
+        const towerY = this.y;
+        const newLevel = this.level + 1;
+        const originalTileIndex = this.originalTileIndex;
+        const currentTargetPriority = this.targetPriority;
+
+        // Destroy old tower without refund
+        this.sell(false);
+
+        // Use dynamic import to avoid circular dependency
+        import("../factories/towerFactory").then(({ TowerFactory }) => {
+            // Create new tower with higher level
+            const newTower = TowerFactory.create(
+                towerType,
+                scene,
+                towerX,
+                towerY,
+                newLevel,
+                false,
+            );
+            newTower.originalTileIndex = originalTileIndex;
+            newTower.setTargetPriority(currentTargetPriority);
+            scene.towers.add(newTower);
+
+            // Select the new tower
+            scene.selectedTower = newTower;
+            newTower.showUi();
+        });
+    }
+
+    private sell(refundMoney = true) {
+        // Mark tower as inactive immediately to prevent any new actions
+        this.isActive = false;
+
         const scene = this.scene as GameScene;
         const refundAmount = Math.floor(
-            this.config.cost * (this.config.refundMultiplier ?? 0.5),
+            this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
         );
 
         // Refund money
-        scene.money += refundAmount;
+        if (refundMoney) {
+            scene.money += refundAmount;
+        }
 
         // Restore buildable tile
-        if (scene.layerBuildable) {
+        if (scene.layerBuildable && refundMoney) {
             const tileX = scene.layerBuildable.worldToTileX(this.x);
             const tileY = scene.layerBuildable.worldToTileY(
                 this.y + (this.config.offsetY ?? 32),
@@ -168,12 +317,16 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         // Hide UI
         this.hideUi();
 
+        // Clean up any active animations and event listeners before destruction
+        this.cleanupBeforeDestroy();
+
         // Remove from towers group
         scene.towers.remove(this, true, true);
 
         // Destroy UI elements
         this.targetPriorityButton?.destroy();
         this.sellButton?.destroy();
+        this.upgradeButton?.destroy();
         this.rangeCircle?.destroy();
 
         // Deselect tower
@@ -212,6 +365,9 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         if (this.sellButton) {
             this.sellButton.setVisible(true);
         }
+        if (this.upgradeButton && this.isUpgradeable) {
+            this.upgradeButton.setVisible(true);
+        }
     }
 
     hideUi() {
@@ -223,16 +379,24 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         if (this.sellButton) {
             this.sellButton.setVisible(false);
         }
+        if (this.upgradeButton) {
+            this.upgradeButton.setVisible(false);
+        }
     }
 
     protected updateDepth() {
         // Set depth based on Y position for proper rendering order
         // Higher Y position = higher depth (rendered in front)
-        this.depth = Math.floor(this.y) + 100;
+        const baseY = this.y + (this.config.offsetY ?? 32);
+        this.depth = Math.floor(baseY) + 100;
     }
 
     protected canShoot(time: number): boolean {
-        return !this.isPreview && time > this.lastFired + this.fireRate;
+        return (
+            this.isActive &&
+            !this.isPreview &&
+            time > this.lastFired + this.fireRate
+        );
     }
 
     protected abstract createAnimations(): void;
@@ -276,9 +440,12 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         ignoreList: Enemy[] = [],
         forTowerShot = true,
     ): Enemy | undefined {
-        const targets = this.getTargets(enemies, radius, position, forTowerShot).filter(
-            (e) => !e.isGoingToDie && !ignoreList.includes(e),
-        );
+        const targets = this.getTargets(
+            enemies,
+            radius,
+            position,
+            forTowerShot,
+        ).filter((e) => !e.isGoingToDie && !ignoreList.includes(e));
         if (targets.length === 0) return undefined;
 
         switch (this.targetPriority) {
@@ -305,6 +472,13 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     getTargetPriority(): TargetPriority {
         return this.targetPriority;
     }
+
+    /**
+     * Override this method in subclasses to clean up animation listeners
+     * and any other resources before the tower is destroyed.
+     */
+    protected abstract cleanupBeforeDestroy(): void;
+    // Base implementation - subclasses should override
 
     protected abstract shoot(target: Enemy): void;
 

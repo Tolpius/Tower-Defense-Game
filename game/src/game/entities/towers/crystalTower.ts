@@ -21,13 +21,21 @@ export class CrystalTower extends Tower {
             this.spriteBase,
             this.level - 1,
         );
-        towerBase.setInteractive();
+        // Limit click area to the tile (64x64) the tower stands on
+        const offsetY = this.config.offsetY ?? 32;
+        const hitArea = new Phaser.Geom.Rectangle(0, offsetY * 2, 64, 64);
+        towerBase.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
         towerBase.on("pointerdown", () => {
             scene.selectedTower?.hideUi();
             scene.selectedTower = this;
             this.showUi();
         });
-        this.weapon = scene.add.sprite(0, this.config.weaponOffsetY ?? -16, this.spriteWeapon, 0);
+        this.weapon = scene.add.sprite(
+            0,
+            this.config.weaponOffsetY ?? -16,
+            this.spriteWeapon,
+            0,
+        );
         this.rangeCircle = scene.add.circle(
             0, // x relativ zum Tower
             32, // y relativ zum Tower (offset to account for tower visual position)

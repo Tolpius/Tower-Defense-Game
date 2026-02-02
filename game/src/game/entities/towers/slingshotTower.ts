@@ -22,7 +22,10 @@ export class SlingShotTower extends Tower {
             this.spriteBase,
             this.level - 1,
         );
-        towerBase.setInteractive();
+        // Limit click area to the tile (64x64) the tower stands on
+        const offsetY = this.config.offsetY ?? 32;
+        const hitArea = new Phaser.Geom.Rectangle(0, offsetY * 2, 64, 64);
+        towerBase.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
         towerBase.on("pointerdown", () => {
             scene.selectedTower?.hideUi();
             scene.selectedTower = this;

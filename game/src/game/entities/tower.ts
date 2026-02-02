@@ -21,6 +21,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected rangeCircle!: Phaser.GameObjects.Arc;
     protected isPreview: boolean;
     protected targetPriority: TargetPriority = TargetPriority.First;
+    protected isActive: boolean = true;
     // UI Elements
     protected targetPriorityButton!: Phaser.GameObjects.Container;
     protected targetPriorityText!: Phaser.GameObjects.Text;
@@ -273,6 +274,9 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     }
 
     private sell(refundMoney = true) {
+        // Mark tower as inactive immediately to prevent any new actions
+        this.isActive = false;
+
         const scene = this.scene as GameScene;
         const refundAmount = Math.floor(
             this.config.cost * (this.config.refundMultiplier ?? 0.5),
@@ -284,7 +288,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         }
 
         // Restore buildable tile
-        if (scene.layerBuildable) {
+        if (scene.layerBuildable && refundMoney) {
             const tileX = scene.layerBuildable.worldToTileX(this.x);
             const tileY = scene.layerBuildable.worldToTileY(
                 this.y + (this.config.offsetY ?? 32),
@@ -300,6 +304,9 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
         // Hide UI
         this.hideUi();
+
+        // Clean up any active animations and event listeners before destruction
+        this.cleanupBeforeDestroy();
 
         // Remove from towers group
         scene.towers.remove(this, true, true);
@@ -373,7 +380,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     }
 
     protected canShoot(time: number): boolean {
-        return !this.isPreview && time > this.lastFired + this.fireRate;
+        return this.isActive && !this.isPreview && time > this.lastFired + this.fireRate;
     }
 
     protected abstract createAnimations(): void;
@@ -449,6 +456,14 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     getTargetPriority(): TargetPriority {
         return this.targetPriority;
     }
+
+    /**
+     * Override this method in subclasses to clean up animation listeners
+     * and any other resources before the tower is destroyed.
+     */
+    protected abstract cleanupBeforeDestroy(): void;
+        // Base implementation - subclasses should override
+    
 
     protected abstract shoot(target: Enemy): void;
 

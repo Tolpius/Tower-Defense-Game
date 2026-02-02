@@ -1,5 +1,5 @@
 import { Enemy } from "../enemy";
-import { Game, Game as GameScene } from "../../scenes/Game";
+import { Game as GameScene } from "../../scenes/Game";
 import { TOWER_CONFIGS, TowerType } from "../../../config/towerConfig";
 import { Tower } from "../tower";
 
@@ -107,47 +107,83 @@ export class CrystalTower extends Tower {
     }
 
     protected shoot(target: Enemy): void {
+        if (!this.isActive) return;
+
+        // Store scene reference and config before any async operations
+        const scene = this.scene as GameScene;
+        const spriteProjectile = this.spriteProjectile;
+        const spriteWeapon = this.spriteWeapon;
+        const spriteImpact = this.spriteImpact;
+        const damage = this.damage;
+        const impactRange = this.config.impactRange;
+        const maxTargets = this.config.maxTargets!;
+
         // Remove any existing animation handlers to prevent multiple projectiles
         this.weapon.off(Phaser.Animations.Events.ANIMATION_UPDATE);
         let ignoreList: Enemy[] = [];
 
-        this.weapon.play(`${this.spriteWeapon}-shoot`, true);
+        this.weapon.play(`${spriteWeapon}-shoot`, true);
 
         // Spawn cloud above the target
-        const cloud = this.scene.add
-            .sprite(target.x, target.y - 48, this.spriteProjectile)
+        const cloud = scene.add
+            .sprite(target.x, target.y - 48, spriteProjectile)
             .setDepth(Math.floor(target.y - 48) + 75);
-        cloud.play(`${this.spriteProjectile}-fly`);
+        cloud.play(`${spriteProjectile}-fly`);
 
         // When cloud animation finishes, spawn the impact projectile
         cloud.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
             cloud.destroy();
-            this.lightningShot({ x: cloud.x, y: cloud.y }, ignoreList, target);
+            if (this.isActive) {
+                this.lightningShot(
+                    scene,
+                    { x: cloud.x, y: cloud.y },
+                    ignoreList,
+                    spriteImpact,
+                    damage,
+                    impactRange,
+                    maxTargets,
+                    target,
+                );
+            }
         });
 
         // Reset weapon to idle after shoot animation completes
         this.weapon.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-            this.weapon.play(`${this.spriteWeapon}-idle`);
+            if (this.isActive) {
+                this.weapon.play(`${spriteWeapon}-idle`);
+            }
         });
     }
 
+    protected cleanupBeforeDestroy(): void {
+        // Remove all animation listeners from weapon
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+        this.weapon?.stop();
+    }
+
     private lightningShot(
+        scene: GameScene,
         origin: { x: number; y: number },
         ignoreList: Enemy[],
+        spriteImpact: string,
+        damage: number,
+        impactRange: number | undefined,
+        maxTargets: number,
         target: Enemy | undefined = undefined,
     ): void {
         //If there is no target provided, get a new one
         if (!target) {
             target = this.getTarget(
-                (this.scene as Game).enemies,
-                this.config.impactRange,
+                scene.enemies,
+                impactRange,
                 origin,
                 ignoreList,
                 false,
             );
         }
         // if there are no valid targets or max targets reached, return
-        if (!target || ignoreList.length >= this.config.maxTargets!) {
+        if (!target || ignoreList.length >= maxTargets) {
             return;
         }
         ignoreList.push(target);
@@ -160,14 +196,14 @@ export class CrystalTower extends Tower {
             Math.PI / 4;
 
         // Spawn impact at cloud position
-        const impact = this.scene.add
-            .sprite(origin.x, origin.y, this.spriteImpact)
+        const impact = scene.add
+            .sprite(origin.x, origin.y, spriteImpact)
             .setDepth(Math.floor(origin.y) + 75)
             .setRotation(angle);
-        impact.play(`${this.spriteImpact}`);
+        impact.play(`${spriteImpact}`);
 
         // Fly impact down to target
-        this.scene.tweens.add({
+        scene.tweens.add({
             targets: impact,
             x: targetX,
             y: targetY,
@@ -177,7 +213,7 @@ export class CrystalTower extends Tower {
             },
             onComplete: () => {
                 if (target && target.isAlive) {
-                    target.takeDamage(this.damage);
+                    target.takeDamage(damage);
                 }
                 impact.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                     impact.destroy();
@@ -186,7 +222,15 @@ export class CrystalTower extends Tower {
                 if (!impact.anims.isPlaying) {
                     impact.destroy();
                 }
-                this.lightningShot(target, ignoreList);
+                this.lightningShot(
+                    scene,
+                    target,
+                    ignoreList,
+                    spriteImpact,
+                    damage,
+                    impactRange,
+                    maxTargets,
+                );
             },
         });
     }
@@ -196,3 +240,4 @@ export class CrystalTower extends Tower {
         // Crystal tower handles projectile spawning directly in shoot()
     }
 }
+

@@ -96,6 +96,8 @@ export class CatapultTower extends Tower {
     }
 
     protected shoot(target: Enemy): void {
+        if (!this.isActive) return;
+
         // Remove any existing animation handlers to prevent multiple projectiles
         this.weapon.off(Phaser.Animations.Events.ANIMATION_UPDATE);
 
@@ -106,6 +108,13 @@ export class CatapultTower extends Tower {
             anim: Phaser.Animations.Animation,
             frame: Phaser.Animations.AnimationFrame,
         ) => {
+            if (!this.isActive) {
+                this.weapon.off(
+                    Phaser.Animations.Events.ANIMATION_UPDATE,
+                    handler,
+                );
+                return;
+            }
             if (anim.key !== `${this.spriteWeapon}-shoot`) return;
 
             if (frame.index === 6 && target && !projectileSpawned) {
@@ -121,11 +130,23 @@ export class CatapultTower extends Tower {
 
         // Reset to first frame after animation completes
         this.weapon.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-            this.weapon.setFrame(0);
+            if (this.isActive) {
+                this.weapon.setFrame(0);
+            }
         });
     }
 
+    protected cleanupBeforeDestroy(): void {
+        // Remove all animation listeners from weapon
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+        this.weapon?.stop();
+    }
+
     protected spawnProjectile(target: Enemy): void {
+        // Store scene reference before any async operations
+        const scene = this.scene as GameScene;
+
         // Calculate muzzle position based on weapon rotation
         const muzzleDistance = 16;
         const muzzleX =
@@ -133,7 +154,7 @@ export class CatapultTower extends Tower {
         const muzzleY =
             this.y + Math.sin(this.weapon.rotation) * muzzleDistance;
 
-        const projectile = this.scene.add
+        const projectile = scene.add
             .sprite(muzzleX, muzzleY, this.spriteProjectile, 0)
             .setDepth(Math.floor(muzzleY) + 75);
         projectile.play(`${this.spriteProjectile}-fly`);
@@ -171,12 +192,12 @@ export class CatapultTower extends Tower {
             // Check if projectile reached target
             if (distance < 10) {
                 projectile.destroy();
-                const impact = this.scene.add
+                const impact = scene.add
                     .sprite(targetX, targetY, this.spriteImpact, 0)
                     .setDepth(Math.floor(targetY) + 75);
                 impact.play(`${this.spriteImpact}`);
                 const targetsInImpactRadius = this.getTargets(
-                    (this.scene as GameScene).enemies,
+                    scene.enemies,
                     this.config.impactRange!,
                     { x: targetX, y: targetY },
                     false,
@@ -191,17 +212,18 @@ export class CatapultTower extends Tower {
             }
 
             // Move projectile towards target
-            const moveDistance = speed * (this.scene.game.loop.delta / 1000);
+            const moveDistance = speed * (scene.game.loop.delta / 1000);
             projectile.x += (dx / distance) * moveDistance;
             projectile.y += (dy / distance) * moveDistance;
         };
 
         // Add update listener
-        this.scene.events.on("update", updateProjectile);
+        scene.events.on("update", updateProjectile);
 
         // Clean up when projectile is destroyed
         projectile.on("destroy", () => {
-            this.scene.events.off("update", updateProjectile);
+            scene.events.off("update", updateProjectile);
         });
     }
 }
+

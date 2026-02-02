@@ -97,11 +97,20 @@ export class SlingShotTower extends Tower {
     }
 
     protected shoot(target: Enemy): void {
+        if (!this.isActive) return;
+
         this.weapon.play(`${this.spriteWeapon}-shoot`, true);
         const handler = (
             anim: Phaser.Animations.Animation,
             frame: Phaser.Animations.AnimationFrame,
         ) => {
+            if (!this.isActive) {
+                this.weapon.off(
+                    Phaser.Animations.Events.ANIMATION_UPDATE,
+                    handler,
+                );
+                return;
+            }
             if (anim.key !== `${this.spriteWeapon}-shoot`) return;
 
             if (frame.index === 6 && target) {
@@ -116,11 +125,26 @@ export class SlingShotTower extends Tower {
 
         // Reset to first frame after animation completes
         this.weapon.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-            this.weapon.setFrame(0);
+            if (this.isActive) {
+                this.weapon.setFrame(0);
+            }
         });
     }
 
+    protected cleanupBeforeDestroy(): void {
+        // Remove all animation listeners from weapon
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_UPDATE);
+        this.weapon?.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+        this.weapon?.stop();
+    }
+
     protected spawnProjectile(target: Enemy): void {
+        // Store scene reference before any async operations
+        const scene = this.scene as GameScene;
+        const damage = this.damage;
+        const spriteProjectile = this.spriteProjectile;
+        const spriteImpact = this.spriteImpact;
+
         // Calculate muzzle position based on weapon rotation
         // Offset is typically at the end of the barrel
         const muzzleDistance = 16; // Distance from tower center to muzzle
@@ -129,12 +153,12 @@ export class SlingShotTower extends Tower {
         const muzzleY =
             this.y + Math.sin(this.weapon.rotation) * muzzleDistance;
 
-        const projectile = this.scene.add
-            .sprite(muzzleX, muzzleY, this.spriteProjectile!, 0)
+        const projectile = scene.add
+            .sprite(muzzleX, muzzleY, spriteProjectile!, 0)
             .setDepth(Math.floor(muzzleY) + 75);
-        projectile.play(`${this.spriteProjectile}-fly`);
+        projectile.play(`${spriteProjectile}-fly`);
 
-        this.scene.tweens.add({
+        scene.tweens.add({
             targets: projectile,
             x: target.x,
             y: target.y,
@@ -144,12 +168,12 @@ export class SlingShotTower extends Tower {
             },
             onComplete: () => {
                 projectile.destroy();
-                const impact = this.scene.add
-                    .sprite(target.x, target.y, this.spriteImpact!, 0)
+                const impact = scene.add
+                    .sprite(target.x, target.y, spriteImpact!, 0)
                     .setDepth(Math.floor(target.y) + 75);
-                impact.play(`${this.spriteImpact}`);
+                impact.play(`${spriteImpact}`);
                 if (target) {
-                    target.takeDamage(this.damage);
+                    target.takeDamage(damage);
                 }
                 impact.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                     impact.destroy();
@@ -158,3 +182,4 @@ export class SlingShotTower extends Tower {
         });
     }
 }
+

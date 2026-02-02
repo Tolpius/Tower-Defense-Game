@@ -7,7 +7,7 @@
                 {
                     "id": 1,
                     "name": "Green Fields",
-                    "startingMoney": 555,
+                    "startingMoney": 55,
                     "startingHealth": 100,
                     "waves": [
                         {

@@ -43,6 +43,7 @@ export class Game extends Scene {
     public buildAnywhere: boolean = false;
     public enemyScale: number = 1;
     public easyMode: boolean = false;
+    public infiniteRange: boolean = false;
 
     constructor() {
         super("Game");
@@ -206,6 +207,13 @@ export class Game extends Scene {
                 });
                 console.log("👶 ISTHISEASYMODE! Alle Gegner haben 1 HP!");
             },
+            snipergang: () => {
+                this.infiniteRange = true;
+                (this.towers.getChildren() as Tower[]).forEach((tower) => {
+                    tower.range = 9999;
+                });
+                console.log("🔫 SNIPERGANG! Infinite Range!");
+            },
         };
 
         this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
@@ -284,9 +292,11 @@ export class Game extends Scene {
 
     /** Wendet die aktuelle enemyScale auf alle existierenden Gegner an */
     private applyEnemyScale() {
-        (this.enemies.getChildren() as Phaser.GameObjects.Sprite[]).forEach((enemy) => {
-            enemy.setScale(this.enemyScale);
-        });
+        (this.enemies.getChildren() as Phaser.GameObjects.Sprite[]).forEach(
+            (enemy) => {
+                enemy.setScale(this.enemyScale);
+            },
+        );
     }
 }
 

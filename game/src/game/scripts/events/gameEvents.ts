@@ -168,3 +168,4 @@ export function setupPointerMoveHandler(scene: any) {
         scene.buildRangeIndicator.setVisible(true);
     });
 }
+

@@ -262,7 +262,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         const currentTargetPriority = this.targetPriority;
 
         // Destroy old tower without refund
-        this.sell(false);
+        this.sell();
 
         // Use dynamic import to avoid circular dependency
         import("../factories/towerFactory").then(({ TowerFactory }) => {

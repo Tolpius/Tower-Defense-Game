@@ -3,7 +3,7 @@ import { WorldsData, WorldData } from "../../config/WorldInterfaces";
 
 export default class WorldSelector extends Phaser.Scene {
     private worlds: WorldData[] = [];
-    private worldButtons: Phaser.GameObjects.Text[] = [];
+    private worldButtons: Phaser.GameObjects.Rectangle[] = [];
 
     constructor() {
         super({ key: "WorldSelector" });
@@ -61,7 +61,7 @@ export default class WorldSelector extends Phaser.Scene {
         // Grid settings
         const columns = 3;
         const buttonWidth = 200;
-        const buttonHeight = 80;
+        const buttonHeight = 100;
         const paddingX = 40;
         const paddingY = 30;
 
@@ -78,25 +78,30 @@ export default class WorldSelector extends Phaser.Scene {
             const y = startY + row * (buttonHeight + paddingY);
 
             const button = this.add
-                .text(x, y, world.name, {
-                    fontSize: "24px",
-                    color: "#fff",
-                    backgroundColor: "#2a6e2a",
-                    padding: { left: 20, right: 20, top: 16, bottom: 16 },
-                    fixedWidth: buttonWidth,
-                    align: "center",
-                })
+                .rectangle(x, y, buttonWidth, buttonHeight, 0x2a6e2a, 1)
                 .setOrigin(0.5)
                 .setInteractive({ useHandCursor: true })
-                .on("pointerover", function (this: Phaser.GameObjects.Text) {
-                    this.setStyle({ backgroundColor: "#3a8e3a" });
+                .on("pointerover", function (this: Phaser.GameObjects.Rectangle) {
+                    this.setFillStyle(0x3a8e3a, 1);
                 })
-                .on("pointerout", function (this: Phaser.GameObjects.Text) {
-                    this.setStyle({ backgroundColor: "#2a6e2a" });
+                .on("pointerout", function (this: Phaser.GameObjects.Rectangle) {
+                    this.setFillStyle(0x2a6e2a, 1);
                 })
                 .on("pointerdown", () => {
                     this.selectWorld(world);
                 });
+
+            this.add
+                .text(x, y, world.name, {
+                    fontSize: "22px",
+                    color: "#fff",
+                    align: "center",
+                    wordWrap: {
+                        width: buttonWidth - 24,
+                        useAdvancedWrap: true,
+                    },
+                })
+                .setOrigin(0.5);
 
             this.worldButtons.push(button);
         });
@@ -106,4 +111,3 @@ export default class WorldSelector extends Phaser.Scene {
         this.scene.start("MapSelector", { world });
     }
 }
-

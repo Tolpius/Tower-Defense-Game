@@ -25,6 +25,7 @@ export default function handleMapInit(scene: Game) {
         [
             { name: "GrassTileset", key: "grass" },
             { name: "GrassTilesetAutumn", key: "grassAutumn" },
+            { name: "GrassTilesetWinter", key: "grassWinter" },
         ],
         "Grass",
     );
@@ -33,6 +34,7 @@ export default function handleMapInit(scene: Game) {
         [
             { name: "AnimatedWaterTiles", key: "water" },
             { name: "AnimatedWaterAutumn", key: "waterAutumn" },
+            { name: "AnimatedWaterWinter", key: "waterWinter" },
         ],
         "Water",
     );

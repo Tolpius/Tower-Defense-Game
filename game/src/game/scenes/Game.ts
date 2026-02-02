@@ -38,6 +38,9 @@ export class Game extends Scene {
     public waterLayer!: Phaser.Tilemaps.TilemapLayer;
     public waterSpriteKey = "water";
 
+    // Cheat System 📈
+    private cheatBuffer: string = "";
+
     constructor() {
         super("Game");
     }
@@ -62,7 +65,10 @@ export class Game extends Scene {
             // Stoppe Game und UI, starte GameOver-Screen
             this.scene.stop("UI");
             this.scene.stop("Game");
-            this.scene.start("GameOver", {worldId: this.worldId, mapId: this.mapId} );
+            this.scene.start("GameOver", {
+                worldId: this.worldId,
+                mapId: this.mapId,
+            });
         }
     }
     get buildRangeIndicator() {
@@ -146,6 +152,31 @@ export class Game extends Scene {
 
         //UI Init
         this.scene.launch("UI");
+
+        // Cheat System 📈
+        this.setupCheatCodes();
+    }
+
+    private setupCheatCodes() {
+        const cheats: Record<string, () => void> = {
+            stonks: () => {
+                this.money += 1000;
+                console.log("📈 STONKS! +1000 Gold!");
+            },
+        };
+
+        this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+            this.cheatBuffer += event.key.toLowerCase();
+            this.cheatBuffer = this.cheatBuffer.slice(-15); // Letzte 15 Zeichen behalten
+
+            for (const [code, action] of Object.entries(cheats)) {
+                if (this.cheatBuffer.endsWith(code)) {
+                    action();
+                    this.cheatBuffer = "";
+                    this.events.emit("cheat-activated");
+                }
+            }
+        });
     }
 
     update(time: number, delta: number) {
@@ -208,3 +239,4 @@ export class Game extends Scene {
         this.events.off("tower-selected");
     }
 }
+

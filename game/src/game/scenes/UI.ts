@@ -128,10 +128,19 @@ export class UI extends Scene {
     }
 
     showCheaterBadge() {
-        // Falls schon vorhanden, nicht nochmal erstellen
-        if (this.cheaterText?.active) return;
-
         const centerX = this.cameras.main.width / 2;
+
+        // Falls schon vorhanden, nur wackeln
+        if (this.cheaterText?.active) {
+            this.tweens.add({
+                targets: [this.cheaterText],
+                angle: { from: -5, to: 5 },
+                duration: 80,
+                yoyo: true,
+                repeat: 5,
+            });
+            return;
+        }
 
         // Frame für "Cheater!" Badge
         this.cheaterFrame = this.add.graphics();
@@ -151,8 +160,8 @@ export class UI extends Scene {
         // Wackel-Animation für extra Shame 😈
         this.tweens.add({
             targets: [this.cheaterText],
-            angle: { from: -3, to: 3 },
-            duration: 100,
+            angle: { from: -5, to: 5 },
+            duration: 80,
             yoyo: true,
             repeat: 5,
         });

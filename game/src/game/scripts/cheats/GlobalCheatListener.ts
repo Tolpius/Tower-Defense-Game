@@ -17,7 +17,9 @@ const globalCheats: Record<string, () => void> = {
     // Schaltet Infinite Mode für alle Maps temporär frei
     unlockall: () => {
         unlockAllInfiniteModesTemporarily();
-        console.log("🔓 UNLOCKALL! Alle Infinite Modes temporär freigeschaltet!");
+        console.log(
+            "🔓 UNLOCKALL! Alle Infinite Modes temporär freigeschaltet!",
+        );
     },
 };
 
@@ -71,7 +73,8 @@ function handleKeyDown(event: KeyboardEvent): void {
 
                 // MapSelector neu laden falls aktiv (für Endless-Button-Update)
                 if (_phaserGame.scene.isActive("MapSelector")) {
-                    const mapSelector = _phaserGame.scene.getScene("MapSelector");
+                    const mapSelector =
+                        _phaserGame.scene.getScene("MapSelector");
                     if (mapSelector) {
                         const data = (mapSelector as any).world;
                         _phaserGame.scene.stop("MapSelector");
@@ -82,3 +85,4 @@ function handleKeyDown(event: KeyboardEvent): void {
         }
     }
 }
+

@@ -70,6 +70,7 @@ Path of Bugs is a tower-defense game with multiple worlds and maps. Build towers
 
 <div align="center">
   <img width="500" src="public/assets/wavebuilder.png" alt="wavebuilder-preview">
+    <p><em>(Wave Builder is a local developer tool and not included in the public game build.)</em></p>
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -80,6 +81,7 @@ Path of Bugs is a tower-defense game with multiple worlds and maps. Build towers
 
 - Mouse: tower placement, tower selection, UI interactions.
 - Keyboard/Click: skip intro in the main menu.
+- Touch (Mobile/Tablet): Tap for tower placement, selection, and UI interactions.
 
 <div align="center">
   <img width="64" height="128" src="public/assets/tower.png" alt="tower">

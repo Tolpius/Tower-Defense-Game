@@ -182,11 +182,14 @@ export class SlingShotTower extends Tower {
             },
             onComplete: () => {
                 projectile.destroy();
+                // Prüfen ob target noch existiert und am Leben ist
+                if (!target || !target.active) return;
+
                 const impact = scene.add
                     .sprite(target.x, target.y, spriteImpact!, 0)
                     .setDepth(Math.floor(target.y) + 75);
                 impact.play(`${spriteImpact}`);
-                if (target) {
+                if (target && target.isAlive) {
                     target.takeDamage(damage);
                 }
                 impact.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {

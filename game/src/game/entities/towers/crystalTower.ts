@@ -220,7 +220,8 @@ export class CrystalTower extends Tower {
                 impact.setDepth(Math.floor(impact.y) + 75);
             },
             onComplete: () => {
-                if (target && target.isAlive) {
+                // Prüfen ob target noch existiert und am Leben ist
+                if (target && target.active && target.isAlive) {
                     target.takeDamage(damage);
                 }
                 impact.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {

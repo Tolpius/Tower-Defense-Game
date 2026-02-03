@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { initGlobalCheatListener } from "../scripts/cheats/GlobalCheatListener";
 
 export class Boot extends Scene {
     constructor() {
@@ -13,6 +14,9 @@ export class Boot extends Scene {
     }
 
     create() {
+        // Globalen Cheat-Listener initialisieren
+        initGlobalCheatListener(this.game);
+
         this.scene.start("Preloader");
     }
 }

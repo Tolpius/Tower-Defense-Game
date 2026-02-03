@@ -8,6 +8,7 @@ import { GameWon } from "./scenes/GameWon";
 import MainMenu from "./scenes/MainMenu";
 import WorldSelector from "./scenes/WorldSelector";
 import MapSelector from "./scenes/MapSelector";
+import { CheaterOverlay } from "./scenes/CheaterOverlay";
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -31,6 +32,7 @@ const config: Phaser.Types.Core.GameConfig = {
         UI,
         GameOver,
         GameWon,
+        CheaterOverlay,
     ],
     physics: {
         default: "arcade",

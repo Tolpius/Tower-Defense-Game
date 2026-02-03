@@ -6,6 +6,20 @@ export interface EnemyStats {
     sideAnimationLeft: boolean; //Defines wether the side animation sprite is looking left or right
 }
 
+/**
+ * Modifiers für dynamisch skalierte Gegner (Infinite Wave Modus)
+ */
+export interface EnemyModifiers {
+    /** HP-Multiplikator (1.0 = normal) */
+    hpMultiplier?: number;
+    /** Speed-Multiplikator (1.0 = normal, höher = schneller) */
+    speedMultiplier?: number;
+    /** Größen-Multiplikator (1.0 = normal) */
+    scaleMultiplier?: number;
+    /** Gold-Multiplikator für moneyOnDeath */
+    goldMultiplier?: number;
+}
+
 export enum EnemyType {
     PathArrow = "patharrow",
     Scorpion = "scorpion",

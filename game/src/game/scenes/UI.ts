@@ -6,8 +6,6 @@ export class UI extends Scene {
     moneyText!: Phaser.GameObjects.Text;
     healthText!: Phaser.GameObjects.Text;
     waveText!: Phaser.GameObjects.Text;
-    cheaterText!: Phaser.GameObjects.Text;
-    cheaterFrame!: Phaser.GameObjects.Graphics;
 
     constructor() {
         super({ key: "UI", active: false });
@@ -18,7 +16,6 @@ export class UI extends Scene {
         gameScene.events.off("money-changed", this.onMoneyChanged, this);
         gameScene.events.off("health-changed", this.onHealthChanged, this);
         gameScene.events.off("wave-changed", this.onWaveChanged, this);
-        gameScene.events.off("cheat-activated", this.showCheaterBadge, this);
         this.events.off("tower-selected");
     }
 
@@ -68,7 +65,7 @@ export class UI extends Scene {
         this.waveText = this.add.text(
             16,
             82,
-            `Wave: ${currentWave}/${maxWaves}`,
+            `Wave: ${currentWave}/${maxWaves === Infinity ? "∞" : maxWaves}`,
             { fontSize: "16px", color: "#ffffff" },
         );
 
@@ -88,7 +85,6 @@ export class UI extends Scene {
 
         // Pause Button Frame
         this.createFrame(690, 10, 36, 28);
-        let paused = false;
         const pauseButton = this.add
             .text(700, 14, "⏸", {
                 fontSize: "18px",
@@ -96,20 +92,92 @@ export class UI extends Scene {
             })
             .setInteractive()
             .on("pointerdown", () => {
-                paused = !paused;
-                if (paused) {
-                    this.scene.pause("Game");
-                    pauseButton.setText("▶");
-                } else {
-                    this.scene.resume("Game");
-                    pauseButton.setText("⏸");
-                }
+                this.showPauseMenu();
             });
 
         gameScene.events.on("money-changed", this.onMoneyChanged, this);
         gameScene.events.on("health-changed", this.onHealthChanged, this);
         gameScene.events.on("wave-changed", this.onWaveChanged, this);
-        gameScene.events.on("cheat-activated", this.showCheaterBadge, this);
+    }
+
+    private pauseMenuElements: Phaser.GameObjects.GameObject[] = [];
+
+    private showPauseMenu() {
+        // Spiel pausieren
+        this.scene.pause("Game");
+
+        const { width, height } = this.cameras.main;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        // Hintergrund-Overlay
+        const overlay = this.add
+            .rectangle(centerX, centerY, width, height, 0x000000, 0.7)
+            .setInteractive(); // Blockiert Klicks dahinter
+
+        // Pause-Text
+        const pauseText = this.add
+            .text(centerX, centerY - 80, "⏸ Paused", {
+                fontSize: "48px",
+                color: "#ffffff",
+                fontStyle: "bold",
+            })
+            .setOrigin(0.5);
+
+        // Resume Button
+        const resumeButton = this.add
+            .text(centerX, centerY, "▶ Resume", {
+                fontSize: "28px",
+                color: "#ffffff",
+                backgroundColor: "#228B22",
+                padding: { left: 24, right: 24, top: 12, bottom: 12 },
+            })
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerover", function (this: Phaser.GameObjects.Text) {
+                this.setStyle({ backgroundColor: "#2aab2a" });
+            })
+            .on("pointerout", function (this: Phaser.GameObjects.Text) {
+                this.setStyle({ backgroundColor: "#228B22" });
+            })
+            .on("pointerdown", () => {
+                this.hidePauseMenu();
+            });
+
+        // Main Menu Button
+        const menuButton = this.add
+            .text(centerX, centerY + 70, "🏠 Main Menu", {
+                fontSize: "28px",
+                color: "#ffffff",
+                backgroundColor: "#B22222",
+                padding: { left: 24, right: 24, top: 12, bottom: 12 },
+            })
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerover", function (this: Phaser.GameObjects.Text) {
+                this.setStyle({ backgroundColor: "#d42a2a" });
+            })
+            .on("pointerout", function (this: Phaser.GameObjects.Text) {
+                this.setStyle({ backgroundColor: "#B22222" });
+            })
+            .on("pointerdown", () => {
+                this.hidePauseMenu();
+                this.scene.stop("Game");
+                this.scene.stop("UI");
+                this.scene.start("MainMenu");
+            });
+
+        // Elemente speichern für späteres Entfernen
+        this.pauseMenuElements = [overlay, pauseText, resumeButton, menuButton];
+    }
+
+    private hidePauseMenu() {
+        // Pause-Menü-Elemente entfernen
+        this.pauseMenuElements.forEach((el) => el.destroy());
+        this.pauseMenuElements = [];
+
+        // Spiel fortsetzen
+        this.scene.resume("Game");
     }
 
     onMoneyChanged(money: number) {
@@ -124,47 +192,9 @@ export class UI extends Scene {
         const gameScene = this.scene.get("Game") as Game;
         const currentWave = gameScene.waveManager?.currentWave ?? 1;
         const maxWaves = gameScene.waveManager?.maxWaves ?? 1;
-        this.waveText.setText(`Wave: ${currentWave}/${maxWaves}`);
-    }
-
-    showCheaterBadge() {
-        const centerX = this.cameras.main.width / 2;
-
-        // Falls schon vorhanden, nur wackeln
-        if (this.cheaterText?.active) {
-            this.tweens.add({
-                targets: [this.cheaterText],
-                angle: { from: -5, to: 5 },
-                duration: 80,
-                yoyo: true,
-                repeat: 5,
-            });
-            return;
-        }
-
-        // Frame für "Cheater!" Badge
-        this.cheaterFrame = this.add.graphics();
-        this.cheaterFrame.lineStyle(3, 0xff0000, 1);
-        this.cheaterFrame.fillStyle(0x000000, 0.7);
-        this.cheaterFrame.fillRoundedRect(centerX - 60, 10, 120, 32, 8);
-        this.cheaterFrame.strokeRoundedRect(centerX - 60, 10, 120, 32, 8);
-
-        this.cheaterText = this.add
-            .text(centerX, 26, "🎮 Cheater!", {
-                fontSize: "18px",
-                color: "#ff4444",
-                fontStyle: "bold",
-            })
-            .setOrigin(0.5);
-
-        // Wackel-Animation für extra Shame 😈
-        this.tweens.add({
-            targets: [this.cheaterText],
-            angle: { from: -5, to: 5 },
-            duration: 80,
-            yoyo: true,
-            repeat: 5,
-        });
+        this.waveText.setText(
+            `Wave: ${currentWave}/${maxWaves === Infinity ? "∞" : maxWaves}`,
+        );
     }
 }
 

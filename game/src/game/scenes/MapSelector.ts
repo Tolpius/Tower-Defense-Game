@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { WorldData, MapData } from "../../config/WorldInterfaces";
+import { isInfiniteModeUnlocked } from "../scripts/progress/ProgressManager";
 
 export default class MapSelector extends Phaser.Scene {
     private world!: WorldData;
@@ -66,7 +67,7 @@ export default class MapSelector extends Phaser.Scene {
         // Grid settings
         const columns = 3;
         const buttonWidth = 180;
-        const buttonHeight = 100;
+        const buttonHeight = 130; // Erhöht für zusätzliche Buttons
         const paddingX = 30;
         const paddingY = 25;
 
@@ -84,45 +85,109 @@ export default class MapSelector extends Phaser.Scene {
             const x = startX + col * (buttonWidth + paddingX);
             const y = startY + row * (buttonHeight + paddingY);
 
-            // Map info text
+            // Map Container Background
+            const containerBg = this.add
+                .rectangle(x, y, buttonWidth + 4, buttonHeight + 4, 0x1a3a5e)
+                .setOrigin(0.5)
+                .setStrokeStyle(2, 0x2a4a6e);
+
+            // Map Name & Info
             const mapInfo = `${map.name}\n🌊 ${map.waves.length} Waves`;
 
-            const button = this.add
-                .text(x, y, mapInfo, {
-                    fontSize: "16px",
+            const mapLabel = this.add
+                .text(x, y - 35, mapInfo, {
+                    fontSize: "14px",
                     color: "#fff",
-                    backgroundColor: "#2a4a6e",
-                    padding: { left: 12, right: 12, top: 12, bottom: 12 },
-                    fixedWidth: buttonWidth,
                     align: "center",
                 })
+                .setOrigin(0.5);
+
+            // Button-Breite für die zwei Buttons
+            const smallButtonWidth = 75;
+            const buttonSpacing = 8;
+
+            // Play Button (Normal Mode)
+            const playButton = this.add
+                .text(
+                    x - smallButtonWidth / 2 - buttonSpacing / 2,
+                    y + 20,
+                    "▶ Play",
+                    {
+                        fontSize: "14px",
+                        color: "#fff",
+                        backgroundColor: "#228B22",
+                        padding: { left: 8, right: 8, top: 6, bottom: 6 },
+                        fixedWidth: smallButtonWidth,
+                        align: "center",
+                    },
+                )
                 .setOrigin(0.5)
                 .setInteractive({ useHandCursor: true })
                 .on("pointerover", function (this: Phaser.GameObjects.Text) {
-                    this.setStyle({ backgroundColor: "#3a6a9e" });
+                    this.setStyle({ backgroundColor: "#2aab2a" });
                 })
                 .on("pointerout", function (this: Phaser.GameObjects.Text) {
-                    this.setStyle({ backgroundColor: "#2a4a6e" });
+                    this.setStyle({ backgroundColor: "#228B22" });
                 })
+                .on("pointerdown", () => {
+                    this.selectMap(map, false);
+                });
+
+            // Endless Button (Infinite Mode) - nur wenn freigeschaltet
+            const isUnlocked = isInfiniteModeUnlocked(this.world.id, map.id);
+            const endlessButton = this.add
+                .text(
+                    x + smallButtonWidth / 2 + buttonSpacing / 2,
+                    y + 20,
+                    isUnlocked ? "♾️ Endless" : "🔒 Locked",
+                    {
+                        fontSize: "14px",
+                        color: isUnlocked ? "#fff" : "#888",
+                        backgroundColor: isUnlocked ? "#8B008B" : "#333",
+                        padding: { left: 8, right: 8, top: 6, bottom: 6 },
+                        fixedWidth: smallButtonWidth,
+                        align: "center",
+                    },
+                )
+                .setOrigin(0.5);
+
+            if (isUnlocked) {
+                endlessButton
+                    .setInteractive({ useHandCursor: true })
+                    .on(
+                        "pointerover",
+                        function (this: Phaser.GameObjects.Text) {
+                            this.setStyle({ backgroundColor: "#ab00ab" });
+                        },
+                    )
+                    .on("pointerout", function (this: Phaser.GameObjects.Text) {
+                        this.setStyle({ backgroundColor: "#8B008B" });
+                    })
+                    .on("pointerdown", () => {
+                        this.selectMap(map, true);
+                    });
+            }
+
+            // Hover-Effekt auf den gesamten Container für Preview
+            containerBg
+                .setInteractive({ useHandCursor: false })
                 .on("pointerover", () => {
                     this.showPreview(map.id);
                 })
                 .on("pointerout", () => {
                     this.hidePreview();
-                })
-                .on("pointerdown", () => {
-                    this.selectMap(map);
                 });
 
-            this.mapButtons.push(button);
+            this.mapButtons.push(mapLabel);
         });
     }
 
-    private selectMap(map: MapData) {
+    private selectMap(map: MapData, startInfiniteMode: boolean) {
         // Start the game with the selected world and map
         this.scene.start("Game", {
             worldId: this.world.id,
             mapId: map.id,
+            startInfiniteMode: startInfiniteMode,
         });
     }
 
@@ -172,5 +237,5 @@ export default class MapSelector extends Phaser.Scene {
         this.previewImage.setVisible(false);
         this.previewFrame?.setVisible(false);
     }
-
 }
+

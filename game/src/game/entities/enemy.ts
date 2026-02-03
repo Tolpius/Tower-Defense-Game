@@ -1,4 +1,9 @@
-import { ENEMY_CONFIG, EnemyStats, EnemyType } from "../../config/enemyConfig";
+import {
+    ENEMY_CONFIG,
+    EnemyModifiers,
+    EnemyStats,
+    EnemyType,
+} from "../../config/enemyConfig";
 import { Game } from "../scenes/Game";
 
 export abstract class Enemy extends Phaser.GameObjects.PathFollower {
@@ -84,6 +89,38 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     set hasReachedBase(value: boolean) {
         this._hasReachedBase = value;
     }
+
+    /**
+     * Wendet Modifier auf den Gegner an (für Infinite Wave Modus)
+     * Muss nach dem Konstruktor aufgerufen werden
+     */
+    applyModifiers(modifiers: EnemyModifiers): void {
+        // HP skalieren
+        if (modifiers.hpMultiplier && modifiers.hpMultiplier !== 1) {
+            this.maxHp = Math.round(this.maxHp * modifiers.hpMultiplier);
+            this.hp = this.maxHp;
+        }
+
+        // Speed skalieren (niedrigere duration = schneller)
+        if (modifiers.speedMultiplier && modifiers.speedMultiplier !== 1) {
+            this.duration = Math.round(
+                this.duration / modifiers.speedMultiplier,
+            );
+        }
+
+        // Größe skalieren
+        if (modifiers.scaleMultiplier && modifiers.scaleMultiplier !== 1) {
+            this.setScale(this.scaleX * modifiers.scaleMultiplier);
+        }
+
+        // Gold skalieren
+        if (modifiers.goldMultiplier && modifiers.goldMultiplier !== 1) {
+            this.moneyOnDeath = Math.round(
+                this.moneyOnDeath * modifiers.goldMultiplier,
+            );
+        }
+    }
+
     // Returns a value between 0 and 1 indicating progress along the path
     get pathProgress(): number {
         return this._pathProgress;
@@ -111,10 +148,10 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
                 this._pathProgress = 1;
                 this.stopFollow();
                 this.hasReachedBase = true;
-                // Enemy reached the end of the path
-                this.healthBar.destroy();
-                this.progressBar.destroy();
-                this.progressText.destroy();
+                // Enemy reached the end of the path - cleanup after damage is dealt
+                this.healthBar?.destroy();
+                this.progressBar?.destroy();
+                this.progressText?.destroy();
                 this.setVisible(false);
             },
         });
@@ -204,11 +241,25 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         this.once(
             Phaser.Animations.Events.ANIMATION_COMPLETE,
             () => {
-                this.setVisible(false);
-                this.setActive(false);
+                this.cleanup();
             },
             this,
         );
+    }
+
+    /** Entfernt alle Ressourcen des Enemies (für Memory Management) */
+    cleanup() {
+        this.healthBar?.destroy();
+        this.progressBar?.destroy();
+        this.progressText?.destroy();
+        this.setVisible(false);
+        this.setActive(false);
+
+        // Verzögerte Zerstörung (10 Sekunden) um Reference Errors bei
+        // noch fliegenden Projektilen zu vermeiden
+        this.scene?.time.delayedCall(10000, () => {
+            this.destroy();
+        });
     }
 
     update() {

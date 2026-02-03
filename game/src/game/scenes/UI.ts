@@ -6,8 +6,6 @@ export class UI extends Scene {
     moneyText!: Phaser.GameObjects.Text;
     healthText!: Phaser.GameObjects.Text;
     waveText!: Phaser.GameObjects.Text;
-    cheaterText!: Phaser.GameObjects.Text;
-    cheaterFrame!: Phaser.GameObjects.Graphics;
 
     constructor() {
         super({ key: "UI", active: false });
@@ -18,7 +16,6 @@ export class UI extends Scene {
         gameScene.events.off("money-changed", this.onMoneyChanged, this);
         gameScene.events.off("health-changed", this.onHealthChanged, this);
         gameScene.events.off("wave-changed", this.onWaveChanged, this);
-        gameScene.events.off("cheat-activated", this.showCheaterBadge, this);
         this.events.off("tower-selected");
     }
 
@@ -109,7 +106,6 @@ export class UI extends Scene {
         gameScene.events.on("money-changed", this.onMoneyChanged, this);
         gameScene.events.on("health-changed", this.onHealthChanged, this);
         gameScene.events.on("wave-changed", this.onWaveChanged, this);
-        gameScene.events.on("cheat-activated", this.showCheaterBadge, this);
     }
 
     onMoneyChanged(money: number) {
@@ -127,46 +123,6 @@ export class UI extends Scene {
         this.waveText.setText(
             `Wave: ${currentWave}/${maxWaves === Infinity ? "∞" : maxWaves}`,
         );
-    }
-
-    showCheaterBadge() {
-        const centerX = this.cameras.main.width / 2;
-
-        // Falls schon vorhanden, nur wackeln
-        if (this.cheaterText?.active) {
-            this.tweens.add({
-                targets: [this.cheaterText],
-                angle: { from: -5, to: 5 },
-                duration: 80,
-                yoyo: true,
-                repeat: 5,
-            });
-            return;
-        }
-
-        // Frame für "Cheater!" Badge
-        this.cheaterFrame = this.add.graphics();
-        this.cheaterFrame.lineStyle(3, 0xff0000, 1);
-        this.cheaterFrame.fillStyle(0x000000, 0.7);
-        this.cheaterFrame.fillRoundedRect(centerX - 60, 10, 120, 32, 8);
-        this.cheaterFrame.strokeRoundedRect(centerX - 60, 10, 120, 32, 8);
-
-        this.cheaterText = this.add
-            .text(centerX, 26, "🎮 Cheater!", {
-                fontSize: "18px",
-                color: "#ff4444",
-                fontStyle: "bold",
-            })
-            .setOrigin(0.5);
-
-        // Wackel-Animation für extra Shame 😈
-        this.tweens.add({
-            targets: [this.cheaterText],
-            angle: { from: -5, to: 5 },
-            duration: 80,
-            yoyo: true,
-            repeat: 5,
-        });
     }
 }
 

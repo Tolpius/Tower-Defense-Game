@@ -11,6 +11,7 @@ import { Types } from "phaser";
 import { MapData, WorldsData } from "../../config/WorldInterfaces";
 import { WaveManager } from "../scripts/waves/WaveManager";
 import { loadWaterSprites } from "../scripts/preloader/waterSprites";
+import { markAsCheater } from "../scripts/cheats/CheaterState";
 
 export class Game extends Scene {
     public enemies!: Phaser.GameObjects.Group;
@@ -238,7 +239,14 @@ export class Game extends Scene {
                 if (this.cheatBuffer.endsWith(code)) {
                     action();
                     this.cheatBuffer = "";
-                    this.events.emit("cheat-activated");
+                    // Globaler Cheater-Status setzen
+                    markAsCheater();
+                    // CheaterOverlay neu starten für Wackel-Animation
+                    if (this.scene.isActive("CheaterOverlay")) {
+                        this.scene.stop("CheaterOverlay");
+                    }
+                    this.scene.launch("CheaterOverlay");
+                    this.scene.bringToTop("CheaterOverlay");
                 }
             }
         });

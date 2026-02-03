@@ -103,6 +103,21 @@ export class WaveManager {
     private spawnInfiniteWave(spawns: InfiniteSpawnData[]): void {
         let delay = 0;
 
+        // In Wave 1 des Infinite-Modus: zuerst den Path-Arrow anzeigen
+        if (this.infiniteWaveNumber === 1) {
+            this.scene.time.delayedCall(0, () => {
+                const enemy = EnemyFactory.create(
+                    this.scene,
+                    this.scene.path,
+                    EnemyType.PathArrow,
+                );
+                enemy.start();
+                this.scene.enemies.add(enemy);
+            });
+            // Nach dem Path-Arrow kurz warten, bevor reguläre Gegner spawnen
+            delay += ENEMY_CONFIG[EnemyType.PathArrow].duration;
+        }
+
         spawns.forEach((spawn) => {
             delay += spawn.delay;
 

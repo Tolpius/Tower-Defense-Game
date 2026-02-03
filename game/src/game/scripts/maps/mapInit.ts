@@ -112,17 +112,17 @@ export default function handleMapInit(scene: Game) {
         Terrain_Path: 10,
         Terrain_Water: 20,
         Terrain_Cliffs: 30,
+        Buildable: 50,
         Props: 100,
         Details: 200,
-        Buildable: 1000,
         Highground: 1100,
     };
 
-    const applyDepth = (
-        layer: Phaser.Tilemaps.TilemapLayer,
-        name: string,
-    ) => {
-        const props = layer.layer?.properties as { name: string; value: number }[];
+    const applyDepth = (layer: Phaser.Tilemaps.TilemapLayer, name: string) => {
+        const props = layer.layer?.properties as {
+            name: string;
+            value: number;
+        }[];
         const depthProp = props?.find((p) => p.name === "depth");
         layer.setDepth(depthProp?.value ?? depthDefaults[name] ?? 0);
     };
@@ -152,3 +152,4 @@ export default function handleMapInit(scene: Game) {
         scene.path.lineTo(point.x, point.y);
     });
 }
+

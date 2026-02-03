@@ -98,6 +98,8 @@ export function setupTowerSelectedHandler(scene: Game) {
             scene.layerBuildable && scene.layerBuildable.setVisible(false);
             scene.buildMode = false;
             scene.buildPreview?.setVisible(false);
+            if (scene.buildRangeIndicator)
+                scene.buildRangeIndicator.setVisible(false);
             return;
         }
         //Deselect currently selected tower
@@ -115,6 +117,43 @@ export function setupTowerSelectedHandler(scene: Game) {
             .image(0, 0, `${config.spriteBase}base`)
             .setAlpha(0.5)
             .setDepth(2);
+
+        // Range-Indicator initial anzeigen (falls Maus schon auf einem Tile ist)
+        const pointer = scene.input.activePointer;
+        const tile = scene.layerBuildable?.getTileAtWorldXY(
+            pointer.worldX,
+            pointer.worldY,
+        );
+        if (tile && tile.index !== 0) {
+            const previewY = tile.getCenterY() - config.levels[0].offsetY!;
+            scene.buildPreview.setPosition(tile.getCenterX(), previewY);
+            scene.buildPreview.setVisible(true);
+
+            // Range-Kreis anzeigen
+            if (!scene.buildRangeIndicator) {
+                scene.buildRangeIndicator = scene.add.graphics();
+                scene.buildRangeIndicator.setDepth(9999);
+            }
+            scene.buildRangeIndicator.clear();
+            scene.buildRangeIndicator.fillStyle(0x00ff00, 0.25);
+            let range = config.levels[0].range;
+            if (
+                scene.layerHighground &&
+                scene.layerHighground.getTileAtWorldXY(
+                    tile.getCenterX(),
+                    tile.getCenterY() - 32,
+                    false,
+                ) !== null
+            ) {
+                range = range * config.levels[0].highgroundRangeMultiplier;
+            }
+            scene.buildRangeIndicator.fillCircle(
+                tile.getCenterX(),
+                tile.getCenterY(),
+                range,
+            );
+            scene.buildRangeIndicator.setVisible(true);
+        }
     });
 }
 

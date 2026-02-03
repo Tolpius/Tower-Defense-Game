@@ -92,6 +92,45 @@ export default class MapSelector extends Phaser.Scene {
                 .setOrigin(0.5)
                 .setStrokeStyle(2, 0x2a4a6e);
 
+            const difficulty =
+                index < 2 ? "Easy" : index < 4 ? "Medium" : "Hard";
+            const difficultyColor =
+                difficulty === "Easy"
+                    ? 0x2ea44f
+                    : difficulty === "Medium"
+                      ? 0x1f6feb
+                      : 0xd1242f;
+            const badgePadding = 6;
+            const badgeHeight = 20;
+            const badgeText = this.add.text(0, 0, difficulty, {
+                fontSize: "12px",
+                color: "#fff",
+            }).setOrigin(0.5);
+            const badgeWidth = badgeText.width + badgePadding * 2;
+            const badgeBg = this.add.graphics();
+            badgeBg.fillStyle(difficultyColor, 1);
+            badgeBg.fillRoundedRect(
+                -badgeWidth / 2,
+                -badgeHeight / 2,
+                badgeWidth,
+                badgeHeight,
+                6,
+            );
+            badgeBg.lineStyle(2, 0xffffff, 1);
+            badgeBg.strokeRoundedRect(
+                -badgeWidth / 2,
+                -badgeHeight / 2,
+                badgeWidth,
+                badgeHeight,
+                6,
+            );
+            const badge = this.add.container(
+                x + buttonWidth / 2 - 12,
+                y - buttonHeight / 2 - 2,
+                [badgeBg, badgeText],
+            );
+            badge.setDepth(5);
+
             // Map Name & Info
             const mapInfo = `${map.name}\n🌊 ${map.waves.length} Waves`;
 
@@ -247,4 +286,3 @@ export default class MapSelector extends Phaser.Scene {
         this.previewFrame?.setVisible(false);
     }
 }
-

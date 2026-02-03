@@ -27,6 +27,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected targetPriorityText!: Phaser.GameObjects.Text;
     protected sellButton!: Phaser.GameObjects.Container;
     protected sellText!: Phaser.GameObjects.Text;
+    protected sellConfirmPending: boolean = false;
     protected upgradeButton!: Phaser.GameObjects.Container;
     protected upgradeText!: Phaser.GameObjects.Text;
 
@@ -254,10 +255,34 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         const hitArea = scene.add.rectangle(0, 0, 80, 28, 0x000000, 0);
         hitArea.setInteractive({ useHandCursor: true });
         hitArea.on("pointerdown", () => {
-            this.sell();
+            this.handleSellClick();
         });
 
         this.sellButton.add([frame, this.sellText, hitArea]);
+    }
+
+    private handleSellClick() {
+        if (this.sellConfirmPending) {
+            // Second click - actually sell
+            this.sell();
+        } else {
+            // First click - show confirm
+            this.sellConfirmPending = true;
+            const refundAmount = Math.floor(
+                this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
+            );
+            this.sellText.setText(`Confirm (${refundAmount})`);
+        }
+    }
+
+    private resetSellConfirm() {
+        if (this.sellConfirmPending) {
+            this.sellConfirmPending = false;
+            const refundAmount = Math.floor(
+                this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
+            );
+            this.sellText.setText(`Sell (${refundAmount})`);
+        }
     }
 
     private createUpgradeButton(scene: GameScene) {
@@ -437,6 +462,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         }
         if (this.sellButton) {
             this.sellButton.setVisible(false);
+            this.resetSellConfirm();
         }
         if (this.upgradeButton) {
             this.upgradeButton.setVisible(false);

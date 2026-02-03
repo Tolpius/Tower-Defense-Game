@@ -9,6 +9,7 @@ import MainMenu from "./scenes/MainMenu";
 import WorldSelector from "./scenes/WorldSelector";
 import MapSelector from "./scenes/MapSelector";
 import { CheaterOverlay } from "./scenes/CheaterOverlay";
+import { FullscreenButton } from "./scenes/FullscreenButton";
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -17,10 +18,11 @@ const config: Phaser.Types.Core.GameConfig = {
     width: 1024,
     height: 576,
     parent: "game-container",
-    backgroundColor: "#028af8",
+    backgroundColor: "#63ab3f",
     scale: {
         mode: Scale.FIT,
-        autoCenter: Scale.CENTER_BOTH,
+        autoCenter: Scale.NO_CENTER,
+        fullscreenTarget: "game-container",
     },
     scene: [
         Boot,
@@ -33,6 +35,7 @@ const config: Phaser.Types.Core.GameConfig = {
         GameOver,
         GameWon,
         CheaterOverlay,
+        FullscreenButton,
     ],
     physics: {
         default: "arcade",

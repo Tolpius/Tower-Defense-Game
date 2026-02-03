@@ -17,6 +17,8 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     damageToBase: number;
     isAlive = true;
     protected _isGoingToDie = false;
+    protected _isGoingToDieTimer?: Phaser.Time.TimerEvent;
+    protected _pendingDamage = 0; // Tracks damage from projectiles still in flight
     protected _hasReachedBase = false;
     isWorthMoney = true;
     config: EnemyStats;
@@ -133,10 +135,50 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     set isGoingToDie(value: boolean) {
         this._isGoingToDie = value;
         if (value) {
-            this.scene.time.delayedCall(2000, () => {
-                this.isGoingToDie = false;
+            // Cancel existing timer if any to prevent multiple resets
+            if (this._isGoingToDieTimer) {
+                this._isGoingToDieTimer.destroy();
+            }
+            // Only reset if enemy is still alive after 2 seconds
+            this._isGoingToDieTimer = this.scene.time.delayedCall(2000, () => {
+                if (this.isAlive) {
+                    this._isGoingToDie = false;
+                }
+                this._isGoingToDieTimer = undefined;
             });
+        } else {
+            // Cancel timer when manually set to false
+            if (this._isGoingToDieTimer) {
+                this._isGoingToDieTimer.destroy();
+                this._isGoingToDieTimer = undefined;
+            }
         }
+    }
+
+    /**
+     * Register damage that is incoming (projectile in flight).
+     * This helps towers avoid overkilling enemies.
+     */
+    addPendingDamage(damage: number): void {
+        this._pendingDamage += damage;
+        // Update isGoingToDie based on pending + current damage
+        if (this.hp <= this._pendingDamage) {
+            this.isGoingToDie = true;
+        }
+    }
+
+    /**
+     * Remove pending damage when projectile hits or misses.
+     */
+    removePendingDamage(damage: number): void {
+        this._pendingDamage = Math.max(0, this._pendingDamage - damage);
+    }
+
+    /**
+     * Get effective HP (current HP minus pending damage from projectiles in flight)
+     */
+    get effectiveHp(): number {
+        return this.hp - this._pendingDamage;
     }
 
     start() {

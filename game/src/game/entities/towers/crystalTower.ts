@@ -109,7 +109,7 @@ export class CrystalTower extends Tower {
         const target = this.getTarget(enemies);
         if (!target) return;
         if (!this.canShoot(time)) return;
-        if (target.hp <= this.damage) target.isGoingToDie = true;
+        target.addPendingDamage(this.damage);
         this.shoot(target);
         this.lastFired = time;
     }
@@ -220,6 +220,8 @@ export class CrystalTower extends Tower {
                 impact.setDepth(Math.floor(impact.y) + 75);
             },
             onComplete: () => {
+                // Remove pending damage
+                target.removePendingDamage(damage);
                 // Prüfen ob target noch existiert und am Leben ist
                 if (target && target.active && target.isAlive) {
                     target.takeDamage(damage);

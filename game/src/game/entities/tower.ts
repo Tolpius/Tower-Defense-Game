@@ -27,8 +27,12 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected targetPriorityText!: Phaser.GameObjects.Text;
     protected sellButton!: Phaser.GameObjects.Container;
     protected sellText!: Phaser.GameObjects.Text;
+    protected sellConfirmPending: boolean = false;
     protected upgradeButton!: Phaser.GameObjects.Container;
     protected upgradeText!: Phaser.GameObjects.Text;
+    protected upgradeFrame!: Phaser.GameObjects.Graphics;
+    protected upgradeCost: number = 0;
+    private moneyChangedHandler?: (money: number) => void;
 
     protected spriteBase: string;
     protected spriteWeapon: string;
@@ -75,6 +79,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             this.createTargetPriorityButton(scene);
             this.createSellButton(scene);
             this.createUpgradeButton(scene);
+            this.setupMoneyChangeListener(scene);
         }
 
         // Determine if tower is upgradeable
@@ -124,9 +129,55 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         return `${this.config.id}${this.config.level}${part}`;
     }
 
+    /**
+     * Berechnet den UI-Offset basierend auf der Tower-Position relativ zur Scene-Mitte
+     * Gibt Positionen für alle drei Buttons zurück, sodass die Reihenfolge immer
+     * Upgrade -> TargetPriority -> Sell ist (von oben nach unten bzw. näher zum Tower nach weiter weg)
+     */
+    private getUiOffset(scene: GameScene): {
+        x: number;
+        upgradeY: number;
+        targetPriorityY: number;
+        sellY: number;
+    } {
+        const centerX = scene.scale.width / 2;
+        const centerY = scene.scale.height / 2;
+
+        // Wenn Tower rechts von der Mitte -> Buttons links, sonst rechts
+        const offsetX = this.x > centerX ? -50 : 50;
+
+        // Abstand zwischen Buttons
+        const buttonSpacing = 35;
+
+        if (this.y > centerY) {
+            // Tower in unterer Hälfte -> Buttons nach oben (negativ)
+            // Reihenfolge von oben nach unten: Upgrade, TP, Sell (also umgekehrte Multiplikatoren)
+            return {
+                x: offsetX,
+                upgradeY: -buttonSpacing * 2,
+                targetPriorityY: -buttonSpacing,
+                sellY: 0,
+            };
+        } else {
+            // Tower in oberer Hälfte -> Buttons nach unten (positiv)
+            // Basis-Offset für alle Buttons (weiter unten)
+            const baseY = 50;
+            return {
+                x: offsetX,
+                upgradeY: baseY,
+                targetPriorityY: baseY + buttonSpacing,
+                sellY: baseY + buttonSpacing * 2,
+            };
+        }
+    }
+
     private createTargetPriorityButton(scene: GameScene) {
-        // Container for the button, positioned to the right of the tower
-        this.targetPriorityButton = scene.add.container(this.x + 50, this.y);
+        const offset = this.getUiOffset(scene);
+        // Container for the button, positioned relative to tower based on screen position
+        this.targetPriorityButton = scene.add.container(
+            this.x + offset.x,
+            this.y + offset.targetPriorityY,
+        );
         this.targetPriorityButton.setDepth(10000);
         this.targetPriorityButton.setVisible(false);
 
@@ -177,8 +228,12 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     }
 
     private createSellButton(scene: GameScene) {
-        // Container for the sell button, positioned below the target priority button
-        this.sellButton = scene.add.container(this.x + 50, this.y + 35);
+        const offset = this.getUiOffset(scene);
+        // Container for the sell button, positioned relative to tower
+        this.sellButton = scene.add.container(
+            this.x + offset.x,
+            this.y + offset.sellY,
+        );
         this.sellButton.setDepth(10000);
         this.sellButton.setVisible(false);
 
@@ -204,34 +259,64 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         const hitArea = scene.add.rectangle(0, 0, 80, 28, 0x000000, 0);
         hitArea.setInteractive({ useHandCursor: true });
         hitArea.on("pointerdown", () => {
-            this.sell();
+            this.handleSellClick();
         });
 
         this.sellButton.add([frame, this.sellText, hitArea]);
     }
 
+    private handleSellClick() {
+        if (this.sellConfirmPending) {
+            // Second click - actually sell
+            this.sell();
+        } else {
+            // First click - show confirm
+            this.sellConfirmPending = true;
+            const refundAmount = Math.floor(
+                this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
+            );
+            this.sellText.setText(`Confirm (${refundAmount})`);
+        }
+    }
+
+    private resetSellConfirm() {
+        if (this.sellConfirmPending) {
+            this.sellConfirmPending = false;
+            const refundAmount = Math.floor(
+                this.getTotalCost() * (this.config.refundMultiplier ?? 0.5),
+            );
+            this.sellText.setText(`Sell (${refundAmount})`);
+        }
+    }
+
     private createUpgradeButton(scene: GameScene) {
-        // Container for the upgrade button, positioned below the sell button
-        this.upgradeButton = scene.add.container(this.x + 50, this.y + 70);
+        const offset = this.getUiOffset(scene);
+        // Container for the upgrade button, positioned relative to tower
+        this.upgradeButton = scene.add.container(
+            this.x + offset.x,
+            this.y + offset.upgradeY,
+        );
         this.upgradeButton.setDepth(10000);
         this.upgradeButton.setVisible(false);
 
         const nextLevelConfig =
             TOWER_CONFIGS[this.config.id].levels[this.level];
-        const upgradeCost = nextLevelConfig?.cost ?? 0;
+        this.upgradeCost = nextLevelConfig?.cost ?? 0;
 
         // Frame background (green-ish for upgrade)
-        const frame = scene.add.graphics();
-        frame.lineStyle(2, 0x66ff66, 1);
-        frame.fillStyle(0x000000, 0.7);
-        frame.fillRoundedRect(-40, -14, 80, 28, 6);
-        frame.strokeRoundedRect(-40, -14, 80, 28, 6);
+        this.upgradeFrame = scene.add.graphics();
+        this.drawUpgradeFrame(scene.money >= this.upgradeCost);
 
         // Text
-        this.upgradeText = scene.add.text(0, 0, `Upgrade (${upgradeCost})`, {
-            fontSize: "11px",
-            color: "#66ff66",
-        });
+        this.upgradeText = scene.add.text(
+            0,
+            0,
+            `Upgrade (${this.upgradeCost})`,
+            {
+                fontSize: "11px",
+                color: scene.money >= this.upgradeCost ? "#66ff66" : "#666666",
+            },
+        );
         this.upgradeText.setOrigin(0.5, 0.5);
 
         // Hit area for clicking
@@ -241,7 +326,31 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             this.upgrade();
         });
 
-        this.upgradeButton.add([frame, this.upgradeText, hitArea]);
+        this.upgradeButton.add([this.upgradeFrame, this.upgradeText, hitArea]);
+    }
+
+    private drawUpgradeFrame(canAfford: boolean) {
+        this.upgradeFrame.clear();
+        const color = canAfford ? 0x66ff66 : 0x666666;
+        this.upgradeFrame.lineStyle(2, color, 1);
+        this.upgradeFrame.fillStyle(0x000000, 0.7);
+        this.upgradeFrame.fillRoundedRect(-40, -14, 80, 28, 6);
+        this.upgradeFrame.strokeRoundedRect(-40, -14, 80, 28, 6);
+    }
+
+    private setupMoneyChangeListener(scene: GameScene) {
+        this.moneyChangedHandler = (money: number) => {
+            this.updateUpgradeButtonState(money);
+        };
+        scene.events.on("money-changed", this.moneyChangedHandler);
+    }
+
+    private updateUpgradeButtonState(money: number) {
+        if (!this.upgradeButton || !this.isUpgradeable) return;
+
+        const canAfford = money >= this.upgradeCost;
+        this.drawUpgradeFrame(canAfford);
+        this.upgradeText.setColor(canAfford ? "#66ff66" : "#666666");
     }
 
     private upgrade() {
@@ -325,6 +434,11 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         // Clean up any active animations and event listeners before destruction
         this.cleanupBeforeDestroy();
 
+        // Remove money change listener
+        if (this.moneyChangedHandler) {
+            scene.events.off("money-changed", this.moneyChangedHandler);
+        }
+
         // Remove from towers group
         scene.towers.remove(this, true, true);
 
@@ -383,6 +497,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         }
         if (this.sellButton) {
             this.sellButton.setVisible(false);
+            this.resetSellConfirm();
         }
         if (this.upgradeButton) {
             this.upgradeButton.setVisible(false);
@@ -450,14 +565,19 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             radius,
             position,
             forTowerShot,
-        ).filter((e) => !e.isGoingToDie && !ignoreList.includes(e));
+        ).filter(
+            (e) =>
+                !e.isGoingToDie && e.effectiveHp > 0 && !ignoreList.includes(e),
+        );
         if (targets.length === 0) return undefined;
 
         switch (this.targetPriority) {
             case TargetPriority.Strongest:
-                // Get the enemy with the highest health
+                // Get the enemy with the highest effective health (accounting for pending damage)
                 return targets.reduce((strongest, current) =>
-                    current.hp > strongest.hp ? current : strongest,
+                    current.effectiveHp > strongest.effectiveHp
+                        ? current
+                        : strongest,
                 );
             case TargetPriority.First:
             default:
@@ -472,6 +592,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
     setTargetPriority(priority: TargetPriority): void {
         this.targetPriority = priority;
+        this.updateTargetPriorityText();
     }
 
     getTargetPriority(): TargetPriority {

@@ -31,7 +31,7 @@ export class WaveManager {
         let delay = 0;
 
         wave.spawns.forEach((spawn, index) => {
-            if (index === 0 && wave.id === 1){
+            if (index === 0 && wave.id === 1) {
                 this.scene.time.delayedCall(spawn.delay, () => {
                     const enemy = EnemyFactory.create(
                         this.scene,

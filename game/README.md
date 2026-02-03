@@ -1,246 +1,180 @@
-# Phaser React TypeScript Template
+<a id="readme-top"></a>
 
-This is a Phaser 3 project template that uses the React framework and Vite for bundling. It includes a bridge for React to Phaser game communication, hot-reloading for quick development workflow and scripts to generate production-ready builds.
+<div align="center">
 
-**[This Template is also available as a JavaScript version.](https://github.com/phaserjs/template-react)**
+![Phaser](https://img.shields.io/badge/Phaser-3-2b6cb0?style=for-the-badge)
+![React](https://img.shields.io/badge/React-19-20232a?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6-646cff?style=for-the-badge&logo=vite&logoColor=white)
 
-### Versions
+</div>
 
-This template has been updated for:
+<br />
 
-- [Phaser 3.90.0](https://github.com/phaserjs/phaser)
-- [React 19.0.0](https://github.com/facebook/react)
-- [Vite 6.3.1](https://github.com/vitejs/vite)
-- [TypeScript 5.7.2](https://github.com/microsoft/TypeScript)
+<div align="center">
+  <img width="707" height="514" src="public/assets/logo_path-of-bugs.png" alt="Game logo">
 
-![screenshot](screenshot.png)
+  <h1 align="center">Path of Bugs</h1>
 
-## Requirements
+  <p align="center">
+    A tower-defense project built with Phaser 3, React, and TypeScript.
+    <br />
+    <a href="https://pathofbugs.bonindev.com/">View Demo</a>
+    ·
+    <a href="#preview">Preview</a>
+    ·
+    <a href="#features">Features</a>
+  </p>
+</div>
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#controls">Controls</a></li>
+    <li><a href="#preview">Preview</a></li>
+    <li><a href="#tech">Tech Stack</a></li>
+    <li><a href="#learning-outcomes">Learning Outcomes</a></li>
+    <li><a href="#contributors">Contributors</a></li>
+    <li><a href="#credits">Credits</a></li>
+  </ol>
+</details>
 
-## Available Commands
+<br />
 
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-| `npm run dev-nolog` | Launch a development web server without sending anonymous data (see "About log.js" below) |
-| `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
+<!-- ******************************************************** OVERVIEW ************************************************* -->
 
-## Writing Code
+<h2 id="overview">Overview</h2>
 
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
+<p>
+Path of Bugs is a tower-defense game with multiple worlds and maps. Build towers, defend your base against waves of bugs, and adapt your strategy to win each level.
+</p>
 
-The local development server runs on `http://localhost:8080` by default. Please see the Vite documentation if you wish to change this, or add SSL support.
+<div align="center">
+  <img width="64" height="64" src="public/assets/leafbug.png" alt="Leafbug">
+</div>
 
-Once the server is running you can edit any of the files in the `src` folder. Vite will automatically recompile your code and then reload the browser.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Template Project Structure
+<!-- ******************************************************** FEATURES ************************************************* -->
 
-We have provided a default project structure to get you started. This is as follows:
+<h2 id="features">Features</h2>
 
-| Path                          | Description                                                                 |
-|-------------------------------|-----------------------------------------------------------------------------|
-| `index.html`                  | A basic HTML page to contain the game.                                     |
-| `src`                         | Contains the React client source code.                                     |
-| `src/main.tsx`                | The main **React** entry point. This bootstraps the React application.      |
-| `src/PhaserGame.tsx`          | The React component that initializes the Phaser Game and acts as a bridge between React and Phaser. |
-| `src/vite-env.d.ts`           | Global TypeScript declarations, providing type information.                |
-| `src/App.tsx`                 | The main React component.                                                  |
-| `src/game/EventBus.ts`        | A simple event bus to communicate between React and Phaser.                |
-| `src/game`                    | Contains the game source code.                                             |
-| `src/game/main.tsx`           | The main **game** entry point. This contains the game configuration and starts the game. |
-| `src/game/scenes/`            | The folder where Phaser Scenes are located.                                |
-| `public/style.css`            | Some simple CSS rules to help with page layout.                            |
-| `public/assets`               | Contains the static assets used by the game.                               |
+- Multiple worlds and maps with distinct paths and starting parameters.
+- Different tower types (e.g., Slingshot, Catapult, Crystal) with upgrades.
+- Variety of enemies with unique behavior and movement.
+- Wave system with progress, win, and game-over screens.
+- Ingame UI for money, health, tower selection, and build preview.
+- Wave Builder route for quick iteration on enemy waves.
 
-## React Bridge
+<div align="center">
+  <img width="500" src="public/assets/wavebuilder.png" alt="wavebuilder-preview">
+</div>
 
-The `PhaserGame.tsx` component is the bridge between React and Phaser. It initializes the Phaser game and passes events between the two.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-To communicate between React and Phaser, you can use the **EventBus.js** file. This is a simple event bus that allows you to emit and listen for events from both React and Phaser.
+<!-- ******************************************************** CONTROLS ************************************************* -->
 
-```js
-// In React
-import { EventBus } from './EventBus';
+<h2 id="controls">Controls</h2>
 
-// Emit an event
-EventBus.emit('event-name', data);
+- Mouse: tower placement, tower selection, UI interactions.
+- Keyboard/Click: skip intro in the main menu.
 
-// In Phaser
-// Listen for an event
-EventBus.on('event-name', (data) => {
-    // Do something with the data
-});
-```
+<div align="center">
+  <img width="64" height="128" src="public/assets/tower.png" alt="tower">
+</div>
 
-In addition to this, the `PhaserGame` component exposes the Phaser game instance along with the most recently active Phaser Scene using React forwardRef.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Once exposed, you can access them like any regular react reference.
+<!-- ******************************************************** PREVIEW ************************************************* -->
 
-## Phaser Scene Handling
+<h2 id="preview">Preview</h2>
 
-In Phaser, the Scene is the lifeblood of your game. It is where you sprites, game logic and all of the Phaser systems live. You can also have multiple scenes running at the same time. This template provides a way to obtain the current active scene from React.
+<div align="center">
+  <img src="public/assets/SeasonClip.gif" alt="Gameplay Gif preview">
+</div>
 
-You can get the current Phaser Scene from the component event `"current-active-scene"`. In order to do this, you need to emit the event `"current-scene-ready"` from the Phaser Scene class. This event should be emitted when the scene is ready to be used. You can see this done in all of the Scenes in our template.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-**Important**: When you add a new Scene to your game, make sure you expose to React by emitting the `"current-scene-ready"` event via the `EventBus`, like this:
+<!-- ******************************************************** TECH STACK ************************************************* -->
 
+<h2 id="tech">Tech Stack</h2>
 
-```ts
-class MyScene extends Phaser.Scene
-{
-    constructor ()
-    {
-        super('MyScene');
-    }
+<p>
+  <a href="https://phaser.io/" target="_blank" rel="noreferrer"><img src="public/assets/phaser-logo.png" alt="Phaser logo" width="166" height="36"></a>
+  <a href="https://www.mapeditor.org/" target="_blank" rel="noreferrer"><img src="public/assets/tiled-logo.png" alt="Tiled logo" width="36" height="36"></a>
+  <a href="https://www.aseprite.org/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/aseprite/7d6df3" alt="Aseprite logo" width="36" height="36"></a>
+  <a href="https://react.dev/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/react/61dafb" alt="React logo" width="36" height="36"></a>
+  <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/typescript/3178c6" alt="TypeScript logo" width="36" height="36"></a>
+  <a href="https://vitejs.dev/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/vite/646cff" alt="Vite logo" width="36" height="36"></a>
+  <a href="https://eslint.org/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/eslint/4b32c3" alt="ESLint logo" width="36" height="36"></a>
+</p>
 
-    create ()
-    {
-        // Your Game Objects and logic here
+- Phaser 3
+- Tiled
+- Aseprite
+- React 19
+- TypeScript 5
+- Vite 6
+- ESLint
 
-        // At the end of create method:
-        EventBus.emit('current-scene-ready', this);
-    }
-}
-```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-You don't have to emit this event if you don't need to access the specific scene from React. Also, you don't have to emit it at the end of `create`, you can emit it at any point. For example, should your Scene be waiting for a network request or API call to complete, it could emit the event once that data is ready.
+<!-- ******************************************************** LEARNING OUTCOMES ************************************************* -->
 
-### React Component Example
+<h2 id="learning-outcomes">Learning Outcomes</h2>
 
-Here's an example of how to access Phaser data for use in a React Component:
+<h3>Technical</h3>
 
-```ts
-import { useRef } from 'react';
-import { IRefPhaserGame } from "./game/PhaserGame";
+<h4>Phaser and Game Architecture</h4>
 
-// In a parent component
-const ReactComponent = () => {
+- Learned Phaser from scratch and built a solid understanding of scenes, game flow, and entity systems.
+- Structured the world logic (maps, paths, waves, UI layers) to keep gameplay readable and scalable.
+- Implemented spritesheet-based animations and integrated them into enemy and UI states.
 
-    const phaserRef = useRef<IRefPhaserGame>(); // you can access to this ref from phaserRef.current
+<h4>World Building and Visual Design</h4>
 
-    const onCurrentActiveScene = (scene: Phaser.Scene) => {
-    
-        // This is invoked
+- Designed and iterated on maps in Tiled to balance gameplay, pacing, and clarity.
+- Worked with Aseprite in the asset pipeline and adapted visuals to the game’s needs.
+- Improved our sense for visual hierarchy (contrast, spacing, scaling) in a top-down game.
 
-    }
+<h3>Organization and Project Management</h3>
 
-    return (
-        ...
-        <PhaserGame ref={phaserRef} currentActiveScene={onCurrentActiveScene} />
-        ...
-    );
+- Planned features in small, testable steps and worked agile throughout the project.
+- Used regular pair programming to share knowledge and avoid siloed development.
+- Kept the team aligned through frequent check-ins, ensuring nobody was left behind.
 
-}
-```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-In the code above, you can get a reference to the current Phaser Game instance and the current Scene by creating a reference with `useRef()` and assign to PhaserGame component.
+<!-- ******************************************************** CONTRIBUTORS ************************************************* -->
 
-From this state reference, the game instance is available via `phaserRef.current.game` and the most recently active Scene via `phaserRef.current.scene`.
+<h2 id="contributors">Contributors</h2>
 
-The `onCurrentActiveScene` callback will also be invoked whenever the the Phaser Scene changes, as long as you emit the event via the EventBus, as outlined above.
+<a href="https://github.com/Tolpius/Tower-Defense-Game/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Tolpius/Tower-Defense-Game" alt="Contributors">
+</a>
 
-## Handling Assets
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Vite supports loading assets via JavaScript module `import` statements.
+<!-- ******************************************************** CREDITS ************************************************* -->
 
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
+<h2 id="credits">Credits</h2>
 
-```js
-import logoImg from './assets/logo.png'
-```
+- Phaser 3 template: https://github.com/phaserjs/template-react-ts
+- Tools: Phaser, React, Vite, TypeScript
+- Assets: Distributed by Foozle (www.foozle.io) — License: Creative Commons Zero (CC0) http://creativecommons.org/publicdomain/zero/1.0/
 
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```js
-preload ()
-{
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
+<!-- ******************************************************** MERCH ************************************************* -->
 
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
-}
-```
+<h2 id="merch">Merch Mockup</h2>
 
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
+<div align="center">
+  <img width="500" src="public/assets/model.png" alt="Merch mockup">
+  <p>Just a playful mockup to imagine Path of Bugs in the real world.</p>
+</div>
 
-## Deploying to Production
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Vite
-
-If you want to customize your build, such as adding plugin (i.e. for loading CSS or fonts), you can modify the `vite/config.*.mjs` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Vite documentation](https://vitejs.dev/) for more information.
-
-## About log.js
-
-If you inspect our node scripts you will see there is a file called `log.js`. This file makes a single silent API call to a domain called `gryzor.co`. This domain is owned by Phaser Studio Inc. The domain name is a homage to one of our favorite retro games.
-
-We send the following 3 pieces of data to this API: The name of the template being used (vue, react, etc). If the build was 'dev' or 'prod' and finally the version of Phaser being used.
-
-At no point is any personal data collected or sent. We don't know about your project files, device, browser or anything else. Feel free to inspect the `log.js` file to confirm this.
-
-Why do we do this? Because being open source means we have no visible metrics about which of our templates are being used. We work hard to maintain a large and diverse set of templates for Phaser developers and this is our small anonymous way to determine if that work is actually paying off, or not. In short, it helps us ensure we're building the tools for you.
-
-However, if you don't want to send any data, you can use these commands instead:
-
-Dev:
-
-```bash
-npm run dev-nolog
-```
-
-Build:
-
-```bash
-npm run build-nolog
-```
-
-Or, to disable the log entirely, simply delete the file `log.js` and remove the call to it in the `scripts` section of `package.json`:
-
-Before:
-
-```json
-"scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
-},
-```
-
-After:
-
-```json
-"scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
-},
-```
-
-Either of these will stop `log.js` from running. If you do decide to do this, please could you at least join our Discord and tell us which template you're using! Or send us a quick email. Either will be super-helpful, thank you.
-
-## Join the Phaser Community!
-
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
-
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
-
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
-
-The Phaser logo and characters are &copy; 2011 - 2025 Phaser Studio Inc.
-
-All rights reserved.

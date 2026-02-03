@@ -46,6 +46,7 @@ export default function handleMapInit(scene: Game) {
         ],
         "SolidGreen",
     );
+
     scene.waterSpriteKey = waterResult.key;
 
     const terrainTilesets = [grassResult.tileset, waterResult.tileset];

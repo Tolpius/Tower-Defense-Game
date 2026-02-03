@@ -68,7 +68,7 @@ export class UI extends Scene {
         this.waveText = this.add.text(
             16,
             82,
-            `Wave: ${currentWave}/${maxWaves}`,
+            `Wave: ${currentWave}/${maxWaves === Infinity ? "∞" : maxWaves}`,
             { fontSize: "16px", color: "#ffffff" },
         );
 
@@ -124,7 +124,9 @@ export class UI extends Scene {
         const gameScene = this.scene.get("Game") as Game;
         const currentWave = gameScene.waveManager?.currentWave ?? 1;
         const maxWaves = gameScene.waveManager?.maxWaves ?? 1;
-        this.waveText.setText(`Wave: ${currentWave}/${maxWaves}`);
+        this.waveText.setText(
+            `Wave: ${currentWave}/${maxWaves === Infinity ? "∞" : maxWaves}`,
+        );
     }
 
     showCheaterBadge() {

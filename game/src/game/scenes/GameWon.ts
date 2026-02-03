@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { WorldsData } from "../../config/WorldInterfaces";
+import { unlockInfiniteMode } from "../scripts/progress/ProgressManager";
 
 export class GameWon extends Scene {
     private worldId!: number;
@@ -29,6 +30,9 @@ export class GameWon extends Scene {
         // Load worlds data
         this.worlds = this.cache.json.get("worlds");
         this.hasNextLevel = this.checkNextLevel();
+
+        // Map wurde gewonnen -> Infinite Mode freischalten
+        unlockInfiniteMode(this.worldId, this.mapId);
 
         this.add
             .text(width / 2, height / 2 - 80, "You won!", {

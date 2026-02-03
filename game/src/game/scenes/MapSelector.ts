@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { WorldData, MapData } from "../../config/WorldInterfaces";
+import { isInfiniteModeUnlocked } from "../scripts/progress/ProgressManager";
 
 export default class MapSelector extends Phaser.Scene {
     private world!: WorldData;
@@ -132,32 +133,37 @@ export default class MapSelector extends Phaser.Scene {
                     this.selectMap(map, false);
                 });
 
-            // Endless Button (Infinite Mode)
+            // Endless Button (Infinite Mode) - nur wenn freigeschaltet
+            const isUnlocked = isInfiniteModeUnlocked(this.world.id, map.id);
             const endlessButton = this.add
                 .text(
                     x + smallButtonWidth / 2 + buttonSpacing / 2,
                     y + 20,
-                    "♾️ Endless",
+                    isUnlocked ? "♾️ Endless" : "🔒 Locked",
                     {
                         fontSize: "14px",
-                        color: "#fff",
-                        backgroundColor: "#8B008B",
+                        color: isUnlocked ? "#fff" : "#888",
+                        backgroundColor: isUnlocked ? "#8B008B" : "#333",
                         padding: { left: 8, right: 8, top: 6, bottom: 6 },
                         fixedWidth: smallButtonWidth,
                         align: "center",
                     },
                 )
-                .setOrigin(0.5)
-                .setInteractive({ useHandCursor: true })
-                .on("pointerover", function (this: Phaser.GameObjects.Text) {
-                    this.setStyle({ backgroundColor: "#ab00ab" });
-                })
-                .on("pointerout", function (this: Phaser.GameObjects.Text) {
-                    this.setStyle({ backgroundColor: "#8B008B" });
-                })
-                .on("pointerdown", () => {
-                    this.selectMap(map, true);
-                });
+                .setOrigin(0.5);
+
+            if (isUnlocked) {
+                endlessButton
+                    .setInteractive({ useHandCursor: true })
+                    .on("pointerover", function (this: Phaser.GameObjects.Text) {
+                        this.setStyle({ backgroundColor: "#ab00ab" });
+                    })
+                    .on("pointerout", function (this: Phaser.GameObjects.Text) {
+                        this.setStyle({ backgroundColor: "#8B008B" });
+                    })
+                    .on("pointerdown", () => {
+                        this.selectMap(map, true);
+                    });
+            }
 
             // Hover-Effekt auf den gesamten Container für Preview
             containerBg

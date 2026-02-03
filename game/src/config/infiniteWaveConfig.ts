@@ -112,34 +112,42 @@ export const INFINITE_WAVE_CONFIG: InfiniteWaveConfig = {
         {
             minWave: 1,
             baseWeight: 10,
-            enemies: [
-                { type: EnemyType.Leafbug, weight: 5 },
-                { type: EnemyType.Scorpion, weight: 3 },
-            ],
+            enemies: [{ type: EnemyType.Leafbug, weight: 1 }],
         },
         {
-            minWave: 5,
+            minWave: 6,
             baseWeight: 10,
-            enemies: [
-                { type: EnemyType.Firebug, weight: 3 },
-                { type: EnemyType.Clampbeetle, weight: 2 },
-            ],
+            enemies: [{ type: EnemyType.Voidbutterfly, weight: 1 }],
         },
         {
-            minWave: 10,
+            minWave: 11,
             baseWeight: 10,
-            enemies: [
-                { type: EnemyType.Flyinglocust, weight: 2 },
-                { type: EnemyType.Voidbutterfly, weight: 2 },
-            ],
+            enemies: [{ type: EnemyType.Scorpion, weight: 1 }],
         },
         {
-            minWave: 15,
+            minWave: 16,
             baseWeight: 10,
-            enemies: [
-                { type: EnemyType.Magmacrab, weight: 1 },
-                { type: EnemyType.Firewasp, weight: 1 },
-            ],
+            enemies: [{ type: EnemyType.Clampbeetle, weight: 1 }],
+        },
+        {
+            minWave: 21,
+            baseWeight: 10,
+            enemies: [{ type: EnemyType.Magmacrab, weight: 1 }],
+        },
+        {
+            minWave: 26,
+            baseWeight: 10,
+            enemies: [{ type: EnemyType.Firewasp, weight: 1 }],
+        },
+        {
+            minWave: 31,
+            baseWeight: 10,
+            enemies: [{ type: EnemyType.Firebug, weight: 1 }],
+        },
+        {
+            minWave: 36,
+            baseWeight: 10,
+            enemies: [{ type: EnemyType.Flyinglocust, weight: 1 }],
         },
     ],
 
@@ -160,6 +168,7 @@ export const INFINITE_WAVE_CONFIG: InfiniteWaveConfig = {
             EnemyType.Magmacrab,
             EnemyType.Scorpion,
             EnemyType.Firebug,
+            EnemyType.Flyinglocust,
         ],
     },
 

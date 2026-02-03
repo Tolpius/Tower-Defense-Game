@@ -3,7 +3,6 @@ import Phaser from "phaser";
 export default class MainMenu extends Phaser.Scene {
     private logo!: Phaser.GameObjects.Image;
     private startButton!: Phaser.GameObjects.Text;
-    private settingsButton!: Phaser.GameObjects.Text;
     private skipText!: Phaser.GameObjects.Text;
     private introPlaying = true;
     private beetles: Phaser.GameObjects.Sprite[] = [];
@@ -78,17 +77,6 @@ export default class MainMenu extends Phaser.Scene {
             .setAlpha(0)
             .setInteractive({ useHandCursor: true })
             .on("pointerdown", () => this.startGame());
-
-        // Settings-Button (noch nicht klickbar)
-        this.settingsButton = this.add
-            .text(width / 2, height / 2 + 140, "Settings", {
-                fontSize: "32px",
-                color: "#fff",
-                backgroundColor: "#222",
-                padding: { left: 20, right: 20, top: 10, bottom: 10 },
-            })
-            .setOrigin(0.5)
-            .setAlpha(0);
 
         this.skipText = this.add
             .text(width / 2, height - 60, "Click or key: Skip intro", {
@@ -234,19 +222,6 @@ export default class MainMenu extends Phaser.Scene {
             ease: "Bounce.easeOut",
         });
 
-        // Settings-Button fade-in
-        this.settingsButton
-            .setPosition(width / 2, height / 2 + 150)
-            .setAlpha(0)
-            .setScale(1);
-        this.tweens.add({
-            targets: this.settingsButton,
-            alpha: 1,
-            duration: 500,
-            delay: 400,
-            ease: "Sine.easeOut",
-        });
-
         this.skipText.setVisible(false);
     }
 
@@ -260,7 +235,6 @@ export default class MainMenu extends Phaser.Scene {
         if (!this.introPlaying) {
             this.logo.setPosition(width / 2, height / 2 - 100);
             this.startButton.setPosition(width / 2, height / 2 + 80);
-            this.settingsButton.setPosition(width / 2, height / 2 + 140);
         }
 
         this.skipText.setPosition(width / 2, height - 60);

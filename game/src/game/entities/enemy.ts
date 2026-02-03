@@ -1,4 +1,9 @@
-import { ENEMY_CONFIG, EnemyStats, EnemyType } from "../../config/enemyConfig";
+import {
+    ENEMY_CONFIG,
+    EnemyModifiers,
+    EnemyStats,
+    EnemyType,
+} from "../../config/enemyConfig";
 import { Game } from "../scenes/Game";
 
 export abstract class Enemy extends Phaser.GameObjects.PathFollower {
@@ -84,6 +89,38 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
     set hasReachedBase(value: boolean) {
         this._hasReachedBase = value;
     }
+
+    /**
+     * Wendet Modifier auf den Gegner an (für Infinite Wave Modus)
+     * Muss nach dem Konstruktor aufgerufen werden
+     */
+    applyModifiers(modifiers: EnemyModifiers): void {
+        // HP skalieren
+        if (modifiers.hpMultiplier && modifiers.hpMultiplier !== 1) {
+            this.maxHp = Math.round(this.maxHp * modifiers.hpMultiplier);
+            this.hp = this.maxHp;
+        }
+
+        // Speed skalieren (niedrigere duration = schneller)
+        if (modifiers.speedMultiplier && modifiers.speedMultiplier !== 1) {
+            this.duration = Math.round(
+                this.duration / modifiers.speedMultiplier,
+            );
+        }
+
+        // Größe skalieren
+        if (modifiers.scaleMultiplier && modifiers.scaleMultiplier !== 1) {
+            this.setScale(this.scaleX * modifiers.scaleMultiplier);
+        }
+
+        // Gold skalieren
+        if (modifiers.goldMultiplier && modifiers.goldMultiplier !== 1) {
+            this.moneyOnDeath = Math.round(
+                this.moneyOnDeath * modifiers.goldMultiplier,
+            );
+        }
+    }
+
     // Returns a value between 0 and 1 indicating progress along the path
     get pathProgress(): number {
         return this._pathProgress;

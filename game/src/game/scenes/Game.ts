@@ -83,9 +83,17 @@ export class Game extends Scene {
         this._buildRangeIndicator = value;
     }
 
-    init(data: { worldId: number; mapId: number }) {
+    // Flag für Start im Infinite-Modus
+    private startInInfiniteMode = false;
+
+    init(data: {
+        worldId: number;
+        mapId: number;
+        startInfiniteMode?: boolean;
+    }) {
         this.worldId = data.worldId;
         this.mapId = data.mapId;
+        this.startInInfiniteMode = data.startInfiniteMode ?? false;
 
         this.worlds = this.cache.json.get("worlds");
         if (!this.worlds) {
@@ -152,6 +160,12 @@ export class Game extends Scene {
 
         //Enemy Spawn Init
         this.waveManager = new WaveManager(this, this.mapConfig.waves);
+
+        // Starte im Infinite-Modus wenn von GameWon kommend
+        if (this.startInInfiniteMode) {
+            this.waveManager.enableInfiniteMode();
+        }
+
         this.waveManager.startWave();
 
         //UI Init
@@ -269,6 +283,21 @@ export class Game extends Scene {
         if (this.levelCompleted) return;
         this.levelCompleted = true;
 
+        // Im Infinite-Modus: Game Over (da man nur verlieren kann)
+        if (this.waveManager.isInfiniteMode) {
+            console.log("Infinite Mode beendet!");
+            this.time.delayedCall(2000, () => {
+                this.scene.stop("UI");
+                this.scene.stop("Game");
+                this.scene.start("GameOver", {
+                    worldId: this.worldId,
+                    mapId: this.mapId,
+                    infiniteWave: this.waveManager.currentInfiniteWave,
+                });
+            });
+            return;
+        }
+
         console.log("Level completed! Waiting 4 seconds...");
         this.time.delayedCall(4000, () => {
             this.scene.stop("UI");
@@ -276,6 +305,7 @@ export class Game extends Scene {
             this.scene.start("GameWon", {
                 worldId: this.worldId,
                 mapId: this.mapId,
+                canContinueToInfinite: true,
             });
         });
     }

@@ -1,7 +1,7 @@
 import { Enemy } from "../entities/enemy";
 import { Leafbug } from "../entities/enemies/leafbug";
 import { Scorpion } from "../entities/enemies/scorpion";
-import { EnemyType } from "../../config/enemyConfig";
+import { EnemyModifiers, EnemyType } from "../../config/enemyConfig";
 import { Firebug } from "../entities/enemies/firebug";
 import { Magmacrab } from "../entities/enemies/magmacrab";
 import { Clampbeetle } from "../entities/enemies/clampbeetle";
@@ -15,34 +15,51 @@ export class EnemyFactory {
         scene: Phaser.Scene,
         path: Phaser.Curves.Path,
         type: EnemyType,
+        modifiers?: EnemyModifiers,
     ): Enemy {
+        let enemy: Enemy;
+
         switch (type.toLowerCase()) {
             case "leafbug":
-                return new Leafbug(scene, path);
+                enemy = new Leafbug(scene, path);
+                break;
             case "scorpion":
-                return new Scorpion(scene, path);
+                enemy = new Scorpion(scene, path);
+                break;
             case "firebug":
-                return new Firebug(scene, path);
+                enemy = new Firebug(scene, path);
+                break;
             case "magmacrab":
-                return new Magmacrab(scene, path);
+                enemy = new Magmacrab(scene, path);
+                break;
             case "clampbeetle":
-                return new Clampbeetle(scene, path);
+                enemy = new Clampbeetle(scene, path);
+                break;
             case "flyinglocust":
-                return new Flyinglocust(scene, path);
+                enemy = new Flyinglocust(scene, path);
+                break;
             case "voidbutterfly":
-                return new Voidbutterfly(scene, path);
+                enemy = new Voidbutterfly(scene, path);
+                break;
             case "firewasp":
-                return new Firewasp(scene, path);
+                enemy = new Firewasp(scene, path);
+                break;
             case "patharrow":
-                // Special enemy type for path visualization/debugging
-                // Assuming PathArrow class is defined elsewhere
-                return new PathArrow(scene, path);
+                enemy = new PathArrow(scene, path);
+                break;
             default:
                 console.warn(
                     `Unknown enemy type: ${type}, using Leafbug as fallback`,
                 );
-                return new Leafbug(scene, path);
+                enemy = new Leafbug(scene, path);
         }
+
+        // Modifiers anwenden (für Infinite Wave Modus)
+        if (modifiers) {
+            enemy.applyModifiers(modifiers);
+        }
+
+        return enemy;
     }
 }
 

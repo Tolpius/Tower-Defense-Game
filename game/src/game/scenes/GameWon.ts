@@ -6,14 +6,20 @@ export class GameWon extends Scene {
     private mapId!: number;
     private worlds!: WorldsData;
     private hasNextLevel: boolean = false;
+    private canContinueToInfinite: boolean = false;
 
     constructor() {
         super({ key: "GameWon" });
     }
 
-    init(data: { worldId: number; mapId: number }) {
+    init(data: {
+        worldId: number;
+        mapId: number;
+        canContinueToInfinite?: boolean;
+    }) {
         this.worldId = data.worldId;
         this.mapId = data.mapId;
+        this.canContinueToInfinite = data.canContinueToInfinite ?? false;
     }
 
     create() {
@@ -31,10 +37,14 @@ export class GameWon extends Scene {
             })
             .setOrigin(0.5);
 
+        // Button-Positionen berechnen
+        let buttonY = height / 2 - 20;
+        const buttonSpacing = 60;
+
         // Next Level Button (only if next level exists)
         if (this.hasNextLevel) {
             this.add
-                .text(width / 2, height / 2, "Next Level", {
+                .text(width / 2, buttonY, "Next Level", {
                     fontSize: "32px",
                     color: "#fff",
                     backgroundColor: "#228B22",
@@ -51,11 +61,35 @@ export class GameWon extends Scene {
                     });
                     this.scene.launch("UI");
                 });
+            buttonY += buttonSpacing;
+        }
+
+        // Continue to Endless Mode Button
+        if (this.canContinueToInfinite) {
+            this.add
+                .text(width / 2, buttonY, "♾️ Endless Mode", {
+                    fontSize: "32px",
+                    color: "#fff",
+                    backgroundColor: "#8B008B",
+                    padding: { left: 16, right: 16, top: 8, bottom: 8 },
+                })
+                .setOrigin(0.5)
+                .setInteractive({ useHandCursor: true })
+                .on("pointerdown", () => {
+                    this.scene.stop("GameWon");
+                    this.scene.start("Game", {
+                        worldId: this.worldId,
+                        mapId: this.mapId,
+                        startInfiniteMode: true,
+                    });
+                    this.scene.launch("UI");
+                });
+            buttonY += buttonSpacing;
         }
 
         // Restart Level Button
         this.add
-            .text(width / 2, height / 2 + 60, "Restart Level", {
+            .text(width / 2, buttonY, "Restart Level", {
                 fontSize: "32px",
                 color: "#fff",
                 backgroundColor: "#B22222",
@@ -71,10 +105,11 @@ export class GameWon extends Scene {
                 });
                 this.scene.launch("UI");
             });
+        buttonY += buttonSpacing;
 
         // Main Menu Button
         this.add
-            .text(width / 2, height / 2 + 120, "Back to Main Menu", {
+            .text(width / 2, buttonY, "Back to Main Menu", {
                 fontSize: "32px",
                 color: "#fff",
                 backgroundColor: "#222",

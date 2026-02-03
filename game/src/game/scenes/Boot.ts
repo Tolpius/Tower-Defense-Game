@@ -17,6 +17,9 @@ export class Boot extends Scene {
         // Globalen Cheat-Listener initialisieren
         initGlobalCheatListener(this.game);
 
+        // Fullscreen-Button starten (läuft parallel zu allen anderen Scenes)
+        this.scene.launch("FullscreenButton");
+
         this.scene.start("Preloader");
     }
 }

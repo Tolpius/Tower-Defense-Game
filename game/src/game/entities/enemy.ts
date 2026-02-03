@@ -308,6 +308,7 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         if (!this.isAlive && this.isWorthMoney && !this.hasReachedBase) {
             this.playMoneyAnimation();
             (this.scene as Game).money += this.moneyOnDeath;
+            (this.scene as Game).addKill();
             this.isWorthMoney = false;
         }
         // Skip update if enemy is dead

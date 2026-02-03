@@ -4,7 +4,6 @@ export default function loadWorldAssets(preloader: Preloader) {
     //WORLD GENERATION
     preloader.load.image("logo", "logo_path-of-bugs.png");
     preloader.load.image("background", "/assets/background.png");
-    preloader.load.image("enemy", "star.png");
     preloader.load.image("td-map-lvl1", "/map/TD-map-lvl1.png");
     preloader.load.image("grassAutumn", "/tilesets/GrassTilesetAutumn.png");
     preloader.load.image("grassWinter", "/tilesets/GrassTilesetWinter.png");
@@ -54,3 +53,4 @@ export default function loadWorldAssets(preloader: Preloader) {
         },
     );
 }
+

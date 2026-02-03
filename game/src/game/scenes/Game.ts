@@ -19,6 +19,7 @@ export class Game extends Scene {
     public layerHighground!: Phaser.Tilemaps.TilemapLayer;
     private _money: number;
     private _health: number;
+    private _kills: number = 0;
     public selectedTower?: Tower;
     public buildingTowerSelected: string | null;
     public buildingTowerSelectedCost: number;
@@ -73,9 +74,22 @@ export class Game extends Scene {
             this.scene.start("GameOver", {
                 worldId: this.worldId,
                 mapId: this.mapId,
+                wave: this.waveManager?.currentWave ?? 1,
+                kills: this._kills,
+                isInfiniteMode: this.waveManager?.isInfiniteMode ?? false,
             });
         }
     }
+
+    get kills() {
+        return this._kills;
+    }
+
+    addKill() {
+        this._kills++;
+        this.events.emit("kills-changed", this._kills);
+    }
+
     get buildRangeIndicator() {
         return this._buildRangeIndicator;
     }
@@ -126,6 +140,7 @@ export class Game extends Scene {
         //Variable Init
         this.money = this.mapConfig.startingMoney;
         this.health = this.mapConfig.startingHealth;
+        this._kills = 0;
 
         this.registry.set("money", this.money);
         this.registry.set("health", this.health);
@@ -300,7 +315,9 @@ export class Game extends Scene {
                 this.scene.start("GameOver", {
                     worldId: this.worldId,
                     mapId: this.mapId,
-                    infiniteWave: this.waveManager.currentInfiniteWave,
+                    wave: this.waveManager.currentInfiniteWave,
+                    kills: this._kills,
+                    isInfiniteMode: true,
                 });
             });
             return;
@@ -314,6 +331,9 @@ export class Game extends Scene {
                 worldId: this.worldId,
                 mapId: this.mapId,
                 canContinueToInfinite: true,
+                wave: this.waveManager?.currentWave ?? 1,
+                kills: this._kills,
+                isInfiniteMode: false,
             });
         });
     }

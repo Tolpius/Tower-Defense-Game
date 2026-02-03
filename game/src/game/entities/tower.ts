@@ -565,14 +565,14 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             radius,
             position,
             forTowerShot,
-        ).filter((e) => !e.isGoingToDie && !ignoreList.includes(e));
+        ).filter((e) => !e.isGoingToDie && e.effectiveHp > 0 && !ignoreList.includes(e));
         if (targets.length === 0) return undefined;
 
         switch (this.targetPriority) {
             case TargetPriority.Strongest:
-                // Get the enemy with the highest health
+                // Get the enemy with the highest effective health (accounting for pending damage)
                 return targets.reduce((strongest, current) =>
-                    current.hp > strongest.hp ? current : strongest,
+                    current.effectiveHp > strongest.effectiveHp ? current : strongest,
                 );
             case TargetPriority.First:
             default:

@@ -98,7 +98,7 @@ export class CatapultTower extends Tower {
         this.weapon.rotation =
             Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y) + 90;
         if (!this.canShoot(time)) return;
-        if (target.hp <= this.damage) target.isGoingToDie = true;
+        target.addPendingDamage(this.damage);
         this.shoot(target);
         this.lastFired = time;
     }
@@ -200,6 +200,8 @@ export class CatapultTower extends Tower {
             // Check if projectile reached target
             if (distance < 10) {
                 projectile.destroy();
+                // Remove pending damage
+                target.removePendingDamage(this.damage);
                 const impact = scene.add
                     .sprite(targetX, targetY, this.spriteImpact, 0)
                     .setDepth(Math.floor(targetY) + 75);

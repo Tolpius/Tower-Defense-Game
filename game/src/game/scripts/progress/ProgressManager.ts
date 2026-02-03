@@ -12,6 +12,9 @@ interface ProgressData {
     completedMaps: string[];
 }
 
+/** Temporärer Cheat-Unlock für alle Maps (Session-only) */
+let _allUnlockedTemporarily = false;
+
 /** Lädt den Fortschritt aus dem localStorage */
 function loadProgress(): ProgressData {
     try {
@@ -42,11 +45,15 @@ function getMapKey(worldId: number, mapId: number): string {
 /**
  * Prüft, ob der Infinite-Mode für eine Map freigeschaltet ist.
  * Voraussetzung: Map wurde mindestens einmal im normalen Modus gewonnen.
+ * Oder: Temporärer Cheat-Unlock aktiv.
  */
 export function isInfiniteModeUnlocked(
     worldId: number,
     mapId: number,
 ): boolean {
+    // Temporärer Cheat-Unlock
+    if (_allUnlockedTemporarily) return true;
+
     const progress = loadProgress();
     return progress.completedMaps.includes(getMapKey(worldId, mapId));
 }
@@ -79,5 +86,20 @@ export function getCompletedMaps(): string[] {
 export function resetProgress(): void {
     localStorage.removeItem(STORAGE_KEY);
     console.log("🗑️ Fortschritt zurückgesetzt!");
+}
+
+/**
+ * Schaltet alle Infinite Modes temporär frei (bis zum Seiten-Refresh).
+ * Wird durch Cheat-Code aktiviert.
+ */
+export function unlockAllInfiniteModesTemporarily(): void {
+    _allUnlockedTemporarily = true;
+}
+
+/**
+ * Prüft ob der temporäre Unlock aktiv ist.
+ */
+export function isAllUnlockedTemporarily(): boolean {
+    return _allUnlockedTemporarily;
 }
 

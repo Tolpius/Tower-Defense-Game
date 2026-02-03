@@ -43,7 +43,10 @@ function getMapKey(worldId: number, mapId: number): string {
  * Prüft, ob der Infinite-Mode für eine Map freigeschaltet ist.
  * Voraussetzung: Map wurde mindestens einmal im normalen Modus gewonnen.
  */
-export function isInfiniteModeUnlocked(worldId: number, mapId: number): boolean {
+export function isInfiniteModeUnlocked(
+    worldId: number,
+    mapId: number,
+): boolean {
     const progress = loadProgress();
     return progress.completedMaps.includes(getMapKey(worldId, mapId));
 }
@@ -77,3 +80,4 @@ export function resetProgress(): void {
     localStorage.removeItem(STORAGE_KEY);
     console.log("🗑️ Fortschritt zurückgesetzt!");
 }
+

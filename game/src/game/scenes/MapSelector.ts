@@ -154,9 +154,12 @@ export default class MapSelector extends Phaser.Scene {
             if (isUnlocked) {
                 endlessButton
                     .setInteractive({ useHandCursor: true })
-                    .on("pointerover", function (this: Phaser.GameObjects.Text) {
-                        this.setStyle({ backgroundColor: "#ab00ab" });
-                    })
+                    .on(
+                        "pointerover",
+                        function (this: Phaser.GameObjects.Text) {
+                            this.setStyle({ backgroundColor: "#ab00ab" });
+                        },
+                    )
                     .on("pointerout", function (this: Phaser.GameObjects.Text) {
                         this.setStyle({ backgroundColor: "#8B008B" });
                     })

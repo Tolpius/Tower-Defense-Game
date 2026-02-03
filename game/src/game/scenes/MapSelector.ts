@@ -66,8 +66,9 @@ export default class MapSelector extends Phaser.Scene {
 
         // Grid settings
         const columns = 3;
-        const buttonWidth = 180;
-        const buttonHeight = 130; // Erhöht für zusätzliche Buttons
+        const buttonWidth = 200;
+        const buttonHeight = 80;
+        const innerPadding = 4;
         const paddingX = 30;
         const paddingY = 25;
 
@@ -91,26 +92,69 @@ export default class MapSelector extends Phaser.Scene {
                 .setOrigin(0.5)
                 .setStrokeStyle(2, 0x2a4a6e);
 
+            const difficulty =
+                index < 2 ? "Easy" : index < 4 ? "Medium" : "Hard";
+            const difficultyColor =
+                difficulty === "Easy"
+                    ? 0x2ea44f
+                    : difficulty === "Medium"
+                      ? 0x1f6feb
+                      : 0xd1242f;
+            const badgePadding = 6;
+            const badgeHeight = 20;
+            const badgeText = this.add.text(0, 0, difficulty, {
+                fontSize: "12px",
+                color: "#fff",
+            }).setOrigin(0.5);
+            const badgeWidth = badgeText.width + badgePadding * 2;
+            const badgeBg = this.add.graphics();
+            badgeBg.fillStyle(difficultyColor, 1);
+            badgeBg.fillRoundedRect(
+                -badgeWidth / 2,
+                -badgeHeight / 2,
+                badgeWidth,
+                badgeHeight,
+                6,
+            );
+            badgeBg.lineStyle(2, 0xffffff, 1);
+            badgeBg.strokeRoundedRect(
+                -badgeWidth / 2,
+                -badgeHeight / 2,
+                badgeWidth,
+                badgeHeight,
+                6,
+            );
+            const badge = this.add.container(
+                x + buttonWidth / 2 - 12,
+                y - buttonHeight / 2 - 2,
+                [badgeBg, badgeText],
+            );
+            badge.setDepth(5);
+
             // Map Name & Info
             const mapInfo = `${map.name}\n🌊 ${map.waves.length} Waves`;
 
             const mapLabel = this.add
-                .text(x, y - 35, mapInfo, {
+                .text(x, y, mapInfo, {
                     fontSize: "14px",
                     color: "#fff",
                     align: "center",
                 })
                 .setOrigin(0.5);
+            mapLabel.setPosition(
+                x,
+                y - buttonHeight / 2 + innerPadding + mapLabel.height / 2,
+            );
 
             // Button-Breite für die zwei Buttons
-            const smallButtonWidth = 75;
+            const smallButtonWidth = 90;
             const buttonSpacing = 8;
 
             // Play Button (Normal Mode)
             const playButton = this.add
                 .text(
                     x - smallButtonWidth / 2 - buttonSpacing / 2,
-                    y + 20,
+                    y,
                     "▶ Play",
                     {
                         fontSize: "14px",
@@ -138,7 +182,7 @@ export default class MapSelector extends Phaser.Scene {
             const endlessButton = this.add
                 .text(
                     x + smallButtonWidth / 2 + buttonSpacing / 2,
-                    y + 20,
+                    y,
                     isUnlocked ? "♾️ Endless" : "🔒 Locked",
                     {
                         fontSize: "14px",
@@ -150,6 +194,10 @@ export default class MapSelector extends Phaser.Scene {
                     },
                 )
                 .setOrigin(0.5);
+            const buttonY =
+                y + buttonHeight / 2 - innerPadding - playButton.height / 2;
+            playButton.setY(buttonY);
+            endlessButton.setY(buttonY);
 
             if (isUnlocked) {
                 endlessButton
@@ -197,7 +245,7 @@ export default class MapSelector extends Phaser.Scene {
         const previewHeight = 180;
         const columns = 3;
         const buttonWidth = 180;
-        const buttonHeight = 100;
+        const buttonHeight = 92;
         const paddingY = 25;
         const startY = 140;
         const rows = Math.ceil(this.world.maps.length / columns);
@@ -238,4 +286,3 @@ export default class MapSelector extends Phaser.Scene {
         this.previewFrame?.setVisible(false);
     }
 }
-

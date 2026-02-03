@@ -126,23 +126,44 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
     /**
      * Berechnet den UI-Offset basierend auf der Tower-Position relativ zur Scene-Mitte
+     * Gibt Positionen für alle drei Buttons zurück, sodass die Reihenfolge immer
+     * Upgrade -> TargetPriority -> Sell ist (von oben nach unten bzw. näher zum Tower nach weiter weg)
      */
     private getUiOffset(scene: GameScene): {
         x: number;
-        y: number;
-        baseY: number;
+        upgradeY: number;
+        targetPriorityY: number;
+        sellY: number;
     } {
         const centerX = scene.scale.width / 2;
         const centerY = scene.scale.height / 2;
 
         // Wenn Tower rechts von der Mitte -> Buttons links, sonst rechts
         const offsetX = this.x > centerX ? -50 : 50;
-        // Abstand zwischen Buttons (positiv = unten, negativ = oben)
-        const offsetY = this.y > centerY ? -35 : 35;
-        // Basis-Offset für alle Buttons gemeinsam (weiter unten wenn Tower in oberer Hälfte)
-        const baseY = this.y > centerY ? 0 : 50;
 
-        return { x: offsetX, y: offsetY, baseY };
+        // Abstand zwischen Buttons
+        const buttonSpacing = 35;
+
+        if (this.y > centerY) {
+            // Tower in unterer Hälfte -> Buttons nach oben (negativ)
+            // Reihenfolge von oben nach unten: Upgrade, TP, Sell (also umgekehrte Multiplikatoren)
+            return {
+                x: offsetX,
+                upgradeY: -buttonSpacing * 2,
+                targetPriorityY: -buttonSpacing,
+                sellY: 0,
+            };
+        } else {
+            // Tower in oberer Hälfte -> Buttons nach unten (positiv)
+            // Basis-Offset für alle Buttons (weiter unten)
+            const baseY = 50;
+            return {
+                x: offsetX,
+                upgradeY: baseY,
+                targetPriorityY: baseY + buttonSpacing,
+                sellY: baseY + buttonSpacing * 2,
+            };
+        }
     }
 
     private createTargetPriorityButton(scene: GameScene) {
@@ -150,7 +171,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         // Container for the button, positioned relative to tower based on screen position
         this.targetPriorityButton = scene.add.container(
             this.x + offset.x,
-            this.y + offset.baseY,
+            this.y + offset.targetPriorityY,
         );
         this.targetPriorityButton.setDepth(10000);
         this.targetPriorityButton.setVisible(false);
@@ -206,7 +227,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         // Container for the sell button, positioned relative to tower
         this.sellButton = scene.add.container(
             this.x + offset.x,
-            this.y + offset.baseY + offset.y,
+            this.y + offset.sellY,
         );
         this.sellButton.setDepth(10000);
         this.sellButton.setVisible(false);
@@ -244,7 +265,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
         // Container for the upgrade button, positioned relative to tower
         this.upgradeButton = scene.add.container(
             this.x + offset.x,
-            this.y + offset.baseY + offset.y * 2,
+            this.y + offset.upgradeY,
         );
         this.upgradeButton.setDepth(10000);
         this.upgradeButton.setVisible(false);

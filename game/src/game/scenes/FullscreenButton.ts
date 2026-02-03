@@ -61,3 +61,4 @@ export class FullscreenButton extends Scene {
         this.button?.setPosition(width - 16, height - 16);
     }
 }
+

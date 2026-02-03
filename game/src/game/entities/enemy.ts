@@ -148,10 +148,10 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
                 this._pathProgress = 1;
                 this.stopFollow();
                 this.hasReachedBase = true;
-                // Enemy reached the end of the path
-                this.healthBar.destroy();
-                this.progressBar.destroy();
-                this.progressText.destroy();
+                // Enemy reached the end of the path - cleanup after damage is dealt
+                this.healthBar?.destroy();
+                this.progressBar?.destroy();
+                this.progressText?.destroy();
                 this.setVisible(false);
             },
         });
@@ -241,11 +241,25 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
         this.once(
             Phaser.Animations.Events.ANIMATION_COMPLETE,
             () => {
-                this.setVisible(false);
-                this.setActive(false);
+                this.cleanup();
             },
             this,
         );
+    }
+
+    /** Entfernt alle Ressourcen des Enemies (für Memory Management) */
+    cleanup() {
+        this.healthBar?.destroy();
+        this.progressBar?.destroy();
+        this.progressText?.destroy();
+        this.setVisible(false);
+        this.setActive(false);
+
+        // Verzögerte Zerstörung (10 Sekunden) um Reference Errors bei
+        // noch fliegenden Projektilen zu vermeiden
+        this.scene?.time.delayedCall(10000, () => {
+            this.destroy();
+        });
     }
 
     update() {

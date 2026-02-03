@@ -66,8 +66,9 @@ export default class MapSelector extends Phaser.Scene {
 
         // Grid settings
         const columns = 3;
-        const buttonWidth = 180;
-        const buttonHeight = 130; // Erhöht für zusätzliche Buttons
+        const buttonWidth = 200;
+        const buttonHeight = 80;
+        const innerPadding = 4;
         const paddingX = 30;
         const paddingY = 25;
 
@@ -95,22 +96,26 @@ export default class MapSelector extends Phaser.Scene {
             const mapInfo = `${map.name}\n🌊 ${map.waves.length} Waves`;
 
             const mapLabel = this.add
-                .text(x, y - 35, mapInfo, {
+                .text(x, y, mapInfo, {
                     fontSize: "14px",
                     color: "#fff",
                     align: "center",
                 })
                 .setOrigin(0.5);
+            mapLabel.setPosition(
+                x,
+                y - buttonHeight / 2 + innerPadding + mapLabel.height / 2,
+            );
 
             // Button-Breite für die zwei Buttons
-            const smallButtonWidth = 75;
+            const smallButtonWidth = 90;
             const buttonSpacing = 8;
 
             // Play Button (Normal Mode)
             const playButton = this.add
                 .text(
                     x - smallButtonWidth / 2 - buttonSpacing / 2,
-                    y + 20,
+                    y,
                     "▶ Play",
                     {
                         fontSize: "14px",
@@ -138,7 +143,7 @@ export default class MapSelector extends Phaser.Scene {
             const endlessButton = this.add
                 .text(
                     x + smallButtonWidth / 2 + buttonSpacing / 2,
-                    y + 20,
+                    y,
                     isUnlocked ? "♾️ Endless" : "🔒 Locked",
                     {
                         fontSize: "14px",
@@ -150,6 +155,10 @@ export default class MapSelector extends Phaser.Scene {
                     },
                 )
                 .setOrigin(0.5);
+            const buttonY =
+                y + buttonHeight / 2 - innerPadding - playButton.height / 2;
+            playButton.setY(buttonY);
+            endlessButton.setY(buttonY);
 
             if (isUnlocked) {
                 endlessButton
@@ -197,7 +206,7 @@ export default class MapSelector extends Phaser.Scene {
         const previewHeight = 180;
         const columns = 3;
         const buttonWidth = 180;
-        const buttonHeight = 100;
+        const buttonHeight = 92;
         const paddingY = 25;
         const startY = 140;
         const rows = Math.ceil(this.world.maps.length / columns);

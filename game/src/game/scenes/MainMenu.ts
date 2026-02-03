@@ -57,7 +57,7 @@ export default class MainMenu extends Phaser.Scene {
                     key: data.anim,
                     frames: this.anims.generateFrameNumbers(
                         data.key,
-                        data.frames
+                        data.frames,
                     ),
                     frameRate: data.frameRate,
                     repeat: -1,

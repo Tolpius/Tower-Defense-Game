@@ -30,6 +30,9 @@ export abstract class Tower extends Phaser.GameObjects.Container {
     protected sellConfirmPending: boolean = false;
     protected upgradeButton!: Phaser.GameObjects.Container;
     protected upgradeText!: Phaser.GameObjects.Text;
+    protected upgradeFrame!: Phaser.GameObjects.Graphics;
+    protected upgradeCost: number = 0;
+    private moneyChangedHandler?: (money: number) => void;
 
     protected spriteBase: string;
     protected spriteWeapon: string;
@@ -76,6 +79,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             this.createTargetPriorityButton(scene);
             this.createSellButton(scene);
             this.createUpgradeButton(scene);
+            this.setupMoneyChangeListener(scene);
         }
 
         // Determine if tower is upgradeable
@@ -297,20 +301,22 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
         const nextLevelConfig =
             TOWER_CONFIGS[this.config.id].levels[this.level];
-        const upgradeCost = nextLevelConfig?.cost ?? 0;
+        this.upgradeCost = nextLevelConfig?.cost ?? 0;
 
         // Frame background (green-ish for upgrade)
-        const frame = scene.add.graphics();
-        frame.lineStyle(2, 0x66ff66, 1);
-        frame.fillStyle(0x000000, 0.7);
-        frame.fillRoundedRect(-40, -14, 80, 28, 6);
-        frame.strokeRoundedRect(-40, -14, 80, 28, 6);
+        this.upgradeFrame = scene.add.graphics();
+        this.drawUpgradeFrame(scene.money >= this.upgradeCost);
 
         // Text
-        this.upgradeText = scene.add.text(0, 0, `Upgrade (${upgradeCost})`, {
-            fontSize: "11px",
-            color: "#66ff66",
-        });
+        this.upgradeText = scene.add.text(
+            0,
+            0,
+            `Upgrade (${this.upgradeCost})`,
+            {
+                fontSize: "11px",
+                color: scene.money >= this.upgradeCost ? "#66ff66" : "#666666",
+            },
+        );
         this.upgradeText.setOrigin(0.5, 0.5);
 
         // Hit area for clicking
@@ -320,7 +326,31 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             this.upgrade();
         });
 
-        this.upgradeButton.add([frame, this.upgradeText, hitArea]);
+        this.upgradeButton.add([this.upgradeFrame, this.upgradeText, hitArea]);
+    }
+
+    private drawUpgradeFrame(canAfford: boolean) {
+        this.upgradeFrame.clear();
+        const color = canAfford ? 0x66ff66 : 0x666666;
+        this.upgradeFrame.lineStyle(2, color, 1);
+        this.upgradeFrame.fillStyle(0x000000, 0.7);
+        this.upgradeFrame.fillRoundedRect(-40, -14, 80, 28, 6);
+        this.upgradeFrame.strokeRoundedRect(-40, -14, 80, 28, 6);
+    }
+
+    private setupMoneyChangeListener(scene: GameScene) {
+        this.moneyChangedHandler = (money: number) => {
+            this.updateUpgradeButtonState(money);
+        };
+        scene.events.on("money-changed", this.moneyChangedHandler);
+    }
+
+    private updateUpgradeButtonState(money: number) {
+        if (!this.upgradeButton || !this.isUpgradeable) return;
+
+        const canAfford = money >= this.upgradeCost;
+        this.drawUpgradeFrame(canAfford);
+        this.upgradeText.setColor(canAfford ? "#66ff66" : "#666666");
     }
 
     private upgrade() {
@@ -403,6 +433,11 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
         // Clean up any active animations and event listeners before destruction
         this.cleanupBeforeDestroy();
+
+        // Remove money change listener
+        if (this.moneyChangedHandler) {
+            scene.events.off("money-changed", this.moneyChangedHandler);
+        }
 
         // Remove from towers group
         scene.towers.remove(this, true, true);

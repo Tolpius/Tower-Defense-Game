@@ -587,6 +587,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
 
     setTargetPriority(priority: TargetPriority): void {
         this.targetPriority = priority;
+        this.updateTargetPriorityText();
     }
 
     getTargetPriority(): TargetPriority {

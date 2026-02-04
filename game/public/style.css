@@ -67,10 +67,12 @@ body {
 /* Wave Builder Styles */
 .wave-builder {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .wave-builder-header {
@@ -105,6 +107,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 40px;
 }
 
 /* Enemy Section */

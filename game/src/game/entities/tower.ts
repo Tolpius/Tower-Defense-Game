@@ -567,7 +567,7 @@ export abstract class Tower extends Phaser.GameObjects.Container {
             forTowerShot,
         ).filter(
             (e) =>
-                !e.isGoingToDie && e.effectiveHp > 0 && !ignoreList.includes(e),
+                !e.isGoingToDie && !ignoreList.includes(e),
         );
         if (targets.length === 0) return undefined;
 

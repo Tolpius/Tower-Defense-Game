@@ -46,11 +46,15 @@ function getMapKey(worldId: number, mapId: number): string {
  * Prüft, ob der Infinite-Mode für eine Map freigeschaltet ist.
  * Voraussetzung: Map wurde mindestens einmal im normalen Modus gewonnen.
  * Oder: Temporärer Cheat-Unlock aktiv.
+ * Oder: VITE_DEBUG=true ist gesetzt.
  */
 export function isInfiniteModeUnlocked(
     worldId: number,
     mapId: number,
 ): boolean {
+    // Debug-Modus: Alle Maps freigeschaltet
+    if (import.meta.env.VITE_DEBUG === "true") return true;
+
     // Temporärer Cheat-Unlock
     if (_allUnlockedTemporarily) return true;
 

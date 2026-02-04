@@ -10,6 +10,7 @@ import WorldSelector from "./scenes/WorldSelector";
 import MapSelector from "./scenes/MapSelector";
 import { CheaterOverlay } from "./scenes/CheaterOverlay";
 import { FullscreenButton } from "./scenes/FullscreenButton";
+import { Leaderboard } from "./scenes/Leaderboard";
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -36,6 +37,7 @@ const config: Phaser.Types.Core.GameConfig = {
         GameWon,
         CheaterOverlay,
         FullscreenButton,
+        Leaderboard,
     ],
     physics: {
         default: "arcade",

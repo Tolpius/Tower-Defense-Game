@@ -172,6 +172,10 @@ export abstract class Enemy extends Phaser.GameObjects.PathFollower {
      */
     removePendingDamage(damage: number): void {
         this._pendingDamage = Math.max(0, this._pendingDamage - damage);
+        // Re-evaluate isGoingToDie - if effective HP is now positive, enemy won't die
+        if (this._isGoingToDie && this.hp > this._pendingDamage) {
+            this.isGoingToDie = false;
+        }
     }
 
     /**

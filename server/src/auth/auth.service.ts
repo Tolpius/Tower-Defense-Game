@@ -2,13 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
+import { PrismaService } from '../prisma/prisma.service';
+import type { User } from '../../generated/prisma/client';
 
-export type AuthUser = {
-  sub: string;
-  email?: string;
-  name?: string;
-  picture?: string;
-};
+export type AuthUser = User;
 
 @Injectable()
 export class AuthService {
@@ -18,12 +15,13 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
+    private readonly prisma: PrismaService,
   ) {
     this.googleClientId = this.config.get<string>('GOOGLE_CLIENT_ID', '');
     this.googleClient = new OAuth2Client(this.googleClientId || undefined);
   }
 
-  async verifyGoogleToken(credential: string): Promise<AuthUser> {
+  async verifyGoogleToken(credential: string): Promise<TokenPayload> {
     if (!credential) {
       throw new UnauthorizedException('Missing Google credential');
     }
@@ -40,7 +38,35 @@ export class AuthService {
       throw new UnauthorizedException('Invalid Google token');
     }
 
-    return this.mapGooglePayload(payload);
+    return payload;
+  }
+
+  async upsertUser(payload: TokenPayload): Promise<AuthUser> {
+    const email = payload.email;
+    if (!email) {
+      throw new UnauthorizedException('Email not provided by Google');
+    }
+    const googleSub = payload.sub || '';
+    if (!googleSub) {
+      throw new UnauthorizedException('Google subject missing');
+    }
+
+    const user = await this.prisma.user.upsert({
+      where: { email },
+      update: {
+        googleSub,
+        name: payload.name || undefined,
+        picture: payload.picture || undefined,
+      },
+      create: {
+        email,
+        googleSub,
+        name: payload.name || undefined,
+        picture: payload.picture || undefined,
+      },
+    });
+
+    return user;
   }
 
   async issueJwt(user: AuthUser): Promise<string> {
@@ -48,19 +74,10 @@ export class AuthService {
       throw new UnauthorizedException('JWT secret not configured');
     }
     return this.jwtService.signAsync({
-      sub: user.sub,
+      sub: user.id,
       email: user.email,
       name: user.name,
       picture: user.picture,
     });
-  }
-
-  private mapGooglePayload(payload: TokenPayload): AuthUser {
-    return {
-      sub: payload.sub || '',
-      email: payload.email || undefined,
-      name: payload.name || undefined,
-      picture: payload.picture || undefined,
-    };
   }
 }

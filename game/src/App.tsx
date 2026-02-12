@@ -3,18 +3,7 @@ import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { IRefPhaserGame, PhaserGame } from "./PhaserGame";
 import SpriteSheetFavicon from "./SpriteSheetFavicon";
 import WaveBuilder from "./WaveBuilder";
-
-type AuthUser = {
-    sub: string;
-    email?: string;
-    name?: string;
-    picture?: string;
-};
-
-type AuthResponse = {
-    access_token: string;
-    user: AuthUser;
-};
+import { AuthUser, AuthResponse, authStorage, fetchMe } from "./auth";
 
 function App() {
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -49,6 +38,16 @@ function App() {
     const [authUser, setAuthUser] = useState<AuthUser | null>(null);
     const [authError, setAuthError] = useState<string | null>(null);
 
+    useEffect(() => {
+        const token = authStorage.get();
+        if (!token) {
+            return;
+        }
+        fetchMe(authApiUrl, token)
+            .then((data) => setAuthUser(data.user))
+            .catch(() => authStorage.clear());
+    }, [authApiUrl]);
+
     const handleGoogleSuccess = async (response: CredentialResponse) => {
         try {
             setAuthError(null);
@@ -71,7 +70,7 @@ function App() {
                 return;
             }
 
-            localStorage.setItem("auth_token", data.access_token);
+            authStorage.set(data.access_token);
             setAuthUser(data.user);
         } catch (error) {
             setAuthError("Auth failed");

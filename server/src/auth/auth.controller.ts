@@ -8,7 +8,8 @@ export class AuthController {
 
   @Post('google')
   async googleLogin(@Body() body: GoogleAuthDto) {
-    const user = await this.authService.verifyGoogleToken(body.credential);
+    const payload = await this.authService.verifyGoogleToken(body.credential);
+    const user = await this.authService.upsertUser(payload);
     const accessToken = await this.authService.issueJwt(user);
 
     return {

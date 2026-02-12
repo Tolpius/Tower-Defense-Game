@@ -4,6 +4,7 @@ import { IRefPhaserGame, PhaserGame } from "./PhaserGame";
 import SpriteSheetFavicon from "./SpriteSheetFavicon";
 import WaveBuilder from "./WaveBuilder";
 import { AuthUser, AuthResponse, authStorage, fetchMe } from "./auth";
+import { EventBus } from "./game/EventBus";
 
 function App() {
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -35,8 +36,11 @@ function App() {
     }, []);
 
     const authApiUrl = import.meta.env.VITE_AUTH_API_URL ?? window.location.origin;
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? "";
     const [authUser, setAuthUser] = useState<AuthUser | null>(null);
     const [authError, setAuthError] = useState<string | null>(null);
+    const [activeSceneKey, setActiveSceneKey] = useState<string | null>(null);
+    const [showLoginOverlay, setShowLoginOverlay] = useState(false);
 
     useEffect(() => {
         const token = authStorage.get();
@@ -47,6 +51,27 @@ function App() {
             .then((data) => setAuthUser(data.user))
             .catch(() => authStorage.clear());
     }, [authApiUrl]);
+
+    useEffect(() => {
+        const handleLoginRequest = () => {
+            setShowLoginOverlay(true);
+        };
+        const handleLogoutRequest = () => {
+            handleLogout();
+        };
+
+        EventBus.on("auth-login-request", handleLoginRequest);
+        EventBus.on("auth-logout-request", handleLogoutRequest);
+
+        return () => {
+            EventBus.off("auth-login-request", handleLoginRequest);
+            EventBus.off("auth-logout-request", handleLogoutRequest);
+        };
+    }, []);
+
+    useEffect(() => {
+        EventBus.emit("auth-state", authUser);
+    }, [authUser]);
 
     const handleGoogleSuccess = async (response: CredentialResponse) => {
         try {
@@ -72,6 +97,7 @@ function App() {
 
             authStorage.set(data.access_token);
             setAuthUser(data.user);
+            setShowLoginOverlay(false);
         } catch (error) {
             setAuthError("Auth failed");
         }
@@ -96,49 +122,55 @@ function App() {
 
     return (
         <div id="app" style={{ position: "relative" }}>
-            <div
-                style={{
-                    position: "absolute",
-                    top: 16,
-                    right: 16,
-                    zIndex: 10,
-                    background: "rgba(0, 0, 0, 0.6)",
-                    color: "#fff",
-                    padding: "12px 14px",
-                    borderRadius: 8,
-                    fontSize: 14,
-                }}
-            >
-                {authUser ? (
-                    <div>
-                        <div style={{ fontWeight: 600 }}>{authUser.name ?? "Player"}</div>
-                        <div style={{ opacity: 0.8 }}>{authUser.email ?? "Logged in"}</div>
-                        <button
-                            onClick={handleLogout}
-                            style={{
-                                marginTop: 8,
-                                background: "transparent",
-                                color: "#fff",
-                                border: "1px solid rgba(255,255,255,0.4)",
-                                borderRadius: 6,
-                                padding: "6px 10px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            Logout
-                        </button>
-                    </div>
-                ) : (
-                    <GoogleLogin
-                        onSuccess={handleGoogleSuccess}
-                        onError={() => setAuthError("Google login failed")}
-                    />
-                )}
-                {authError ? (
-                    <div style={{ color: "#ffb3b3", marginTop: 8 }}>{authError}</div>
-                ) : null}
-            </div>
-            <PhaserGame ref={phaserRef} />
+            {showLoginOverlay ? (
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 1000,
+                        background: "rgba(0, 0, 0, 0.6)",
+                        color: "#fff",
+                        padding: "12px 14px",
+                        borderRadius: 8,
+                        fontSize: 14,
+                    }}
+                >
+                    {googleClientId ? (
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={() => setAuthError("Google login failed")}
+                        />
+                    ) : (
+                        <div style={{ marginBottom: 8 }}>
+                            Missing `VITE_GOOGLE_CLIENT_ID` in build env.
+                        </div>
+                    )}
+                    {authError ? (
+                        <div style={{ color: "#ffb3b3", marginTop: 8 }}>{authError}</div>
+                    ) : null}
+                    <button
+                        onClick={() => setShowLoginOverlay(false)}
+                        style={{
+                            marginTop: 8,
+                            background: "transparent",
+                            color: "#fff",
+                            border: "1px solid rgba(255,255,255,0.4)",
+                            borderRadius: 6,
+                            padding: "6px 10px",
+                            cursor: "pointer",
+                            width: "100%",
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            ) : null}
+            <PhaserGame
+                ref={phaserRef}
+                currentActiveScene={(scene) => setActiveSceneKey(scene.scene.key)}
+            />
         </div>
     );
 }

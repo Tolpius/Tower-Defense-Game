@@ -1,11 +1,21 @@
 import Phaser from "phaser";
+import { EventBus } from "../EventBus";
 
 export default class MainMenu extends Phaser.Scene {
     private logo!: Phaser.GameObjects.Image;
     private startButton!: Phaser.GameObjects.Text;
+    private loginButton!: Phaser.GameObjects.Text;
+    private logoutButton!: Phaser.GameObjects.Text;
+    private authNameText!: Phaser.GameObjects.Text;
+    private authNicknameText!: Phaser.GameObjects.Text;
+    private authAvatar!: Phaser.GameObjects.Image;
+    private authAvatarMask!: Phaser.Display.Masks.GeometryMask;
+    private authAvatarBg!: Phaser.GameObjects.Rectangle;
     private skipText!: Phaser.GameObjects.Text;
     private introPlaying = true;
     private beetles: Phaser.GameObjects.Sprite[] = [];
+    private isLoggedIn = false;
+    private currentUserId: string | null = null;
 
     private beetleData = [
         {
@@ -78,6 +88,96 @@ export default class MainMenu extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on("pointerdown", () => this.startGame());
 
+        this.loginButton = this.add
+            .text(width / 2, height / 2 + 150, "Login", {
+                fontSize: "28px",
+                color: "#fff",
+                backgroundColor: "#444",
+                padding: { left: 18, right: 18, top: 8, bottom: 8 },
+            })
+            .setOrigin(0.5)
+            .setAlpha(0)
+            .setDepth(3)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerdown", () => {
+                EventBus.emit("auth-login-request");
+            });
+
+        this.logoutButton = this.add
+            .text(width / 2, height / 2 + 150, "Logout", {
+                fontSize: "28px",
+                color: "#fff",
+                backgroundColor: "#444",
+                padding: { left: 18, right: 18, top: 8, bottom: 8 },
+            })
+            .setOrigin(0.5)
+            .setAlpha(0)
+            .setDepth(3)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerdown", () => {
+                EventBus.emit("auth-logout-request");
+            });
+
+        const authMargin = 20;
+        const avatarSize = 48;
+        const avatarX = width - authMargin - avatarSize;
+        const avatarY = authMargin;
+
+        if (!this.textures.exists("avatar-placeholder")) {
+            const placeholder = this.make.graphics({ x: 0, y: 0, add: false });
+            placeholder.fillStyle(0xffffff);
+            placeholder.fillRect(0, 0, 1, 1);
+            placeholder.generateTexture("avatar-placeholder", 1, 1);
+            placeholder.destroy();
+        }
+
+        this.authAvatarBg = this.add
+            .rectangle(
+                avatarX + avatarSize / 2,
+                avatarY + avatarSize / 2,
+                avatarSize,
+                avatarSize,
+                0x333333,
+                0.8,
+            )
+            .setDepth(4)
+            .setVisible(false);
+
+        this.authAvatar = this.add
+            .image(avatarX, avatarY, "avatar-placeholder")
+            .setOrigin(0, 0)
+            .setDisplaySize(avatarSize, avatarSize)
+            .setDepth(4)
+            .setVisible(false);
+
+        const maskShape = this.make.graphics({ x: avatarX, y: avatarY, add: false });
+        maskShape.fillStyle(0xffffff);
+        maskShape.fillCircle(avatarSize / 2, avatarSize / 2, avatarSize / 2);
+        this.authAvatarMask = maskShape.createGeometryMask();
+        this.authAvatar.setMask(this.authAvatarMask);
+
+        this.authNameText = this.add
+            .text(avatarX - 12, avatarY, "", {
+                fontSize: "20px",
+                color: "#fff",
+                backgroundColor: "rgba(0,0,0,0.4)",
+                padding: { left: 8, right: 8, top: 4, bottom: 4 },
+            })
+            .setOrigin(1, 0)
+            .setDepth(4)
+            .setVisible(false);
+
+        this.authNicknameText = this.add
+            .text(avatarX - 12, avatarY + 28, "Nickname: TBD", {
+                fontSize: "16px",
+                color: "#ddd",
+                backgroundColor: "rgba(0,0,0,0.3)",
+                padding: { left: 8, right: 8, top: 2, bottom: 2 },
+            })
+            .setOrigin(1, 0)
+            .setDepth(4)
+            .setVisible(false);
+
         this.skipText = this.add
             .text(width / 2, height - 60, "Click or key: Skip intro", {
                 fontSize: "20px",
@@ -111,6 +211,46 @@ export default class MainMenu extends Phaser.Scene {
         this.input.keyboard!.once("keydown", this.skipIntro, this);
 
         this.scale.on("resize", this.resize, this);
+
+        EventBus.on("auth-state", (user: { name?: string; email?: string } | null) => {
+            this.isLoggedIn = !!user;
+            if (user && "id" in user) {
+                this.currentUserId = (user as { id?: string }).id ?? null;
+            } else {
+                this.currentUserId = null;
+            }
+            const label = user?.name || user?.email ? user.name ?? user.email : "";
+            this.authNameText.setText(label ?? "");
+            this.updateAuthButtons();
+
+            if (this.isLoggedIn && user) {
+                this.authAvatarBg.setVisible(true);
+                this.authNameText.setVisible(true);
+                this.authNicknameText.setVisible(true);
+
+                const picture = (user as { picture?: string }).picture;
+                if (picture && this.currentUserId) {
+                    const key = `avatar-${this.currentUserId}`;
+                    if (this.textures.exists(key)) {
+                        this.authAvatar.setTexture(key).setVisible(true);
+                    } else {
+                        this.load.setCORS("anonymous");
+                        this.load.image(key, picture);
+                        this.load.once(`filecomplete-image-${key}`, () => {
+                            this.authAvatar.setTexture(key).setVisible(true);
+                        });
+                        this.load.start();
+                    }
+                } else {
+                    this.authAvatar.setTexture("avatar-placeholder").setVisible(true);
+                }
+            } else {
+                this.authAvatarBg.setVisible(false);
+                this.authAvatar.setVisible(false);
+                this.authNameText.setVisible(false);
+                this.authNicknameText.setVisible(false);
+            }
+        });
     }
 
     playIntro() {
@@ -222,6 +362,10 @@ export default class MainMenu extends Phaser.Scene {
             ease: "Bounce.easeOut",
         });
 
+        this.loginButton.setPosition(width / 2, height / 2 + 150).setAlpha(1);
+        this.logoutButton.setPosition(width / 2, height / 2 + 150).setAlpha(1);
+        this.updateAuthButtons();
+
         this.skipText.setVisible(false);
     }
 
@@ -235,9 +379,28 @@ export default class MainMenu extends Phaser.Scene {
         if (!this.introPlaying) {
             this.logo.setPosition(width / 2, height / 2 - 100);
             this.startButton.setPosition(width / 2, height / 2 + 80);
+            this.loginButton.setPosition(width / 2, height / 2 + 150);
+            this.logoutButton.setPosition(width / 2, height / 2 + 150);
+            const authMargin = 20;
+            const avatarSize = 48;
+            const avatarX = width - authMargin - avatarSize;
+            const avatarY = authMargin;
+            this.authAvatar.setPosition(avatarX, avatarY);
+            this.authAvatarBg.setPosition(avatarX + avatarSize / 2, avatarY + avatarSize / 2);
+            this.authNameText.setPosition(avatarX - 12, avatarY);
+            this.authNicknameText.setPosition(avatarX - 12, avatarY + 28);
         }
 
         this.skipText.setPosition(width / 2, height - 60);
     }
-}
 
+    private updateAuthButtons() {
+        if (this.isLoggedIn) {
+            this.loginButton.setVisible(false).disableInteractive();
+            this.logoutButton.setVisible(true).setInteractive({ useHandCursor: true });
+        } else {
+            this.logoutButton.setVisible(false).disableInteractive();
+            this.loginButton.setVisible(true).setInteractive({ useHandCursor: true });
+        }
+    }
+}

@@ -34,7 +34,7 @@ function App() {
         return () => faviconAnimator?.stop();
     }, []);
 
-    const authApiUrl = import.meta.env.VITE_AUTH_API_URL ?? "http://localhost:3000";
+    const authApiUrl = import.meta.env.VITE_AUTH_API_URL ?? window.location.origin;
     const [authUser, setAuthUser] = useState<AuthUser | null>(null);
     const [authError, setAuthError] = useState<string | null>(null);
 

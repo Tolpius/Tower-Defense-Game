@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import { PrismaService } from '../prisma/prisma.service';
-import type { User } from '../../generated/prisma/client';
+import type { User } from '@prisma/client';
 
 export type AuthUser = User;
 

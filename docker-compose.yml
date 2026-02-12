@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ./server
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
+      PORT: ${SERVER_PORT:-3000}
+    depends_on:
+      - db
+    ports:
+      - "${SERVER_PORT:-3000}:3000"
+
+  game:
+    build:
+      context: ./game
+      args:
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
+        VITE_AUTH_API_URL: ${VITE_AUTH_API_URL}
+    depends_on:
+      - server
+    ports:
+      - "${GAME_PORT:-5173}:80"
+
+volumes:
+  db_data:

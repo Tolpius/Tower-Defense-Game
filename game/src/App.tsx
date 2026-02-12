@@ -77,6 +77,11 @@ function App() {
         }
     };
 
+    const handleLogout = () => {
+        authStorage.clear();
+        setAuthUser(null);
+    };
+
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
 
@@ -108,6 +113,20 @@ function App() {
                     <div>
                         <div style={{ fontWeight: 600 }}>{authUser.name ?? "Player"}</div>
                         <div style={{ opacity: 0.8 }}>{authUser.email ?? "Logged in"}</div>
+                        <button
+                            onClick={handleLogout}
+                            style={{
+                                marginTop: 8,
+                                background: "transparent",
+                                color: "#fff",
+                                border: "1px solid rgba(255,255,255,0.4)",
+                                borderRadius: 6,
+                                padding: "6px 10px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Logout
+                        </button>
                     </div>
                 ) : (
                     <GoogleLogin

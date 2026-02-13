@@ -20,6 +20,10 @@ export type UpdateNicknameResponse = {
     user: AuthUser;
 };
 
+export type InfiniteModesSyncResponse = {
+    completedMaps: string[];
+};
+
 export class AuthApiError extends Error {
     status: number;
     constructor(status: number, message: string) {
@@ -90,4 +94,45 @@ export async function updateNickname(
     }
 
     return { user: payload.user };
+}
+
+export async function syncInfiniteModes(
+    authApiUrl: string,
+    token: string,
+    completedMaps: string[],
+): Promise<InfiniteModesSyncResponse> {
+    const res = await fetch(`${authApiUrl}/auth/infinite-modes/sync`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ completedMaps }),
+    });
+
+    const payload = (await res.json().catch(() => null)) as
+        | { message?: string | string[] }
+        | { completedMaps?: string[] }
+        | null;
+
+    if (!res.ok) {
+        const rawMessage = Array.isArray(payload?.message)
+            ? payload?.message[0]
+            : payload?.message;
+        throw new AuthApiError(
+            res.status,
+            typeof rawMessage === "string" ? rawMessage : "Request failed",
+        );
+    }
+
+    if (
+        !payload ||
+        typeof payload !== "object" ||
+        !("completedMaps" in payload) ||
+        !Array.isArray(payload.completedMaps)
+    ) {
+        throw new AuthApiError(res.status, "Invalid response from server");
+    }
+
+    return { completedMaps: payload.completedMaps };
 }

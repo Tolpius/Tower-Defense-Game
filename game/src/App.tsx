@@ -12,6 +12,7 @@ import {
     updateNickname,
 } from "./auth";
 import { EventBus } from "./game/EventBus";
+import { syncCompletedMapsWithBackend } from "./game/scripts/progress/ProgressManager";
 
 function App() {
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -97,6 +98,15 @@ function App() {
 
     useEffect(() => {
         EventBus.emit("auth-state", authUser);
+    }, [authUser]);
+
+    useEffect(() => {
+        if (!authUser) {
+            return;
+        }
+        syncCompletedMapsWithBackend().catch((error) => {
+            console.warn("Failed to sync endless unlocks:", error);
+        });
     }, [authUser]);
 
     const handleGoogleSuccess = async (response: CredentialResponse) => {

@@ -29,5 +29,6 @@ import { AuthenticatedController } from './authenticated.controller';
   ],
   controllers: [AuthController, AuthenticatedController],
   providers: [AuthService, JwtAuthGuard],
+  exports: [JwtAuthGuard, JwtModule],
 })
 export class AuthModule {}

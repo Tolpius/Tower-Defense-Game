@@ -19,6 +19,25 @@ model User {
   nickname  String   @unique
   name      String?
   picture   String?
+  scores    Score[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Score {
+  id         String   @id @default(uuid())
+  userId     String
+  worldId    Int
+  mapId      Int
+  isInfinite Boolean
+  wave       Int
+  kills      Int
+  score      Int
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([score(sort: Desc), createdAt(sort: Desc)])
+  @@index([worldId, mapId, isInfinite])
+  @@index([userId])
 }

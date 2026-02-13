@@ -1,14 +1,29 @@
 import { Scene } from "phaser";
+import { LeaderboardService } from "../services/LeaderboardService";
 
 export class GameOver extends Scene {
     private worldId!: number;
     private mapId!: number;
+    private wave!: number;
+    private kills!: number;
+    private isInfiniteMode!: boolean;
+    private scoreSubmitted = false;
     constructor() {
         super({ key: "GameOver" });
     }
-    init(data: { worldId: number; mapId: number }) {
+    init(data: {
+        worldId: number;
+        mapId: number;
+        wave?: number;
+        kills?: number;
+        isInfiniteMode?: boolean;
+    }) {
         this.worldId = data.worldId;
         this.mapId = data.mapId;
+        this.wave = data.wave ?? 1;
+        this.kills = data.kills ?? 0;
+        this.isInfiniteMode = data.isInfiniteMode ?? false;
+        this.scoreSubmitted = false;
     }
 
     create() {
@@ -21,8 +36,22 @@ export class GameOver extends Scene {
             })
             .setOrigin(0.5);
 
+        const score = LeaderboardService.calculateScore(this.wave, this.kills);
         this.add
-            .text(width / 2, height / 2 - 30, "Restart", {
+            .text(
+                width / 2,
+                height / 2 - 50,
+                `Wave: ${this.wave}  |  Kills: ${this.kills}  |  Score: ${score}`,
+                {
+                    fontSize: "20px",
+                    color: "#ffd700",
+                },
+            )
+            .setOrigin(0.5);
+        void this.submitScore(score);
+
+        this.add
+            .text(width / 2, height / 2, "Restart", {
                 fontSize: "32px",
                 color: "#fff",
                 backgroundColor: "#B22222",
@@ -40,7 +69,7 @@ export class GameOver extends Scene {
             });
 
         this.add
-            .text(width / 2, height / 2 + 40, "Back to Main Menu", {
+            .text(width / 2, height / 2 + 60, "Back to Main Menu", {
                 fontSize: "32px",
                 color: "#fff",
                 backgroundColor: "#222",
@@ -53,5 +82,22 @@ export class GameOver extends Scene {
                 this.scene.start("MainMenu");
             });
     }
-}
 
+    private async submitScore(score: number) {
+        if (this.scoreSubmitted) {
+            return;
+        }
+        this.scoreSubmitted = true;
+        const success = await LeaderboardService.submitScore({
+            worldId: this.worldId,
+            mapId: this.mapId,
+            isInfinite: this.isInfiniteMode,
+            wave: this.wave,
+            kills: this.kills,
+            score,
+        });
+        if (success) {
+            console.log("Score submitted successfully");
+        }
+    }
+}

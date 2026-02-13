@@ -4,6 +4,7 @@ import { EventBus } from "../EventBus";
 export default class MainMenu extends Phaser.Scene {
     private logo!: Phaser.GameObjects.Image;
     private startButton!: Phaser.GameObjects.Text;
+    private leaderboardButton!: Phaser.GameObjects.Text;
     private loginButton!: Phaser.GameObjects.Text;
     private logoutButton!: Phaser.GameObjects.Text;
     private authNameText!: Phaser.GameObjects.Text;
@@ -17,6 +18,55 @@ export default class MainMenu extends Phaser.Scene {
     private beetles: Phaser.GameObjects.Sprite[] = [];
     private isLoggedIn = false;
     private currentUserId: string | null = null;
+    private readonly onAuthState = (user: {
+        id?: string;
+        name?: string;
+        email?: string;
+        picture?: string;
+        nickname?: string;
+    } | null) => {
+        this.isLoggedIn = !!user;
+        if (user && "id" in user) {
+            this.currentUserId = (user as { id?: string }).id ?? null;
+        } else {
+            this.currentUserId = null;
+        }
+        const label = user?.name || user?.email ? user.name ?? user.email : "";
+        this.authNameText.setText(label ?? "");
+        const nickname = user?.nickname ?? "";
+        this.updateNicknameRow(nickname);
+        this.updateAuthButtons();
+
+        if (this.isLoggedIn && user) {
+            this.authAvatarBg.setVisible(true);
+            this.authNameText.setVisible(true);
+            this.authNicknameText.setVisible(true);
+            this.authNicknameEditButton.setVisible(true);
+
+            const picture = user.picture;
+            if (picture && this.currentUserId) {
+                const key = `avatar-${this.currentUserId}`;
+                if (this.textures.exists(key)) {
+                    this.authAvatar.setTexture(key).setVisible(true);
+                } else {
+                    this.load.setCORS("anonymous");
+                    this.load.image(key, picture);
+                    this.load.once(`filecomplete-image-${key}`, () => {
+                        this.authAvatar.setTexture(key).setVisible(true);
+                    });
+                    this.load.start();
+                }
+            } else {
+                this.authAvatar.setTexture("avatar-placeholder").setVisible(true);
+            }
+        } else {
+            this.authAvatarBg.setVisible(false);
+            this.authAvatar.setVisible(false);
+            this.authNameText.setVisible(false);
+            this.authNicknameText.setVisible(false);
+            this.authNicknameEditButton.setVisible(false);
+        }
+    };
 
     private beetleData = [
         {
@@ -117,6 +167,21 @@ export default class MainMenu extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on("pointerdown", () => {
                 EventBus.emit("auth-logout-request");
+            });
+
+        this.leaderboardButton = this.add
+            .text(width / 2, height / 2 + 220, "Leaderboard", {
+                fontSize: "24px",
+                color: "#fff",
+                backgroundColor: "#555",
+                padding: { left: 16, right: 16, top: 8, bottom: 8 },
+            })
+            .setOrigin(0.5)
+            .setAlpha(0)
+            .setDepth(3)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerdown", () => {
+                this.scene.start("Leaderboard");
             });
 
         const authMargin = 20;
@@ -228,52 +293,10 @@ export default class MainMenu extends Phaser.Scene {
 
         this.scale.on("resize", this.resize, this);
 
-        EventBus.on(
-            "auth-state",
-            (user: { id?: string; name?: string; email?: string; picture?: string; nickname?: string } | null) => {
-            this.isLoggedIn = !!user;
-            if (user && "id" in user) {
-                this.currentUserId = (user as { id?: string }).id ?? null;
-            } else {
-                this.currentUserId = null;
-            }
-            const label = user?.name || user?.email ? user.name ?? user.email : "";
-            this.authNameText.setText(label ?? "");
-            const nickname = user?.nickname ?? "";
-            this.updateNicknameRow(nickname);
-            this.updateAuthButtons();
-
-            if (this.isLoggedIn && user) {
-                this.authAvatarBg.setVisible(true);
-                this.authNameText.setVisible(true);
-                this.authNicknameText.setVisible(true);
-                this.authNicknameEditButton.setVisible(true);
-
-                const picture = user.picture;
-                if (picture && this.currentUserId) {
-                    const key = `avatar-${this.currentUserId}`;
-                    if (this.textures.exists(key)) {
-                        this.authAvatar.setTexture(key).setVisible(true);
-                    } else {
-                        this.load.setCORS("anonymous");
-                        this.load.image(key, picture);
-                        this.load.once(`filecomplete-image-${key}`, () => {
-                            this.authAvatar.setTexture(key).setVisible(true);
-                        });
-                        this.load.start();
-                    }
-                } else {
-                    this.authAvatar.setTexture("avatar-placeholder").setVisible(true);
-                }
-            } else {
-                this.authAvatarBg.setVisible(false);
-                this.authAvatar.setVisible(false);
-                this.authNameText.setVisible(false);
-                this.authNicknameText.setVisible(false);
-                this.authNicknameEditButton.setVisible(false);
-            }
-            },
-        );
+        EventBus.on("auth-state", this.onAuthState);
+        this.events.once("shutdown", () => {
+            EventBus.off("auth-state", this.onAuthState);
+        });
     }
 
     playIntro() {
@@ -387,6 +410,7 @@ export default class MainMenu extends Phaser.Scene {
 
         this.loginButton.setPosition(width / 2, height / 2 + 150).setAlpha(1);
         this.logoutButton.setPosition(width / 2, height / 2 + 150).setAlpha(1);
+        this.leaderboardButton.setPosition(width / 2, height / 2 + 220).setAlpha(1);
         this.updateAuthButtons();
 
         this.skipText.setVisible(false);
@@ -404,6 +428,7 @@ export default class MainMenu extends Phaser.Scene {
             this.startButton.setPosition(width / 2, height / 2 + 80);
             this.loginButton.setPosition(width / 2, height / 2 + 150);
             this.logoutButton.setPosition(width / 2, height / 2 + 150);
+            this.leaderboardButton.setPosition(width / 2, height / 2 + 220);
             const authMargin = 20;
             const avatarSize = 48;
             const avatarX = width - authMargin - avatarSize;

@@ -78,15 +78,20 @@ function App() {
             setNicknameValue(authUser.nickname ?? "");
             setShowNicknameOverlay(true);
         };
+        const handleAuthStateRequest = () => {
+            EventBus.emit("auth-state", authUser);
+        };
 
         EventBus.on("auth-login-request", handleLoginRequest);
         EventBus.on("auth-logout-request", handleLogoutRequest);
         EventBus.on("auth-nickname-edit-request", handleNicknameEditRequest);
+        EventBus.on("auth-request-state", handleAuthStateRequest);
 
         return () => {
             EventBus.off("auth-login-request", handleLoginRequest);
             EventBus.off("auth-logout-request", handleLogoutRequest);
             EventBus.off("auth-nickname-edit-request", handleNicknameEditRequest);
+            EventBus.off("auth-request-state", handleAuthStateRequest);
         };
     }, [authUser]);
 

@@ -15,6 +15,7 @@ export type AuthUser = User;
 @Injectable()
 export class AuthService {
   private static readonly NICKNAME_REGEX = /^[A-Za-z0-9]+$/;
+  private static readonly MAP_KEY_REGEX = /^([1-9]\d*)-([1-9]\d*)$/;
   private readonly googleClient: OAuth2Client;
   private readonly googleClientId: string;
 
@@ -114,6 +115,63 @@ export class AuthService {
       where: { id: userId },
       data: { nickname },
     });
+  }
+
+  async syncInfiniteModesForUser(
+    userId: string,
+    rawCompletedMaps: unknown,
+  ): Promise<string[]> {
+    if (!Array.isArray(rawCompletedMaps)) {
+      throw new BadRequestException('completedMaps must be an array');
+    }
+
+    const parsedPairs = rawCompletedMaps.map((value) =>
+      this.parseMapKeyOrThrow(value),
+    );
+    const uniquePairs = new Map<string, { worldId: number; mapId: number }>();
+    for (const pair of parsedPairs) {
+      uniquePairs.set(`${pair.worldId}-${pair.mapId}`, pair);
+    }
+
+    if (uniquePairs.size > 0) {
+      await this.prisma.infiniteModeUnlock.createMany({
+        data: Array.from(uniquePairs.values()).map((pair) => ({
+          userId,
+          worldId: pair.worldId,
+          mapId: pair.mapId,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    const fromDb = await this.prisma.infiniteModeUnlock.findMany({
+      where: { userId },
+      orderBy: [{ worldId: 'asc' }, { mapId: 'asc' }],
+      select: {
+        worldId: true,
+        mapId: true,
+      },
+    });
+
+    return fromDb.map((entry) => `${entry.worldId}-${entry.mapId}`);
+  }
+
+  private parseMapKeyOrThrow(value: unknown): { worldId: number; mapId: number } {
+    if (typeof value !== 'string') {
+      throw new BadRequestException(
+        'Each completedMaps entry must be a string key like "1-2"',
+      );
+    }
+    const match = value.match(AuthService.MAP_KEY_REGEX);
+    if (!match) {
+      throw new BadRequestException(
+        `Invalid completedMaps entry "${value}", expected "worldId-mapId"`,
+      );
+    }
+
+    const worldId = Number(match[1]);
+    const mapId = Number(match[2]);
+    return { worldId, mapId };
   }
 
   private async generateUniqueGuestNickname(): Promise<string> {

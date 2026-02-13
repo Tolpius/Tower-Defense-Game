@@ -1,3 +1,5 @@
+import { authStorage, syncInfiniteModes } from "../../../auth";
+
 /**
  * ProgressManager - Verwaltet Spielfortschritt im localStorage
  *
@@ -37,6 +39,20 @@ function saveProgress(progress: ProgressData): void {
     }
 }
 
+function normalizeCompletedMaps(completedMaps: string[]): string[] {
+    const unique = new Set(
+        completedMaps.filter((value) => /^([1-9]\d*)-([1-9]\d*)$/.test(value)),
+    );
+    return Array.from(unique).sort((a, b) => {
+        const [wa, ma] = a.split("-").map(Number);
+        const [wb, mb] = b.split("-").map(Number);
+        if (wa !== wb) {
+            return wa - wb;
+        }
+        return ma - mb;
+    });
+}
+
 /** Erzeugt den Key für eine Map */
 function getMapKey(worldId: number, mapId: number): string {
     return `${worldId}-${mapId}`;
@@ -68,8 +84,9 @@ export function unlockInfiniteMode(worldId: number, mapId: number): void {
 
     if (!progress.completedMaps.includes(key)) {
         progress.completedMaps.push(key);
-        saveProgress(progress);
+        saveProgress({ completedMaps: normalizeCompletedMaps(progress.completedMaps) });
         console.log(`🔓 Infinite Mode für Map ${key} freigeschaltet!`);
+        void syncCompletedMapsWithBackend();
     }
 }
 
@@ -77,7 +94,32 @@ export function unlockInfiniteMode(worldId: number, mapId: number): void {
  * Gibt alle abgeschlossenen Maps zurück.
  */
 export function getCompletedMaps(): string[] {
-    return loadProgress().completedMaps;
+    return normalizeCompletedMaps(loadProgress().completedMaps);
+}
+
+/**
+ * Überschreibt die lokal gespeicherten abgeschlossenen Maps.
+ */
+export function setCompletedMaps(completedMaps: string[]): void {
+    saveProgress({ completedMaps: normalizeCompletedMaps(completedMaps) });
+}
+
+/**
+ * Synchronisiert localStorage mit dem Backend für eingeloggte User.
+ * - lokale Unlocks, die in der DB fehlen, werden ergänzt
+ * - Ergebnis aus der DB wird lokal gespeichert
+ */
+export async function syncCompletedMapsWithBackend(): Promise<string[] | null> {
+    const token = authStorage.get();
+    if (!token) {
+        return null;
+    }
+
+    const authApiUrl = import.meta.env.VITE_AUTH_API_URL ?? window.location.origin;
+    const localCompletedMaps = getCompletedMaps();
+    const response = await syncInfiniteModes(authApiUrl, token, localCompletedMaps);
+    setCompletedMaps(response.completedMaps);
+    return response.completedMaps;
 }
 
 /**
@@ -102,4 +144,3 @@ export function unlockAllInfiniteModesTemporarily(): void {
 export function isAllUnlockedTemporarily(): boolean {
     return _allUnlockedTemporarily;
 }
-

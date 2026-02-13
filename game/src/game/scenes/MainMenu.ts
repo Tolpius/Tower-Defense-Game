@@ -297,6 +297,7 @@ export default class MainMenu extends Phaser.Scene {
         this.events.once("shutdown", () => {
             EventBus.off("auth-state", this.onAuthState);
         });
+        EventBus.emit("auth-request-state");
     }
 
     playIntro() {

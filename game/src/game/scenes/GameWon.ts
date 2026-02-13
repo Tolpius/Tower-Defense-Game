@@ -1,13 +1,18 @@
 import { Scene } from "phaser";
 import { WorldsData } from "../../config/WorldInterfaces";
 import { unlockInfiniteMode } from "../scripts/progress/ProgressManager";
+import { LeaderboardService } from "../services/LeaderboardService";
 
 export class GameWon extends Scene {
     private worldId!: number;
     private mapId!: number;
+    private wave!: number;
+    private kills!: number;
+    private isInfiniteMode!: boolean;
     private worlds!: WorldsData;
     private hasNextLevel: boolean = false;
     private canContinueToInfinite: boolean = false;
+    private scoreSubmitted = false;
 
     constructor() {
         super({ key: "GameWon" });
@@ -17,10 +22,17 @@ export class GameWon extends Scene {
         worldId: number;
         mapId: number;
         canContinueToInfinite?: boolean;
+        wave?: number;
+        kills?: number;
+        isInfiniteMode?: boolean;
     }) {
         this.worldId = data.worldId;
         this.mapId = data.mapId;
         this.canContinueToInfinite = data.canContinueToInfinite ?? false;
+        this.wave = data.wave ?? 1;
+        this.kills = data.kills ?? 0;
+        this.isInfiniteMode = data.isInfiniteMode ?? false;
+        this.scoreSubmitted = false;
     }
 
     create() {
@@ -34,11 +46,26 @@ export class GameWon extends Scene {
         // Map wurde gewonnen -> Infinite Mode freischalten
         unlockInfiniteMode(this.worldId, this.mapId);
 
+        const score = LeaderboardService.calculateScore(this.wave, this.kills);
+        void this.submitScore(score);
+
         this.add
-            .text(width / 2, height / 2 - 80, "You won!", {
+            .text(width / 2, height / 2 - 110, "You won!", {
                 fontSize: "48px",
                 color: "#fff",
             })
+            .setOrigin(0.5);
+
+        this.add
+            .text(
+                width / 2,
+                height / 2 - 60,
+                `Wave: ${this.wave}  |  Kills: ${this.kills}  |  Score: ${score}`,
+                {
+                    fontSize: "20px",
+                    color: "#ffd700",
+                },
+            )
             .setOrigin(0.5);
 
         // Button-Positionen berechnen
@@ -174,5 +201,22 @@ export class GameWon extends Scene {
         // Fallback (should not happen if checkNextLevel is correct)
         return { worldId: this.worldId, mapId: this.mapId };
     }
-}
 
+    private async submitScore(score: number) {
+        if (this.scoreSubmitted) {
+            return;
+        }
+        this.scoreSubmitted = true;
+        const success = await LeaderboardService.submitScore({
+            worldId: this.worldId,
+            mapId: this.mapId,
+            isInfinite: this.isInfiniteMode,
+            wave: this.wave,
+            kills: this.kills,
+            score,
+        });
+        if (success) {
+            console.log("Score submitted successfully");
+        }
+    }
+}

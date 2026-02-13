@@ -8,6 +8,7 @@ export default class MainMenu extends Phaser.Scene {
     private logoutButton!: Phaser.GameObjects.Text;
     private authNameText!: Phaser.GameObjects.Text;
     private authNicknameText!: Phaser.GameObjects.Text;
+    private authNicknameEditButton!: Phaser.GameObjects.Text;
     private authAvatar!: Phaser.GameObjects.Image;
     private authAvatarMask!: Phaser.Display.Masks.GeometryMask;
     private authAvatarBg!: Phaser.GameObjects.Rectangle;
@@ -178,6 +179,21 @@ export default class MainMenu extends Phaser.Scene {
             .setDepth(4)
             .setVisible(false);
 
+        this.authNicknameEditButton = this.add
+            .text(avatarX - 12, avatarY + 28, "\u270E", {
+                fontSize: "16px",
+                color: "#fff",
+                backgroundColor: "rgba(0,0,0,0.45)",
+                padding: { left: 6, right: 6, top: 2, bottom: 2 },
+            })
+            .setOrigin(1, 0)
+            .setDepth(4)
+            .setVisible(false)
+            .setInteractive({ useHandCursor: true })
+            .on("pointerdown", () => {
+                EventBus.emit("auth-nickname-edit-request");
+            });
+
         this.skipText = this.add
             .text(width / 2, height - 60, "Click or key: Skip intro", {
                 fontSize: "20px",
@@ -212,7 +228,9 @@ export default class MainMenu extends Phaser.Scene {
 
         this.scale.on("resize", this.resize, this);
 
-        EventBus.on("auth-state", (user: { name?: string; email?: string } | null) => {
+        EventBus.on(
+            "auth-state",
+            (user: { id?: string; name?: string; email?: string; picture?: string; nickname?: string } | null) => {
             this.isLoggedIn = !!user;
             if (user && "id" in user) {
                 this.currentUserId = (user as { id?: string }).id ?? null;
@@ -221,14 +239,17 @@ export default class MainMenu extends Phaser.Scene {
             }
             const label = user?.name || user?.email ? user.name ?? user.email : "";
             this.authNameText.setText(label ?? "");
+            const nickname = user?.nickname ?? "";
+            this.updateNicknameRow(nickname);
             this.updateAuthButtons();
 
             if (this.isLoggedIn && user) {
                 this.authAvatarBg.setVisible(true);
                 this.authNameText.setVisible(true);
                 this.authNicknameText.setVisible(true);
+                this.authNicknameEditButton.setVisible(true);
 
-                const picture = (user as { picture?: string }).picture;
+                const picture = user.picture;
                 if (picture && this.currentUserId) {
                     const key = `avatar-${this.currentUserId}`;
                     if (this.textures.exists(key)) {
@@ -249,8 +270,10 @@ export default class MainMenu extends Phaser.Scene {
                 this.authAvatar.setVisible(false);
                 this.authNameText.setVisible(false);
                 this.authNicknameText.setVisible(false);
+                this.authNicknameEditButton.setVisible(false);
             }
-        });
+            },
+        );
     }
 
     playIntro() {
@@ -389,6 +412,7 @@ export default class MainMenu extends Phaser.Scene {
             this.authAvatarBg.setPosition(avatarX + avatarSize / 2, avatarY + avatarSize / 2);
             this.authNameText.setPosition(avatarX - 12, avatarY);
             this.authNicknameText.setPosition(avatarX - 12, avatarY + 28);
+            this.updateNicknameButtonPosition();
         }
 
         this.skipText.setPosition(width / 2, height - 60);
@@ -402,5 +426,16 @@ export default class MainMenu extends Phaser.Scene {
             this.logoutButton.setVisible(false).disableInteractive();
             this.loginButton.setVisible(true).setInteractive({ useHandCursor: true });
         }
+    }
+
+    private updateNicknameRow(nickname: string) {
+        this.authNicknameText.setText(`Nickname: ${nickname || "-"}`);
+        this.updateNicknameButtonPosition();
+    }
+
+    private updateNicknameButtonPosition() {
+        const gap = 6;
+        const nicknameLeftEdge = this.authNicknameText.x - this.authNicknameText.width;
+        this.authNicknameEditButton.setPosition(nicknameLeftEdge - gap, this.authNicknameText.y);
     }
 }

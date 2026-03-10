@@ -2,29 +2,29 @@ import { Preloader } from "../../scenes/Preloader";
 
 export default function loadEnemySprites(preloader: Preloader) {
     //ENEMY GENERATION
-    preloader.load.spritesheet("scorpion", "/enemies/scorpion/Scorpion.png", {
+    preloader.load.spritesheet("scorpion", "enemies/scorpion/Scorpion.png", {
         frameWidth: 64,
         frameHeight: 64,
     });
 
-    preloader.load.spritesheet("leafbug", "/enemies/leafbug/Leafbug.png", {
+    preloader.load.spritesheet("leafbug", "enemies/leafbug/Leafbug.png", {
         frameWidth: 64,
         frameHeight: 64,
     });
 
-    preloader.load.spritesheet("firebug", "/enemies/firebug/Firebug.png", {
+    preloader.load.spritesheet("firebug", "enemies/firebug/Firebug.png", {
         frameWidth: 128,
         frameHeight: 64,
     });
 
-    preloader.load.spritesheet("firewasp", "/enemies/firewasp/Firewasp.png", {
+    preloader.load.spritesheet("firewasp", "enemies/firewasp/Firewasp.png", {
         frameWidth: 96,
         frameHeight: 96,
     });
 
     preloader.load.spritesheet(
         "magmacrab",
-        "/enemies/magmacrab/Magmacrab.png",
+        "enemies/magmacrab/Magmacrab.png",
         {
             frameWidth: 64,
             frameHeight: 64,
@@ -33,7 +33,7 @@ export default function loadEnemySprites(preloader: Preloader) {
 
     preloader.load.spritesheet(
         "clampbeetle",
-        "/enemies/clampbeetle/Clampbeetle.png",
+        "enemies/clampbeetle/Clampbeetle.png",
         {
             frameWidth: 64,
             frameHeight: 64,
@@ -42,7 +42,7 @@ export default function loadEnemySprites(preloader: Preloader) {
 
     preloader.load.spritesheet(
         "flyinglocust",
-        "/enemies/flyinglocust/FlyingLocust.png",
+        "enemies/flyinglocust/FlyingLocust.png",
         {
             frameWidth: 64,
             frameHeight: 64,
@@ -51,7 +51,7 @@ export default function loadEnemySprites(preloader: Preloader) {
 
     preloader.load.spritesheet(
         "voidbutterfly",
-        "/enemies/voidbutterfly/Voidbutterfly.png",
+        "enemies/voidbutterfly/Voidbutterfly.png",
         {
             frameWidth: 64,
             frameHeight: 64,
@@ -60,7 +60,7 @@ export default function loadEnemySprites(preloader: Preloader) {
 
     preloader.load.spritesheet(
         "patharrow",
-        "/enemies/pathArrows/pathArrow.png",
+        "enemies/pathArrows/pathArrow.png",
         {
             frameWidth: 53,
             frameHeight: 32,

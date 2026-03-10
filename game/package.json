@@ -25,6 +25,9 @@
         "build": "vite build --config vite/config.prod.mjs"
     },
     "dependencies": {
+        "@capacitor/android": "^8.1.0",
+        "@capacitor/cli": "^8.1.0",
+        "@capacitor/core": "^8.1.0",
         "@react-oauth/google": "^0.13.4",
         "phaser": "^3.90.0",
         "react": "^19.0.0",
